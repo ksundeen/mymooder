@@ -1,16 +1,45 @@
+# Goal of My Mooder Application
+My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see overtime and space and across activities, people, and weather how their mood fluctuates from negative to positive. With this data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs as a result that will support more positive mood qualities.
+
+# Tech Stack
+* Python Django GeoNode for the WebMap Portal (in a docker container)
+* Python FastAPI for python algorithms to run regression of data points (in a docker container)
+* React Native front end with Leaflet (maps) and D3 (graphs) in docker container with SQLite database that will support exporting to geopackage or using the GeoNode’s API to submit data to the PostgreSQL/PostGIS endpoints to view on the portal.
+
+Data can then be viewed in QGIS or other GIS applications.
+
+## Complete Development Environment for React Native Application.
+In this section, we'll review the steps for setting up technologies required to run a React Native Environment with a GeoNode WebMap and a Fast API python backend that uses:
+
+- <b>Docker</b>: `docker-cli`, `docker engine`, `docker-compose` to handle running, building, and deploying the final apps.
+- <b>Node.js</b>: `nvm`, `npm`, and `npx` for managing JavaScript dependencies for the React Native app.
+- <b>React Native with a SQLite</b>: to create the front end mobile device app and mobile device database to store all user data.
+- <b>Python Fast API</b>: to handle creating machine learning algorithms (`geopandas`, `scipy`, `matplotlib`...etc) from the server to the react native app.
+- <b>GeoNode</b>: A free and opensource geospatial webmapping application used to host geospatial data in `GeoServer`, stored through `PostgreSQL` with the `PostGIS` spatial extension, and accessed through a `Python Django` JavaScript frontend API and web app. 
+
 # Getting Started for React Native Setup
 
-1. Install Just using Make
+1. Pull the repository in WSL or IOS os Linux
+2. Install Just as a command runner for your OS from: https://github.com/casey/just
+3. With Ubuntu 24.04 install using:
 
-    make just
+       sudo apt install just
 
-2. Run commands from the justfile to install api, frontend, and GeoNode dependencies
+6. Run commands from the justfile to install api, frontend, and GeoNode dependencies
 
-    # Fast API
+    ## React Native
+       cd mymooder
+       just install-ubuntu-packages
+       just install-dockertools
+       just install-frontend
 
-    # React Native 
+    ## Fast API
 
-    # GeoNode
+       ...coming
+
+    ## GeoNode
+
+       ...coming
 
 ## IOS
 - Install XCode on Any Ipad or Mac Device
@@ -73,13 +102,3 @@
 10. Finally, to get back to the root user from your profile user, simply type exit bring you back to the root user login screen:
 
         exit
-
-
-## Complete Development Environment for React Native Application.
-In this section, we'll review the steps for setting up technologies required to run a React Native Environment with a GeoNode WebMap and a Fast API python backend that uses:
-
-- <b>Docker</b>: `docker-cli`, `docker engine`, `docker-compose` to handle running, building, and deploying the final apps.
-- <b>Node.js</b>: `nvm`, `npm`, and `npx` for managing JavaScript dependencies for the React Native app.
-- <b>React Native with a SQLite</b>: to create the front end mobile device app and mobile device database to store all user data.
-- <b>Python Fast API</b>: to handle creating machine learning algorithms (`geopandas`, `scipy`, `matplotlib`...etc) from the server to the react native app.
-- <b>GeoNode</b>: A free and opensource geospatial webmapping application used to host geospatial data in `GeoServer`, stored through `PostgreSQL` with the `PostGIS` spatial extension, and accessed through a `Python Django` JavaScript frontend API and web app. 
