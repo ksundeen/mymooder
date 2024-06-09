@@ -27,18 +27,6 @@ up target:
 
 ################################################
 
-# Build Sphinx documentation.
-docs:
-    #!/usr/bin/env bash
-    set {{flags}}
-    {{activate}}
-    pushd docs
-    make clean
-    rm -rf source/apidoc
-    sphinx-apidoc -o source/apidoc ../{{project}}
-    make html
-    popd
-
 # Install dependencies.
 pythoninstall:
     #!/usr/bin/env bash
@@ -57,51 +45,6 @@ login target:
     set {{flags}}
     pushd "{{docker_root}}/docker_compose.yaml"
     just login
-
-mkcert:
-    #!/usr/bin/env bash
-    set {{flags}}
-    # If there's already a cert, we're good to go.
-    if test -f certs/localhost+2-key.pem; then
-        printf '{{thumbup}} Found key files in ./certs.\n'
-        exit 0
-    fi
-    # Install mkcert if it isn't already installed.
-    if [ -x "$(command -v mkcert --version)" ]; then
-        printf '{{thumbup}} mkcert is installed.\n'
-        mkcert --version
-    else
-      sudo apt install libnss3-tools wget -y
-      pushd /tmp
-        wget https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-linux-amd64
-        sudo cp mkcert-v1.4.3-linux-amd64 /usr/local/bin/mkcert
-        sudo chmod +x /usr/local/bin/mkcert
-        mkcert -install
-      popd
-    fi
-    # Create the key files.
-    mkdir -p certs
-    pushd certs
-    mkcert localhost 127.0.0.1 ::1
-    popd
-    printf '{{thumbup}} Created key files in ./certs.\n'
-    ls -la ./certs
-
-
-# Install Postgres client tools.
-pgclient:
-    #!/usr/bin/env bash
-    set {{flags}}
-    export LD_LIBRARY_PATH=
-    if [ -x "$(command -v psql)" ]; then
-        printf '{{thumbup}} PostgreSQL client tools are already installed.\n'
-        psql --version
-        exit 0
-    fi
-    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-    sudo apt -y update
-    sudo apt install -y postgresql-client-common postgresql-client-{{pg_version}}
 
 # Prettify the status_code to comply with the linter.
 pretty:
@@ -170,8 +113,8 @@ venv:
         printf '{{check}} Created a virtual environment (venv).\n'
     fi
 
-# Prepare the environment.
-ready: pyenv venv docker pgclient
+# Install all pyenv tools
+install-pyenv-tools: pyenv venv
     #!/usr/bin/env bash
     if [ -e {{envfile}} ]
     then
