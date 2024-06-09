@@ -50,19 +50,45 @@ install-frontend:
 
 # Start GeoNode
 
+# Install git tools for Ubuntu
+_1_install-git:
+    #!/usr/bin/env bash
+    set {{flags}}
+    sudo apt update && sudo apt upgrade -y
+    sudo apt install git -y
+    git --version
+
+# Create new SSH Git Key
+# https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+_2_generate-get email:
+    #!/usr/bin/env bash
+    set {{flags}}
+    ssh-keygen -t ed25519 -C "{{email}}"
+
+    # Then enter passphrase
+
+
+# https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+# Copies the contents of the id_ed25519.pub file to your clipboard
+_3_copy-git-key:
+    #!/usr/bin/env bash
+    set {{flags}}
+    cat ~/.ssh/id_ed25519.pub | clip
+
 # Install Dependencies for Docker
 
 # Start a docker-compose definition.
+# These need to already have images built
 up target:
     #!/usr/bin/env bash
     set {{flags}}
     docker compose up
 
-
 # Install all the docker tools.
-install-dockertools: install-docker install-compose
+install-dockertools: install-docker-engine install-docker-compose
 
-install-docker:
+# Install docker engine
+install-docker-engine:
     #!/usr/bin/env bash
     if [ -x "$(command -v docker)" ]; then
         echo "docker is already installed."
@@ -100,27 +126,8 @@ install-docker:
 
     sudo usermod -aG docker ${USER}
 
-# Install previous docker
-docker-focal-2004:
-    #!/usr/bin/env bash
-    if [ -x "$(command -v docker)" ]; then
-        echo "docker is already installed."
-        exit 0
-    fi
-    sudo apt update
-    sudo apt-get install -y \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        software-properties-common
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-    apt-cache policy docker-ce
-    sudo apt-get install -y docker-ce
-    sudo usermod -aG docker ${USER}
-
 # Install docker-compose.
-install-compose:
+install-docker-compose:
     #!/usr/bin/env bash
     if [ -x "$(command -v docker-compose)" ]; then
         echo "docker-compose is already installed."
@@ -129,3 +136,4 @@ install-compose:
     sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
     docker-compose --version
+    
