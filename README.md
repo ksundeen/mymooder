@@ -18,27 +18,68 @@ In this section, we'll review the steps for setting up technologies required to 
 - <b>GeoNode</b>: A free and opensource geospatial webmapping application used to host geospatial data in `GeoServer`, stored through `PostgreSQL` with the `PostGIS` spatial extension, and accessed through a `Python Django` JavaScript frontend API and web app. 
 
 # Getting Started for React Native Setup
+1. Install git for linux or IOS:
 
-1. Pull the repository in WSL or IOS os Linux using the SSH connection. If you need to add an SSH key, follow GIthub instructions: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+2. Configure your credentials for Git to show in your repositories:
+        git config --global user.email "kim.h.sundeen@gmail.com"
+        git config --global user.name "Kim Sundeen"
 
-          git clone git@github.com:ksundeen/mymooder.git
+3. Pull the repository in WSL or IOS os Linux using the SSH connection. If you need to add an SSH key, follow GIthub instructions: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+        # For example, if you haven't created an SSH key before, then generate one using 
+        ssh-keygen -t ed25519 -C "your_email@example.com"
+
+        # Start in admin level powershell and run
+        eval "$(ssh-agent -s)"
+
+        # Add a new ssh key
+        ssh-add ~/.ssh/id_ed25519
+
+        # Then copy the public key valuy and enter it into the Github Setting under SSH Keys
+        cat ~/.ssh/id_ed25519.pub
+
+        # Copy this value and add in into Github directly into the setting 
+
+        # Then clone the ssh version of the repository
+        git clone git@github.com:ksundeen/mymooder.git
    
 3. Install Just as a command runner for your OS from: https://github.com/casey/just. For Ubuntu 24.04 install Just using:
 
           sudo apt install just
 
-4. Use your preferred IDE for code editing. Alternatively, use VS code installed using the Ubuntu image. Change directories into the mymooder directory and install VS Code using the command:
+          # See a list of just commands by typing:
+          just --list
+
+4. Use your preferred IDE for code editing and make a fork or branch off the `main` branch. Alternatively, use VS code installed using the Ubuntu image. Change directories into the mymooder directory and install VS Code using the command:
            
           cd mymooder
           code .
+          git checkout -b feature/startup
       
 6. Run commands from the justfile to install api, frontend, and GeoNode dependencies
+To see a list of just 
+
+    ## Install Basic Ubuntu Packages
+        cd mymooder
+        
+        # View the list of available commans to run
+        just --list
+
+        # Install Ubuntu tools with
+        just install-ubutnu-pacakges
+        
+        # Install just the ubuntu tools with
+        just install-dockertools # (installs both docker engine an docker-compose)
 
     ## React Native
-       cd mymooder
-       just install-ubuntu-packages
-       just install-dockertools
-       just install-frontend
+        cd mymooder/m
+        mymooder-frontend
+        
+        # List just commands
+        just --list
+
+        # Install 
+       
 
     ## Fast API
 
@@ -51,6 +92,9 @@ In this section, we'll review the steps for setting up technologies required to 
 ## IOS
 - Install XCode on Any Ipad or Mac Device
  - If developing on an Ipad, use https://coder.com/blog/a-guide-to-writing-code-on-an-ipad
+
+## {PREFERRED DEVELOPMENT ENVIRONMENT for both Windows & IOS}
+Instead of trying to support both IOS and Windows WSL, just use Ubuntu, the linux distributions that will natively support docker, node, and react development. It's unclear id XCode could be installed for Ubuntu though. 
 
 ## Install & Configure A Development Environment Using Windows Subsystem for Linux (WSL) in Windows:
 1. Open the Windows terminal (`cmd.exe`) and install Windows Subsystem Linux (WSL) 2:

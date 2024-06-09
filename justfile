@@ -1,6 +1,7 @@
 set shell := ["bash", "-uc"]
 set dotenv-load
 
+project := "mymooder"
 project_frontend := "mymooder-frontend"
 project_api := "mymooder-api"
 project_geonode := "mymooder-geonode"
@@ -37,21 +38,12 @@ install-ubuntu-packages:
 
 # Start the API
 
-# Install Dependencies for the React Native Front End
-
-# Start the React Native Front End
-install-frontend:
-    #!/usr/bin/env bash
-    set {{flags}}
-    pushd {{project_frontend}}
-    install-nvm
-
 # Install Depedencies for GeoNode
 
 # Start GeoNode
 
 # Install git tools for Ubuntu
-_1_install-git:
+install-git:
     #!/usr/bin/env bash
     set {{flags}}
     sudo apt update && sudo apt upgrade -y
@@ -60,7 +52,7 @@ _1_install-git:
 
 # Create new SSH Git Key
 # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-_2_generate-get email:
+generate-get email:
     #!/usr/bin/env bash
     set {{flags}}
     ssh-keygen -t ed25519 -C "{{email}}"
@@ -70,7 +62,7 @@ _2_generate-get email:
 
 # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
 # Copies the contents of the id_ed25519.pub file to your clipboard
-_3_copy-git-key:
+copy-git-key:
     #!/usr/bin/env bash
     set {{flags}}
     cat ~/.ssh/id_ed25519.pub | clip

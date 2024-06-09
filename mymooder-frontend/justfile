@@ -1,36 +1,61 @@
 set shell := ["bash", "-uc"]
+set dotenv-load
 
 project_frontend := "mymooder-frontend"
 flags := env_var_or_default("JUST_FLAGS", "-eo pipefail")
 thumbup := "\\U1F44D"
 check := "\\U2705"
 warn := "\\U26A0"
-nvm_dir := env_var_or_default("/root/.nvm")
-node_version := env_var_or_default("NODE_VERSION", "20.10.0")
-
+# NVM_DIR := "/root/.nvm"
+NVM_DIR := "${HOME}/.nvm"
+node_version := "20.10.0"
 
 # Containers
 docker_root := "docker"
 
-# Install nvm
+# Install Dependencies for the React Native Front End
+
+# Start the React Native Front End
+install-frontend:
+    #!/usr/bin/env bash
+    set {{flags}}
+    # pushd ./{{project_frontend}}
+    just install-nvm
+
+# Install nvm. 
 install-nvm:
     #!/usr/bin/env bash
     set {{flags}}
     sudo apt install -y curl
     sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-    sudo . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
-    sudo . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
-    sudo . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
-    sudo export PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
-    sudo node --version
-    sudo npm --version
+    export NVM_DIR="$HOME/.nvm" > "$NVM_DIR/.nvmrc"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" > "$NVM_DIR/.nvmrc"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  > "$NVM_DIR/.nvmrc"  # This loads nvm bash_completion
+    
+    source ~/.bashrc
+    . "$NVM_DIR/nvm.sh" && nvm install {{node_version}}
+    . "$NVM_DIR/nvm.sh" && nvm use v{{node_version}}
+    . "$NVM_DIR/nvm.sh" && nvm alias default v{{node_version}}
+    node --version > "$NVM_DIR/.nvmrc" 
+    npm --version > "$NVM_DIR/.nvmrc" 
 
 # Install React Native Sample App
 install-react-native:
     #!/usr/bin/env bash
+    source ~/.bashrc
     set {{flags}}
-    npm install --save react-native-sqlite-storage
 
+    # Install Expo from https://docs.expo.dev/get-started/set-up-your-environment/?platform=ios&device=physical
+    npm install -g eas-cli
+
+    # Login into Expo Application Service (EAS)
+
+    # Enroll in the Apple Developer Program for a personal device 
+
+    # # Sign up for expo account
+    # curl https://expo.dev/signup
+    # npx create-expo-app@latest
+    npm install --save react-native-sqlite-storage
 
 # Build production docker image
 build-docker:
