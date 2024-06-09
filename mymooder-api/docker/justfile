@@ -1,0 +1,216 @@
+set shell := ["bash", "-uc"]
+set dotenv-load
+
+project := "mymooder-api"
+envfile := "just.env"
+flags := env_var_or_default("JUST_FLAGS", "-eo pipefail")
+activate := "source venv/bin/activate"
+thumbup := "\\U1F44D"
+check := "\\U2705"
+warn := "\\U26A0"
+
+# Package management.
+pg_version := env_var_or_default("PG_VERSION", "14")
+py_version := env_var_or_default("PY_VERSION", "3.9.15")
+pip_version := env_var_or_default("PIP_VERSION", "22.2.2")
+poetry_version := env_var_or_default("POETRY_VERSION", "1.2.2")
+
+# Containers
+docker_root := "docker"
+
+# React Native App
+# Start a docker-compose definition.
+up target:
+    #!/usr/bin/env bash
+    set {{flags}}
+    docker compose up
+
+################################################
+
+# Build Sphinx documentation.
+docs:
+    #!/usr/bin/env bash
+    set {{flags}}
+    {{activate}}
+    pushd docs
+    make clean
+    rm -rf source/apidoc
+    sphinx-apidoc -o source/apidoc ../{{project}}
+    make html
+    popd
+
+# Install dependencies.
+pythoninstall:
+    #!/usr/bin/env bash
+    set {{flags}}
+    {{activate}} && poetry install
+
+# Check the status_code for ugliness.
+lint:
+    #!/usr/bin/env bash
+    set {{flags}}
+    {{activate}} && black --check {{project}} --line-length 79 && flake8 {{project}}
+
+# Run a container.
+login target:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd "{{docker_root}}/docker_compose.yaml"
+    just login
+
+mkcert:
+    #!/usr/bin/env bash
+    set {{flags}}
+    # If there's already a cert, we're good to go.
+    if test -f certs/localhost+2-key.pem; then
+        printf '{{thumbup}} Found key files in ./certs.\n'
+        exit 0
+    fi
+    # Install mkcert if it isn't already installed.
+    if [ -x "$(command -v mkcert --version)" ]; then
+        printf '{{thumbup}} mkcert is installed.\n'
+        mkcert --version
+    else
+      sudo apt install libnss3-tools wget -y
+      pushd /tmp
+        wget https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-linux-amd64
+        sudo cp mkcert-v1.4.3-linux-amd64 /usr/local/bin/mkcert
+        sudo chmod +x /usr/local/bin/mkcert
+        mkcert -install
+      popd
+    fi
+    # Create the key files.
+    mkdir -p certs
+    pushd certs
+    mkcert localhost 127.0.0.1 ::1
+    popd
+    printf '{{thumbup}} Created key files in ./certs.\n'
+    ls -la ./certs
+
+
+# Install Postgres client tools.
+pgclient:
+    #!/usr/bin/env bash
+    set {{flags}}
+    export LD_LIBRARY_PATH=
+    if [ -x "$(command -v psql)" ]; then
+        printf '{{thumbup}} PostgreSQL client tools are already installed.\n'
+        psql --version
+        exit 0
+    fi
+    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+    sudo apt -y update
+    sudo apt install -y postgresql-client-common postgresql-client-{{pg_version}}
+
+# Prettify the status_code to comply with the linter.
+pretty:
+    #!/usr/bin/env bash
+    set {{flags}}
+    echo Prettifying {{project}}...
+    {{activate}} && black {{project}} --line-length 79
+    echo Prettifying tests...
+    {{activate}} && black tests --line-length 79
+
+# Install pyenv.
+pyenv:
+    #!/usr/bin/env bash
+    set {{flags}}
+    if [ -x "$(command -v pyenv)" ]; then
+        printf '{{thumbup}} pyenv is already installed.\n'
+        pyenv --version
+        exit 0
+    fi
+    sudo apt-get update
+    sudo apt-get install -y build-essential checkinstall curl
+    sudo apt-get update
+    sudo apt-get install -y \
+      libreadline-dev \
+      liblzma-dev \
+      libncurses-dev \
+      libncursesw5-dev \
+      libssl-dev \
+      libsqlite3-dev \
+      tk-dev \
+      libgdbm-dev \
+      libc6-dev \
+      libbz2-dev \
+      libffi-dev \
+      zlib1g-dev
+    curl https://pyenv.run | bash
+    echo '' >> ~/.bashrc
+    echo '# pyenv' >> ~/.bashrc
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+    echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+    printf '{{check}} Installed pyenv.\n'
+    printf '{{warn}} You need to restart the shell to use pyenv.\n'
+    echo 'Start a new shell or use this command:'
+    echo 'exec "$SHELL"'
+    # Install the required python version.
+    export PYENV_ROOT="$HOME/.pyenv"
+    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+    pyenv install {{py_version}}
+
+
+# Create a virtual environment.
+venv:
+    #!/usr/bin/env bash
+    set {{flags}}
+    if [ -e venv ]
+    then
+        printf '{{thumbup}} There is already a virtual environment here.\n'
+    else
+        export PYENV_ROOT="$HOME/.pyenv"
+        command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+        eval "$(pyenv init -)"
+        pyenv local {{py_version}}
+        python3 -m venv venv
+        printf '{{check}} Created a virtual environment (venv).\n'
+    fi
+
+# Prepare the environment.
+ready: pyenv venv docker pgclient
+    #!/usr/bin/env bash
+    if [ -e {{envfile}} ]
+    then
+        printf '{{thumbup}} {{envfile}} already exists.\n'
+    else
+        touch just.env
+        printf '{{check}} Created {{envfile}}.\n'
+    fi
+    {{activate}} && \
+    pip install pip=={{pip_version}} && \
+    pip install poetry=={{poetry_version}} && \
+    poetry install
+    pre-commit install
+
+    
+# Start the API.
+api start:
+    #!/usr/bin/env bash
+    set {{flags}}
+    source venv/bin/activate && {{project}} api start
+
+# Run local tests.
+test: secure
+    #!/usr/bin/env bash
+    set {{flags}}
+    source venv/bin/activate
+    pushd tests
+    pytest --cov={{project}}
+    popd
+
+# Run local test coverage reports.
+# Use file_path to call an individual file path like "tests/api/organizations/test_organizations.py"
+cov file_path: secure
+    #!/usr/bin/env bash
+    set {{flags}}
+    source venv/bin/activate
+    if [ "{{file_path}}" == "all" ];
+    then
+        coverage run -m pytest -v && coverage report -m && coverage html
+    else
+        coverage run -m pytest -v {{file_path}} && coverage report -m && coverage html
+    fi

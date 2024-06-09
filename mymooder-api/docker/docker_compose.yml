@@ -1,0 +1,20 @@
+version: "3.3"
+
+
+services:
+
+  mooder-dev-postgres:
+    image: mymooder-api
+    container_name: mymooder-api
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=example
+    networks:
+      - mooder-dev
+
+
+
+networks:
+  mooder-dev:
+    driver: bridge

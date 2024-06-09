@@ -1,0 +1,40 @@
+set shell := ["bash", "-uc"]
+
+project_frontend := "mymooder-frontend"
+flags := env_var_or_default("JUST_FLAGS", "-eo pipefail")
+thumbup := "\\U1F44D"
+check := "\\U2705"
+warn := "\\U26A0"
+nvm_dir := env_var_or_default("/root/.nvm")
+node_version := env_var_or_default("NODE_VERSION", "20.10.0")
+
+
+# Containers
+docker_root := "docker"
+
+# Install nvm
+install-nvm:
+    #!/usr/bin/env bash
+    set {{flags}}
+    sudo apt install -y curl
+    sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+    sudo . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
+    sudo . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+    sudo . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+    sudo export PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+    sudo node --version
+    sudo npm --version
+
+# Install React Native Sample App
+install-react-native:
+    #!/usr/bin/env bash
+    set {{flags}}
+    npm install --save react-native-sqlite-storage
+
+
+# Build production docker image
+build-docker:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd "{{docker_root}}"
+    docker build --tag {{project_frontend}} .
