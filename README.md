@@ -19,9 +19,11 @@ In this section, we'll review the steps for setting up technologies required to 
 
 # Getting Started for React Native Setup
 
-1. Pull the repository in WSL or IOS os Linux
-2. Install Just as a command runner for your OS from: https://github.com/casey/just
-3. With Ubuntu 24.04 install using:
+1. Pull the repository in WSL or IOS os Linux using the SSH connection. If you need to add an SSH key, follow GIthub instructions: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+          git clone git@github.com:ksundeen/mymooder.git
+   
+3. Install Just as a command runner for your OS from: https://github.com/casey/just. For Ubuntu 24.04 install using:
 
        sudo apt install just
 
