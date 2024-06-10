@@ -44,12 +44,13 @@ In this section, we'll review the steps for setting up technologies required to 
         git clone git@github.com:ksundeen/mymooder.git
    
 3. Install Just as a command runner for your OS from: https://github.com/casey/just. For Ubuntu 24.04 install Just using:
+
           sudo apt install just
 
           # See a list of just commands by typing:
           just --list
 
-4. Use your preferred IDE for code editing and make a fork or branch off the `main` branch. Alternatively, use VS code installed using the Ubuntu image. Change directories into the mymooder directory and install VS Code using the command:
+5. Use your preferred IDE for code editing and make a fork or branch off the `main` branch. Alternatively, use VS code installed using the Ubuntu image. Change directories into the mymooder directory and install VS Code using the command:
            
           cd mymooder
           code .
