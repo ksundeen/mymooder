@@ -52,10 +52,10 @@ RUN npm --version
 WORKDIR /app
 
 # Copy the package.json and yarn.lock files to the working directory
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
 # Install app dependencies
-RUN yarn install --frozen-lockfile
+RUN npm install
 
 # Copy the entire app directory to the working directory
 COPY . .

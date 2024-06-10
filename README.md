@@ -44,7 +44,6 @@ In this section, we'll review the steps for setting up technologies required to 
         git clone git@github.com:ksundeen/mymooder.git
    
 3. Install Just as a command runner for your OS from: https://github.com/casey/just. For Ubuntu 24.04 install Just using:
-
           sudo apt install just
 
           # See a list of just commands by typing:
@@ -78,8 +77,10 @@ To see a list of just
         # List just commands
         just --list
 
-        # Install 
-       
+![wsl-root-img](./instruction-img/confirm-wsl-root.png?raw=true)
+
+        # Install additional react pacakges
+
 
     ## Fast API
 
@@ -90,11 +91,18 @@ To see a list of just
        ...coming
 
 ## IOS
-- Install XCode on Any Ipad or Mac Device
- - If developing on an Ipad, use https://coder.com/blog/a-guide-to-writing-code-on-an-ipad
+Several Options Exist:
+       
+#### 1. Use UTM using Chemu to run emulators and vm for machines. 
+#### 2. Use the Darling package to buils os apps with xcode: https://www.baeldung.com/linux/xcode
+#### 3. You need to download the specific iso image for non-macOs machines. See https://ubuntu.com/download/desktop/thank-you?version=24.04&architecture=amd64&lts=true
+#### 4. Download the specific ISO image to use ubuntu-24.04-desktop-amd64.iso
+#### 5. Install XCode on Any Ipad or Mac Device
+#### 6. If developing on an Ipad, use https://coder.com/blog/a-guide-to-writing-code-on-an-ipad
+        
 
 ## {PREFERRED DEVELOPMENT ENVIRONMENT for both Windows & IOS}
-Instead of trying to support both IOS and Windows WSL, just use Ubuntu, the linux distributions that will natively support docker, node, and react development. It's unclear id XCode could be installed for Ubuntu though. 
+Instead of trying to support both IOS and Windows WSL, just use Ubuntu, the linux distributions that will natively support docker, node, and react development. It's unclear if XCode could be installed for Ubuntu though. 
 
 ## Install & Configure A Development Environment Using Windows Subsystem for Linux (WSL) in Windows:
 1. Open the Windows terminal (`cmd.exe`) and install Windows Subsystem Linux (WSL) 2:
