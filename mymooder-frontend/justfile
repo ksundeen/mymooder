@@ -8,7 +8,7 @@ thumbup := "\\U1F44D"
 check := "\\U2705"
 warn := "\\U26A0"
 # NVM_DIR := "/root/.nvm"
-NVM_DIR := "${HOME}/.nvm"
+nvm_dir := env_var_or_default("NVM_DIR", "$HOME/.nvm")
 node_version := "20.10.0"
 
 # Containers
@@ -30,12 +30,12 @@ eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "preview")
 #     just install-nvm
 
 # Install nvm. 
-install-nvm:
+ubuntu-install-nvm:
     #!/usr/bin/env bash
     set {{flags}}
     sudo apt install -y curl
     sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-    export NVM_DIR="$HOME/.nvm" > "$NVM_DIR/.nvmrc"
+    export NVM_DIR="{{nvm_dir}} > "$NVM_DIR/.nvmrc"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" > "$NVM_DIR/.nvmrc"  # This loads nvm
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  > "$NVM_DIR/.nvmrc"  # This loads nvm bash_completion
     
@@ -45,6 +45,23 @@ install-nvm:
     . "$NVM_DIR/nvm.sh" && nvm alias default v{{node_version}}
     node --version > "$NVM_DIR/.nvmrc" 
     npm --version > "$NVM_DIR/.nvmrc" 
+
+# Install nvm. 
+macos-install-nvm:
+    brew install curl
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+    export NVM_DIR="$HOME/.nvm" > "{{nvm_dir}}/.nvmrc"
+    [ -s "{{nvm_dir}}/nvm.sh" ] && \. "{{nvm_dir}}/nvm.sh" > "{{nvm_dir}}/.nvmrc"  # This loads nvm
+    [ -s "{{nvm_dir}}/bash_completion" ] && \. "{{nvm_dir}}/bash_completion"  > "{{nvm_dir}}/.nvmrc"  # This loads nvm bash_completion
+    
+    source ~/.zshrc
+    . {{nvm_dir}}/nvm.sh && nvm install {{node_version}}
+    . {{nvm_dir}}/nvm.sh && nvm use v{{node_version}}
+    . {{nvm_dir}}/nvm.sh && nvm alias default v{{node_version}}
+    source ~/.zshrc
+
+    node --version > {{nvm_dir}}/.nvmrc
+    npm --version > {{nvm_dir}}/.nvmrc 
 
 # If developing through cloud expo resources, install dependencies
 # This also sets the name of the project to src
@@ -64,10 +81,10 @@ expo-install:
     # Supports local dev builds with either XCode or Android Studio
     npm install --save expo-dev-client
 
-# Plan to build with Cloud-based Expo tools
+    # Plan to build with Cloud-based Expo tools
     # Install lates EAS cli
     # Installing with cloud building through Expo from https://docs.expo.dev/get-started/set-up-your-environment/?platform=ios&device=physical
-    npm install -g eas-cli
+    npm install --global eas-cli
 
     # Login into Expo Application Service (EAS)
     eas login

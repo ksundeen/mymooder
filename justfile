@@ -18,7 +18,7 @@ docker_root := "docker"
 # $ just --summary
 
 # Install Dependencies for Ubuntu 24.04
-install-ubuntu-packages:
+ubuntu-install-packages:
     #!/usr/bin/env bash
     set {{flags}}
     sudo apt-get update
@@ -34,11 +34,23 @@ install-ubuntu-packages:
         jq \
         nano
 
-# Install Depdendencies for the API
+# Install Dependencies for MacOS
+macos-install-packages:
+    # brew install update
+    # brew install apt-utils
+
+    # Install general utilities.
+    brew install \
+        iputils \
+        checkstyle \
+        jq \
+        nano
+
+# Install Dependencies for the API
 
 # Start the API
 
-# Install Depedencies for GeoNode
+# Install Dependencies for GeoNode
 
 # Start GeoNode
 
