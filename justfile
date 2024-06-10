@@ -62,10 +62,10 @@ generate-get email:
 
 # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
 # Copies the contents of the id_ed25519.pub file to your clipboard
-copy-git-key:
+cat-git-key:
     #!/usr/bin/env bash
     set {{flags}}
-    cat ~/.ssh/id_ed25519.pub | clip
+    cat ~/.ssh/id_ed25519.pub
 
 # Install Dependencies for Docker
 
