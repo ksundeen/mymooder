@@ -1,0 +1,28 @@
+{
+    "build": {
+        "preview": {
+            "ios": {
+                "simulator": true
+            },
+            "distribution": "internal"
+        },
+        "development": {
+            "developmentClient": true,
+            "distribution": "internal",
+            "env": {
+                "EXPO_PUBLIC_API_URL": "https://localhost:8081"
+            }
+        },
+        "test": {
+            "env": {
+                "EXPO_PUBLIC_API_URL": "https://api.test.com"
+                }
+            },
+        "production": {
+            "env": {
+            "EXPO_PUBLIC_API_URL": "https://api.production.com"
+            },
+            "autoincrement": true
+        }
+    }
+  }

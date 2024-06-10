@@ -7,12 +7,11 @@ services:
     image: mymooder-api
     container_name: mymooder-api
     ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=example
+      - "8080:8080"
+    # environment:
+    #   - POSTGRES_PASSWORD=example
     networks:
       - mooder-dev
-
 
 
 networks:
