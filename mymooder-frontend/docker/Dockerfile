@@ -51,7 +51,7 @@ RUN npm --version
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the package.json and yarn.lock files to the working directory
+# Copy the package.json and package-lock.json files to the working directory
 COPY package.json package-lock.json ./
 
 # Install app dependencies
