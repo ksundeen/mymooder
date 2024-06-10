@@ -97,7 +97,37 @@ To see a list of just
 
        ...coming
 
-## IOS
+## IOS (Tested for M2 Chip MacOS)
+
+1. Get Java Runtime to Open Project for XCode tools to get the brew package manager
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+2. Run commands to add brew to your path
+
+        (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/Kim/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+        
+3. Install Java tools with brew. If you want a specific version tack on version like openjdk@11
+    
+        brew install openjdk
+    
+4. Add the openjdk path to your PATH variable by running this in the terminal:
+
+          echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
+
+5. Ensure compilers can also find the openjdk by running this in the teriminal:
+
+        export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
+        
+6. Install the just command runner with
+
+        brew install just
+        
+7. Check you ~/.zshrc file that it includes these exports:
+
+        export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+        export JAVA_HOME="/opt/homebrew/opt/openjdk/bin/java" 
+
+
 Several Options Exist:
        
 #### 1. Use UTM using Chemu to run emulators and vm for machines. 
