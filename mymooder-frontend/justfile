@@ -72,6 +72,7 @@ install-rn-packages:
 
     # Install additioanal package to include sqlite storage
     npm install --save react-native-sqlite-storage
+    apt install gradles
 
 
 # Build production docker image

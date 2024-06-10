@@ -71,13 +71,19 @@ To see a list of just
         just install-dockertools # (installs both docker engine an docker-compose)
 
     ## React Native
-        cd mymooder/m
-        mymooder-frontend
+        cd mymooder/mymooder-frontend
         
         # List just commands
         just --list
 
-![wsl-root-img](./instruction-img/confirm-wsl-root.png?raw=true)
+7. Run the react native application locally with
+
+        # Navigate to the directory
+
+        npm run android
+        npm run ios # You need to use macOS to build the ios project - use the Expo app if you need to iOS development without a mac.
+        
+![wsl-root-img](run-apps.png?raw=true)
 
         # Install additional react pacakges
 
@@ -152,7 +158,7 @@ Instead of trying to support both IOS and Windows WSL, just use Ubuntu, the linu
 
         wsl -u root
 
-![wsl-root-img](./instruction-img/confirm-wsl-root.png?raw=true)
+![wsl-root-img](./confirm-wsl-root.png?raw=true)
 
 9. Now in Ubuntu-24.04 default terminal, confirm your `ksundeen` user exists using the `su` for sudouser command:
   
