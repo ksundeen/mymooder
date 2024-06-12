@@ -21,10 +21,11 @@ In this section, we'll review the steps for setting up technologies required to 
 1. Install git for linux or IOS:
 
 2. Configure your credentials for Git to show in your repositories:
-        git config --global user.email "kim.h.sundeen@gmail.com"
-        git config --global user.name "Kim Sundeen"
 
-3. Pull the repository in WSL or IOS os Linux using the SSH connection. If you need to add an SSH key, follow GIthub instructions: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+           git config --global user.email "kim.h.sundeen@gmail.com"
+           git config --global user.name "Kim Sundeen"
+
+4. Pull the repository in WSL or IOS os Linux using the SSH connection. If you need to add an SSH key, follow GIthub instructions: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
         # For example, if you haven't created an SSH key before, then generate one using 
         ssh-keygen -t ed25519 -C "your_email@example.com"
