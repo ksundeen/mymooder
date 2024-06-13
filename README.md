@@ -18,7 +18,7 @@ In this section, we'll review the steps for setting up technologies required to 
 - <b>GeoNode</b>: A free and opensource geospatial webmapping application used to host geospatial data in `GeoServer`, stored through `PostgreSQL` with the `PostGIS` spatial extension, and accessed through a `Python Django` JavaScript frontend API and web app. 
 
 # Getting Started for React Native Setup
-1. Install git for linux or IOS:
+1. Install git for Linux or iOS:
 
 2. Configure your credentials for Git to show in your repositories:
         git config --global user.email "kim.h.sundeen@gmail.com"
@@ -79,6 +79,12 @@ To see a list of just
 
 7. Run the react native application locally with
 
+        # Install the Android SDK on a Mac with Homebrew
+        brew install android-sdk
+
+        # This may prompt that you need the Java SDK version 8, in which case, install it with:
+        brew install --cask temurin@8
+
         # Navigate to the directory
 
         npm run android
@@ -97,7 +103,7 @@ To see a list of just
 
        ...coming
 
-## IOS (Tested for M2 Chip MacOS)
+## iOS (Tested for M2 Chip MacOS)
 
 1. Get Java Runtime to Open Project for XCode tools to get the brew package manager
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -112,7 +118,7 @@ To see a list of just
     
 4. Add the openjdk path to your PATH variable by running this in the terminal:
 
-          echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
+        echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
 
 5. Ensure compilers can also find the openjdk by running this in the teriminal:
 
@@ -126,11 +132,39 @@ To see a list of just
 
         export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
         export JAVA_HOME="/opt/homebrew/opt/openjdk/bin/java" 
+        
+8. Also add a symlink for the system Java wrappers to find this JDK:
+
+        sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk \
+        /Library/Java/JavaVirtualMachines/openjdk.jdk
+        
+8. There appears to be a bug with how XCode is installed that causes an error. You need to run this command to resolve the message
+
+        sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+9. Make sure to also install any additional iOS simulators for the versions you want to test. 
+
+10. Add docker engine and docker compose using brew instear of Docker for Desktop. Docker for Desktop uses too much space, CPU, and memory and adds more compleixities when you want to later build any ubuntu images with the docker cli tools.
+
+<i>Follow this slackoverflow post to remove any additional Docker for Desktop tools:
+        https://stackoverflow.com/questions/37465526/how-to-uninstall-docker-completely-from-a-mac</i>
+
+11. Start over and install docker-machine with installing the Docker for Desktop app again. 
+
+        brew install docker-machine docker
+
+12. Open the whale icon app, Docker for Desktop, and then confirm it's working with typing in the terminal:
+
+        docker ps
+
+        # You should see something like this if you have not running containers:
+        CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
 
-Several Options Exist:
+
+### iOS Several Options Exist:
        
-#### 1. Use UTM using Chemu to run emulators and vm for machines. 
+#### 1. Use UTM using Chemu to run emulators and vm for machines (about $10 for a license). 
 #### 2. Use the Darling package to buils os apps with xcode: https://www.baeldung.com/linux/xcode
 #### 3. You need to download the specific iso image for non-macOs machines. See https://ubuntu.com/download/desktop/thank-you?version=24.04&architecture=amd64&lts=true
 #### 4. Download the specific ISO image to use ubuntu-24.04-desktop-amd64.iso

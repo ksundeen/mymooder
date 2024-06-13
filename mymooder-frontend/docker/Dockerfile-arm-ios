@@ -1,0 +1,91 @@
+# Dockerfile
+FROM amd64/ubuntu:24.04
+USER root
+SHELL ["/bin/bash", "-c"]
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG NONROOT_USER=nonroot
+ENV NODE_VERSION=20.10.0
+
+
+# Prepare apt.
+RUN apt-get update
+RUN apt-get install -y apt-utils
+
+# Install general utilities.
+RUN apt-get install -y \
+    iputils-ping \
+    sudo \
+    git \
+    build-essential \
+    checkinstall \
+    curl \
+    jq
+
+# Create the non-root user.
+RUN useradd -m -s /usr/bin/bash -d "/home/${NONROOT_USER}" "${NONROOT_USER}"
+# Add the user to the sudoers group.
+RUN usermod -aG sudo "${NONROOT_USER}"
+# Set a password for running sudo. (It's the same as the user name.)
+RUN echo "${NONROOT_USER}:${NONROOT_USER}" | chpasswd
+# Copy home directory files into place.
+COPY home/* ${NONROOT_HOME}/
+
+ENV NONROOT_HOME=/home/${NONROOT_USER}
+ENV NVM_DIR=${NONROOT_HOME}/.nvm
+
+# Install ubuntu & react build dependencies.
+USER root
+RUN apt-get update && \
+    apt-get install -y \
+    apt-transport-https curl
+
+# # # Ubuntu-nstall LTS node version
+# RUN sudo apt install -y curl
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+# RUN export NVM_DIR="{{nvm_dir}} > "$NVM_DIR/.nvmrc"
+# RUN [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" > "$NVM_DIR/.nvmrc"  # This loads nvm
+# RUN [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  > "$NVM_DIR/.nvmrc"  # This loads nvm bash_completion
+# RUN source ~/.bashrc
+
+# RUN node --version > ${DEBIAN_FRONTEND}$NVM_DIR/.nvmrc
+# RUN npm --version > $NVM_DIR/.nvmrc
+
+
+
+# MacOS Install 
+RUN sudo apt-get brew
+RUN brew install curl
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+RUN source ~/.zshrc
+RUN . ${NVM_DIR}/nvm.sh && nvm install ${NODE_VERSION}
+RUN . ${nvm_dir}/nvm.sh && nvm use v${NODE_VERSION}
+RUN . ${nvm_dir}/nvm.sh && nvm alias default v${NODE_VERSION}
+RUN source ~/.zshrc
+
+RUN node --version > ${DEBIAN_FRONTEND}{NVM_DIR}/.nvmrc
+RUN npm --version > ${NVM_DIR}/.nvmrc 
+
+# Set the working directory to /app
+RUN pushd mymooder-frontend/mymooder/app
+WORKDIR /app
+
+# Copy the entire app directory to the working directory
+COPY . .
+
+# # Copy the package.json and package-lock.json files to the working directory
+# COPY package.json package-lock.json ./
+
+# Install app dependencies
+RUN npm install
+
+# Build the app for production
+RUN npx react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios/assets
+# RUN npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+
+# Expose port 8080 for the React Native packager
+EXPOSE 8080
+
+# Start the app
+CMD ["npx", "react-native", "start"]

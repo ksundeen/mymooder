@@ -44,7 +44,8 @@ macos-install-packages:
         iputils \
         checkstyle \
         jq \
-        nano
+        nano \
+        apt-dater
 
 # Install Dependencies for the API
 
@@ -88,11 +89,11 @@ up target:
     set {{flags}}
     docker compose up
 
-# Install all the docker tools.
-install-dockertools: install-docker-engine install-docker-compose
+# Ubuntu install all the docker tools.
+ubuntu-install-dockertools: ubuntu-install-docker-engine ubuntu-install-docker-compose
 
-# Install docker engine
-install-docker-engine:
+# Ubuntu nstall docker engine
+ubuntu-install-docker-engine:
     #!/usr/bin/env bash
     if [ -x "$(command -v docker)" ]; then
         echo "docker is already installed."
@@ -130,8 +131,13 @@ install-docker-engine:
 
     sudo usermod -aG docker ${USER}
 
-# Install docker-compose.
-install-docker-compose:
+# MacOS install docker engine
+macos-install-docker:
+    brew install --cask docker
+  
+
+# Ubuntu install docker-compose.
+ubuntu-install-docker-compose:
     #!/usr/bin/env bash
     if [ -x "$(command -v docker-compose)" ]; then
         echo "docker-compose is already installed."
