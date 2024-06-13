@@ -2,8 +2,8 @@ set shell := ["bash", "-uc"]
 set dotenv-load
 
 project_frontend := "mymooder-frontend"
-project_app := "mymooder"
-project_src := "app"
+project_mymooder := "mymooder"
+project_app := "app"
 flags := env_var_or_default("JUST_FLAGS", "-eo pipefail")
 thumbup := "\\U1F44D"
 check := "\\U2705"
@@ -18,7 +18,8 @@ docker_root := "docker"
 # React Native Environmental Variables
 app_name:= env_var_or_default("APP_NAME", "mymooder")
 node_env := env_var_or_default("NODE_ENV", "development")
-eas_build_platform := env_var_or_default("EAS_BUILD_PLATFORM", "ios")
+eas_build_platform_ios := env_var_or_default("EAS_BUILD_PLATFORM", "ios")
+eas_build_platform_android := env_var_or_default("EAS_BUILD_PLATFORM", "android")
 eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "development")
 
 # Install Dependencies for the React Native Front End
@@ -69,7 +70,7 @@ macos-install-nvm:
 expo-new-install:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
 
     # Sign up for expo account
     curl https://expo.dev/signup
@@ -99,7 +100,7 @@ expo-new-install:
 react-install-clean-cache:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
 
     sudo npm cache clean --force
 
@@ -110,28 +111,28 @@ react-install-clean-cache:
 expo-local-run-ios:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
     NODE_ENV={{node_env}} npx expo run:ios
 
 # Run android app locally
 expo-local-run-android:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
     NODE_ENV={{node_env}} npx expo run:android
 
 # Create native Android or iOS directories for the local project - preparing to publish to Expo
 expo-local-pre-build:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
     npx expo prebuild
 
 # Configures build configurations and set environmental variables
 expo-build-configure:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
 
     # Create Expo build configuration
     eas build:configure
@@ -142,16 +143,21 @@ expo-build-configure:
 expo-build:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
 
     # Create the build
-    eas build --platform {{eas_build_platform}} --profile {{eas_build_profile}}
+    # eas build --platform ios --profile {{eas_build_profile}}
 
-# Start local app running for debugging
+    # eas build --platform android --profile {{eas_build_profile}}
+
+    eas build --platform all --profile {{eas_build_profile}}
+
+
+# Start local app running for debugging on the website
 expo-start:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
 
     NODE_ENV={{node_env}} npx expo start
 
@@ -160,7 +166,7 @@ react-native-install:
     #!/usr/bin/env bash
     source ~/.bashrc
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
 
     # Install additioanal package to include sqlite storage
     npm install --save react-native-sqlite-storage
@@ -171,15 +177,15 @@ docker-build-ubuntu-amd:
     #!/usr/bin/env bash
     set {{flags}}
     pushd "{{docker_root}}"
-    # docker buildx build -t dev:lastest -f {{project_src}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
     # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
     docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
 
 docker-build-ubuntu-amd-mymooder-dir:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd "{{project_app}}"
-    # docker buildx build -t dev:lastest -f {{project_src}}/{{project_app}}/Dockerfile 
+    pushd "{{project_mymooder}}"
+    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
     # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
     docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
 
@@ -188,7 +194,7 @@ docker-build-ios:
     #!/usr/bin/env bash
     set {{flags}}
     pushd "{{docker_root}}"
-    # docker buildx build -t dev:lastest -f {{project_src}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
     # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
     docker buildx build -t mymooder-frontend:latest -f Dockerfile-arm-ios --no-cache .
 

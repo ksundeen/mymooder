@@ -132,6 +132,9 @@ To see a list of just
 
         export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
         export JAVA_HOME="/opt/homebrew/opt/openjdk/bin/java" 
+
+        # Or type this in the terminal
+        echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
         
 8. Also add a symlink for the system Java wrappers to find this JDK:
 
@@ -160,7 +163,14 @@ To see a list of just
         # You should see something like this if you have not running containers:
         CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
+13. In total to get both Android and iOS apps to work, this is the ~/.zshrc file I use:
 
+        export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+        export ANDROID_HOME="/Users/$USER/Library/Android/sdk"
+        export PATH="${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME"
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 ### iOS Several Options Exist:
        
