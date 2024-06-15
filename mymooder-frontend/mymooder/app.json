@@ -17,6 +17,11 @@
       "bundleIdentifier": "com.ksundeen.mymooder"
     },
     "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDJ9EbDpnvLVdvCOmlNvLHJHfAnHvwddYM"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

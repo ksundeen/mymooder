@@ -242,3 +242,6 @@ Instead of trying to support both IOS and Windows WSL, just use Ubuntu, the linu
 10. Finally, to get back to the root user from your profile user, simply type exit bring you back to the root user login screen:
 
         exit
+
+# Monkey Pacthing the Android Leaflet.html file location
+I noticed when building the Android app that the location of the Leakflet.html was incorrect. Finding the right location took some detective working, but the solution is applying this fix to two files: 
