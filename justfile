@@ -41,7 +41,6 @@ macos-install-packages:
 
     # Install general utilities.
     brew install \
-        iputils \
         checkstyle \
         jq \
         nano \
