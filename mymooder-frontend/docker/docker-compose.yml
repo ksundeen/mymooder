@@ -1,18 +1,17 @@
 version: "3.3"
 
-
 services:
 
-  mooder-dev-postgres:
-    image: mymooder-
-    container_name: mymooder-api
+  mmymooder-frontend:
+    image: mymooder-frontend
+    container_name: mymooder-frontend
     ports:
-      - "8080:8080"
+      - 8080:8081
+      # - "5432:5432"
     # environment:
     #   - POSTGRES_PASSWORD=example
     networks:
       - mymooder-dev
-
 
 networks:
   mymooder-dev:

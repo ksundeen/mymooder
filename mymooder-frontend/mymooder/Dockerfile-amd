@@ -1,0 +1,127 @@
+# Dockerfile
+FROM amd64/node:20.14.0
+# FROM ubuntu:24.04
+USER root
+# # Set password for non-root user
+# RUN echo node:node | chpasswd
+
+
+# USER node
+SHELL ["/bin/bash", "-c"]
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+
+# optionally if you want to run npm global bin without specifying path
+ENV PATH=$PATH:/home/node/.npm-global/bin 
+
+
+# ARG DEBIAN_FRONTEND=noninteractive
+# ARG NONROOT_USER=nonroot
+# ENV NODE_VERSION=20.10.0
+
+
+# # Prepare apt.
+RUN apt-get update
+RUN apt-get install -y apt-utils sudo
+
+# # Install general utilities.
+RUN apt-get install -y \
+    iputils-ping \
+    sudo \
+    git \
+    build-essential \
+    checkinstall \
+    curl \
+    jq
+
+# # Create the non-root user.
+# RUN useradd -m -s /usr/bin/bash -d "/home/${NONROOT_USER}" "${NONROOT_USER}"
+# # Add the user to the sudoers group.
+# RUN usermod -aG sudo "${NONROOT_USER}"
+# # Set a password for running sudo. (It's the same as the user name.)
+# RUN echo "${NONROOT_USER}:${NONROOT_USER}" | chpasswd
+# # Copy home directory files into place.
+# COPY home/* ${NONROOT_HOME}/
+
+# ENV NONROOT_HOME=/home/${NONROOT_USER}
+# ENV NVM_DIR=${NONROOT_HOME}/.nvm
+
+# # Install ubuntu & react build dependencies.
+# USER root
+RUN apt-get update && \
+    apt-get install -y \
+    apt-transport-https curl
+
+# # USER ${NONROOT_USER}
+# # Ubuntu-install LTS node version
+# RUN sudo apt install -y curl
+# RUN sudo /bin/bash -c curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+# RUN sudo /bin/bash -c export NVM_DIR > "${NONROOT_HOME}/.nvmrc"
+# RUN sudo [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" > "$NVM_DIR/.nvmrc"  # This loads nvm
+# RUN sudo [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+# RUN source ~/.bashrc
+
+# RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
+# RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+# RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+# ENV PATH="${NVM_DIR}/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+
+RUN node --version
+RUN ls node --version
+RUN npm --version
+RUN ls npm --version
+
+# Create directory with correct permissions
+# RUN mkdir -p /home/node/mymooder/node_modules && chown -R node:node /home/node/mymooder
+
+# Set user to be non-root user
+USER node
+
+# Make new app directory
+RUN mkdir /home/node/mymooder
+
+# Setting working directory
+WORKDIR /home/node/mymooder
+RUN echo ${PWD} && ls
+
+# Switch to non-root user
+# USER node
+
+# Copy the package.json and package-lock.json files from local to Dockerfile working directory
+# COPY **/package.json **/package-lock.json ./
+
+# If Dockerfile in docker folder
+# COPY ["../package*.json","/home/node/mymooder"]
+
+# If Dockerfile in /mymooder folder
+COPY ["package*.json","/home/node/mymooder"]
+
+# Copy the entire app directory to the working directory
+# RUN pushd mymooder
+
+# If Dockerfile in docker folder
+# COPY ["../*","/home/node/mymooder"]
+
+# If Dockerfile in /mymooder folder
+COPY . .
+
+USER root
+# Change all permissions to non-root node user
+RUN chown -R node:node /home/node/mymooder/*
+
+# RUN cd /app
+# WORKDIR /app
+
+USER node
+
+# Install app dependencies
+RUN npm install
+
+# Build the app for production
+RUN npx react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios/assets
+# RUN npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+
+# Expose port 8080 for the React Native packager
+EXPOSE 8080
+
+# Start the app
+CMD ["npx", "react-native", "start"]

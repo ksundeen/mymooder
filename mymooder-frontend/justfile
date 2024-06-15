@@ -2,7 +2,8 @@ set shell := ["bash", "-uc"]
 set dotenv-load
 
 project_frontend := "mymooder-frontend"
-project_src := "src"
+project_mymooder := "mymooder"
+project_app := "app"
 flags := env_var_or_default("JUST_FLAGS", "-eo pipefail")
 thumbup := "\\U1F44D"
 check := "\\U2705"
@@ -16,9 +17,10 @@ docker_root := "docker"
 
 # React Native Environmental Variables
 app_name:= env_var_or_default("APP_NAME", "mymooder")
-node_env := env_var_or_default("NODE_ENV", "dev")
-eas_build_platform := env_var_or_default("EAS_BUILD_PLATFORM", "ios")
-eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "preview")
+node_env := env_var_or_default("NODE_ENV", "development")
+eas_build_platform_ios := env_var_or_default("EAS_BUILD_PLATFORM", "ios")
+eas_build_platform_android := env_var_or_default("EAS_BUILD_PLATFORM", "android")
+eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "development")
 
 # Install Dependencies for the React Native Front End
 
@@ -48,7 +50,7 @@ ubuntu-install-nvm:
 
 # Install nvm. 
 macos-install-nvm:
-    brew install curl
+    brew install curl apt-get
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
     export NVM_DIR="$HOME/.nvm" > "{{nvm_dir}}/.nvmrc"
     [ -s "{{nvm_dir}}/nvm.sh" ] && \. "{{nvm_dir}}/nvm.sh" > "{{nvm_dir}}/.nvmrc"  # This loads nvm
@@ -65,17 +67,19 @@ macos-install-nvm:
 
 # If developing through cloud expo resources, install dependencies
 # This also sets the name of the project to src
-expo-install:
+expo-new-install:
     #!/usr/bin/env bash
     set {{flags}}
+    pushd {{project_mymooder}}
+
     # Sign up for expo account
     curl https://expo.dev/signup
 
     # Create new project 
-    npx create-expo-app {{app_name}}
+    # npx create-expo-app {{app_name}}
     #############################
     # Or Create React Native app
-    # npx create-react-native-app my mooder
+    # npx create-react-native-app {{app_name}}
     ##############################
 
     # Supports local dev builds with either XCode or Android Studio
@@ -92,55 +96,116 @@ expo-install:
     # Confirm you're logged in
     eas whoami
 
-expo-run-ios:
+# Remove previous node_modules and reinstalls from package.json
+react-install-clean-cache:
     #!/usr/bin/env bash
     set {{flags}}
-    npx expo run ios
+    pushd {{project_mymooder}}
 
-expo-run-android:
+    sudo npm cache clean --force
+
+    rm -rf ./node_modules
+    npm install
+
+# Run ios app locally
+expo-local-run-ios:
     #!/usr/bin/env bash
     set {{flags}}
-    npx expo run android
+    pushd {{project_mymooder}}
+    NODE_ENV={{node_env}} npx expo run:ios
 
+# Run android app locally
+expo-local-run-android:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd {{project_mymooder}}
+    NODE_ENV={{node_env}} npx expo run:android
+
+# Create native Android or iOS directories for the local project - preparing to publish to Expo
+expo-local-pre-build:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd {{project_mymooder}}
+    npx expo prebuild
 
 # Configures build configurations and set environmental variables
-expo-configure:
+expo-build-configure:
     #!/usr/bin/env bash
     set {{flags}}
+    pushd {{project_mymooder}}
 
     # Create Expo build configuration
-    eas buid:configure
+    eas build:configure
 
     # Enroll in the Apple Developer Program for a personal device 
 
-# Build App to Be Transfered to a Dockerfile for deployment
+# Build App to Be Transfered to a Dockerfile for deployment through Apps Developer Program
 expo-build:
     #!/usr/bin/env bash
     set {{flags}}
-        
-    # Create the build
-    eas build --platform {{eas_build_platform}} --profile {{eas_build_profile}}
+    pushd {{project_mymooder}}
 
+    # Create the build
+    # eas build --platform ios --profile {{eas_build_profile}}
+
+    # eas build --platform android --profile {{eas_build_profile}}
+
+    eas build --platform all --profile {{eas_build_profile}}
+
+
+# Start local app running for debugging on the website
 expo-start:
     #!/usr/bin/env bash
     set {{flags}}
-    NOD_ENV={{node_env}} npx expo start
+    pushd {{project_mymooder}}
+
+    NODE_ENV={{node_env}} npx expo start
 
 # Install React Native Sample App
 react-native-install:
     #!/usr/bin/env bash
     source ~/.bashrc
     set {{flags}}
-    pushd {{project_src}}
+    pushd {{project_mymooder}}
 
     # Install additioanal package to include sqlite storage
     npm install --save react-native-sqlite-storage
     apt install gradles
 
-
-# Build production docker image
-react-native-build:
+# Build production Ubuntu amd docker image to be deployed on our local site
+docker-build-ubuntu-amd:
     #!/usr/bin/env bash
     set {{flags}}
     pushd "{{docker_root}}"
-    docker build --tag {{project_frontend}} .
+    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
+    docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
+
+docker-build-ubuntu-amd-mymooder-dir:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd "{{project_mymooder}}"
+    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
+    docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
+
+# Build production docker image to be deployed on our local site
+docker-build-ios:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd "{{docker_root}}"
+    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
+    docker buildx build -t mymooder-frontend:latest -f Dockerfile-arm-ios --no-cache .
+
+
+# Start docker-compose file up fro mymyooder-frontend
+docker-compose-up-frontend:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd "{{docker_root}}"
+    docker compose up
+
+docker-exec:
+    # This throws errors anyway
+    docker exec -it mymooder-frontend bash
