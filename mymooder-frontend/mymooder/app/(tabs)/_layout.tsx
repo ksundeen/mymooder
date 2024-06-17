@@ -4,6 +4,7 @@ import React from 'react';
 import { TabBarIcon, TabMapIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 
 
 
@@ -35,11 +36,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="charts"
+        options={{
+          title: 'Charts',
+          tabBarIcon: ({ color, focused }) => (
+              <AntDesign name='dotchart' size={24} color={color} />
+            ),
+        }}
+      />
+      <Tabs.Screen
         name="map"
         options={{
           title: 'Map',
           tabBarIcon: ({ color, focused }) => (
-              <TabMapIcon name={focused ? 'map' : 'map'} color={color} />
+              <FontAwesome name={focused ? 'map' : 'map-o'} size={24} color={color} />
             ),
         }}
       />

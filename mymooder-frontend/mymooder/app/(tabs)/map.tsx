@@ -4,8 +4,8 @@ import { StyleSheet, SafeAreaView } from 'react-native';
 import { LatLng, LeafletView } from 'react-native-leaflet-view';
 
 const DEFAULT_COORDINATE: LatLng = {
-  lat: 51.505,
-  lng: -0.09,
+  lat: 43.2478,
+  lng: -89.3437,
 };
 
 export default function App() {
