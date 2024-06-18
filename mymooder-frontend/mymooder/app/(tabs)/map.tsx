@@ -8,7 +8,7 @@ const DEFAULT_COORDINATE: LatLng = {
   lng: -89.3437,
 };
 
-export default function App() {
+export default function Map() {
   return (
     <SafeAreaView style={styles.root}>
       <LeafletView

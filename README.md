@@ -78,7 +78,7 @@ To see a list of just
         # List just commands
         just --list
 
-7. Run the react native application locally with
+7. Install the Android SDK
 
         # Install the Android SDK on a Mac with Homebrew
         brew install android-sdk
@@ -86,10 +86,17 @@ To see a list of just
         # This may prompt that you need the Java SDK version 8, in which case, install it with:
         brew install --cask temurin@8
 
-        # Navigate to the directory
+ 8. Navigate to the mymooder-frontend directory and use justfile commands to run various commands in this order:
+* Configure the apps
 
-        npm run android
-        npm run ios # You need to use macOS to build the ios project - use the Expo app if you need to iOS development without a mac.
+        1. Configure the app with the just command 
+        2. Build the expo profile with a pre-build command
+        3. Run the apps locally to confirm they work
+        4. Use expo to build the apps and distribute them for testing
+        
+        NODE_ENV=development npx expo start
+        
+9. To create credentials for iOS, use `eas credentials` from https://docs.expo.dev/app-signing/app-credentials/ to register the provisioning file to authortize the app.
         
 ![wsl-root-img](run-apps.png?raw=true)
 

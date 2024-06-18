@@ -17,8 +17,8 @@ docker_root := "docker"
 
 # React Native Environmental Variables
 app_name:= env_var_or_default("APP_NAME", "mymooder")
-node_env := env_var_or_default("NODE_ENV", "development")
-eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "development")
+node_env := env_var_or_default("NODE_ENV", "test")
+eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "test") # test, development, ad-hoc
 
 # Install Dependencies for the React Native Front End
 
@@ -161,6 +161,21 @@ E_expo-build:
     set {{flags}}
     pushd {{project_mymooder}}
 
+    # Install dependencies
+    # npm install -g eas-cli
+
+    # Login to the Expo account
+    # eas login
+
+    # Configure the build environments
+    eas build:configure
+
+    # Pre-build the apps
+    npx expo prebuild
+
+    # Run the build with the internal build and create the registration for it
+    eas device:create
+
     # Create the build
     # eas build --platform ios --profile {{eas_build_profile}}
 
@@ -168,6 +183,7 @@ E_expo-build:
 
     eas build --platform all --profile {{eas_build_profile}}
 
+    eas submit --platform all
 
 # Install React Native Sample App
 z_DO_NOT_USE_react-native-new_install:

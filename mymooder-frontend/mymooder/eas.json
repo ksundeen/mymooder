@@ -1,26 +1,43 @@
 {
     "build": {
         "preview": {
+            "extends": "production",
+            "distribution": "internal",
+            "ios": {
+                "enterpriseProvisioning": "universal"
+              }
+        
+        },
+        "development": {
             "ios": {
                 "simulator": true
             },
-            "distribution": "internal"
-        },
-        "development": {
+            "extends": "production",
             "developmentClient": true,
             "distribution": "internal",
             "env": {
                 "EXPO_PUBLIC_API_URL": "https://localhost:8081"
             }
         },
-        "test": {
+        "adhoc": {
+            "extends": "production",
+            "distribution": "internal",
             "env": {
                 "EXPO_PUBLIC_API_URL": "https://api.test.com"
+                }
+        },
+        "test": {
+            "ios": {
+                "enterpriseProvisioning": "adhoc"
+            },
+            "distribution": "internal",
+            "env": {
+                "EXPO_PUBLIC_API_URL": "https://mymooder.api.test.com"
                 }
             },
         "production": {
             "env": {
-            "EXPO_PUBLIC_API_URL": "https://api.production.com"
+            "EXPO_PUBLIC_API_URL": "https://mymooder.api.production.com"
             }
         }
     }
