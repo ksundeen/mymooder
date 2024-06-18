@@ -22,10 +22,10 @@ In this section, we'll review the steps for setting up technologies required to 
 
 2. Configure your credentials for Git to show in your repositories:
 
-           git config --global user.email "kim.h.sundeen@gmail.com"
-           git config --global user.name "Kim Sundeen"
+           git config --global user.email "<your.name@some-domain.com>"
+           git config --global user.name "<Your Name>"
 
-4. Pull the repository in WSL or IOS os Linux using the SSH connection. If you need to add an SSH key, follow GIthub instructions: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+3. Pull the repository in WSL or IOS os Linux using the SSH connection. If you need to add an SSH key, follow GIthub instructions: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
         # For example, if you haven't created an SSH key before, then generate one using 
         ssh-keygen -t ed25519 -C "your_email@example.com"
@@ -43,36 +43,44 @@ In this section, we'll review the steps for setting up technologies required to 
 
         # Then clone the ssh version of the repository
         git clone git@github.com:ksundeen/mymooder.git
-   
-3. Install Just as a command runner for your OS from: https://github.com/casey/just. For Ubuntu 24.04 install Just using:
 
-          sudo apt install just
+4. Install Brew for Mac as the package managaer. Read more about Brew https://brew.sh
 
-          # See a list of just commands by typing:
-          just --list
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-5. Use your preferred IDE for code editing and make a fork or branch off the `main` branch. Alternatively, use VS code installed using the Ubuntu image. Change directories into the mymooder directory and install VS Code using the command:
+5. Install Just as a command runner for your OS from: https://github.com/casey/just. Or from source 
+
+
+        # For Ubuntu 24.04 install Just using:
+        sudo apt install just 
+
+        # For macOS 
+        brew install just
+
+        # See a list of just commands by typing:
+        just --list
+
+6. Use your preferred IDE for code editing and make a fork or branch off the `main` branch. Alternatively, use VS code installed using the Ubuntu image. Change directories into the mymooder directory and install VS Code using the command:
            
           cd mymooder
           code .
           git checkout -b feature/startup
       
-6. Run commands from the justfile to install api, frontend, and GeoNode dependencies
+7. Run commands from the justfile to install api, frontend, and GeoNode dependencies
 To see a list of just 
 
-    ## Install Basic Ubuntu Packages
+    ## Install Basic Mac/Ubuntu Packages
         cd mymooder
         
-        # View the list of available commans to run
+        # View the list of available commands to run
         just --list
-
-        # Install Ubuntu tools with
-        just install-ubutnu-pacakges
         
-        # Install just the ubuntu tools with
-        just install-dockertools # (installs both docker engine an docker-compose)
+#### I decided to use Docker for Desktop to Handle running anything with Docker, but unfortunately, building docker images failed with npmx and using expo tools, so I've moved away from docker and instead using expo for CI/CD builds.
 
-    ## React Native
+        # The repo still references helpful infor to install and configur doker, but I gave up on in after a while. 
+        # just install-dockertools # (installs both docker engine an docker-compose)
+
+        ## React Native
         cd mymooder/mymooder-frontend
         
         # List just commands
