@@ -3,12 +3,11 @@ import * as React from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { LatLng, LeafletView } from 'react-native-leaflet-view';
 
-const DEFAULT_COORDINATE: LatLng = {
-  lat: 43.2478,
-  lng: -89.3437,
-};
-
 export default function Map() {
+  const DEFAULT_COORDINATE: LatLng = {
+    lat: 43.2478,
+    lng: -89.3437,
+  };
   return (
     <SafeAreaView style={styles.root}>
       <LeafletView

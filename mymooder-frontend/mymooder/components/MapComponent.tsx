@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { LatLng, LeafletView } from 'react-native-leaflet-view';
-import Svg, { G, Path, Circle } from "react-native-svg";
-import * as d3 from "d3";
 
 const DEFAULT_COORDINATE: LatLng = {
   lat: 43.233224,

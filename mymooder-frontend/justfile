@@ -12,13 +12,12 @@ warn := "\\U26A0"
 nvm_dir := env_var_or_default("NVM_DIR", "$HOME/.nvm")
 node_version := "20.10.0"
 
-# Containers
-docker_root := "docker"
-
 # React Native Environmental Variables
 app_name:= env_var_or_default("APP_NAME", "mymooder")
 node_env := env_var_or_default("NODE_ENV", "test")
 eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "preview") # test, development, adhoc
+patch_package := "npx patch-package react-native-leaflet-view"
+
 
 # Install Dependencies for the React Native Front End
 
@@ -91,6 +90,8 @@ A_expo-setup-install:
     # Install expo/types for jsx
     npm install --save --global expo-cli
 
+    npx --save install patch-package
+
     # Login into Expo Application Service (EAS)
     eas login
 
@@ -108,11 +109,17 @@ react-install-clean-cache:
     rm -rf ./node_modules
     npm install
 
+    # Apply patched location to leaflet.html
+    {{patch_package}}
+
 # Run ios app locally
 B1_expo-local-run-ios:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_mymooder}}
+
+    # Apply patched location to leaflet.html
+    {{patch_package}}
     NODE_ENV={{node_env}} npx expo run:ios
 
 # Run android app locally
@@ -120,6 +127,10 @@ B2_expo-local-run-android:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_mymooder}}
+
+    # Apply patched location to leaflet.html
+    {{patch_package}}
+
     NODE_ENV={{node_env}} npx expo run:android
 
 # Run ios app locally
@@ -127,6 +138,10 @@ B3_expo-local-run-web:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_mymooder}}
+
+    # Apply patched location to leaflet.html
+    {{patch_package}}
+
     NODE_ENV={{node_env}} npx expo run:web --clear
 
 # Start local app running for debugging on the website
@@ -135,25 +150,35 @@ B4_expo-start:
     set {{flags}}
     pushd {{project_mymooder}}
 
+    # Apply patched location to leaflet.html
+    {{patch_package}}
+
     NODE_ENV={{node_env}} npx expo start
 
-# Create native Android or iOS directories for the local project - preparing to publish to Expo
-C_expo-local-pre-build:
-    #!/usr/bin/env bash
-    set {{flags}}
-    pushd {{project_mymooder}}
-    npx expo prebuild
-
 # Configures build configurations and set environmental variables
-D_expo-build-configure:
+C_expo-build-configure:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_mymooder}}
+
+    # Apply patched location to leaflet.html
+    {{patch_package}}
 
     # Create Expo build configuration
     eas build:configure
 
     # Enroll in the Apple Developer Program for a personal device 
+
+# Create native Android or iOS directories for the local project - preparing to publish to Expo
+D_expo-local-pre-build:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd {{project_mymooder}}
+
+    # Apply patched location to leaflet.html
+    {{patch_package}}
+
+    npx expo prebuild
 
 # Build App to Be Transfered to a Expo or Dockerfile for deployment through Apps Developer Program
 E_expo-build:
@@ -161,17 +186,22 @@ E_expo-build:
     set {{flags}}
     pushd {{project_mymooder}}
 
+    # Apply patched location to leaflet.html
+    {{patch_package}}
+
     # Install dependencies
     # npm install -g eas-cli
 
     # Login to the Expo account
     # eas login
 
+    #### Android credentials ######
     # Get credentials for Android
     # eas credentials
 
     # Package up credentials for Android
     # eytool -export -rfc -alias 2ae1a6233d053ff97b0751c040ec5e8c -file certificate_for_google.pem -keystore @ksundeen__mymooder.jks
+    #### /Android credentials ######
 
     # Configure the build environments
     eas build:configure
@@ -188,7 +218,7 @@ E_expo-build:
 
     # To redesignate credentials for IOS use
     # eas build:resign
-    ##### iOS ##########
+    ##### /iOS ##########
 
     # Create the build
     # eas build --platform ios --profile {{eas_build_profile}}
@@ -207,44 +237,9 @@ z_DO_NOT_USE_react-native-new_install:
     set {{flags}}
     pushd {{project_mymooder}}
 
+    # Apply patched location to leaflet.html
+    {{patch_package}}
+    
     # Install additioanal package to include sqlite storage
     npm install --save react-native-sqlite-storage
     apt install gradles
-
-# Build production Ubuntu amd docker image to be deployed on our local site
-docker-build-ubuntu-amd:
-    #!/usr/bin/env bash
-    set {{flags}}
-    pushd "{{docker_root}}"
-    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
-    # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
-    docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
-
-docker-build-ubuntu-amd-mymooder-dir:
-    #!/usr/bin/env bash
-    set {{flags}}
-    pushd "{{project_mymooder}}"
-    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
-    # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
-    docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
-
-# Build production docker image to be deployed on our local site
-docker-build-ios:
-    #!/usr/bin/env bash
-    set {{flags}}
-    pushd "{{docker_root}}"
-    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
-    # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
-    docker buildx build -t mymooder-frontend:latest -f Dockerfile-arm-ios --no-cache .
-
-
-# Start docker-compose file up fro mymyooder-frontend
-docker-compose-up-frontend:
-    #!/usr/bin/env bash
-    set {{flags}}
-    pushd "{{docker_root}}"
-    docker compose up
-
-docker-exec:
-    # This throws errors anyway
-    docker exec -it mymooder-frontend bash

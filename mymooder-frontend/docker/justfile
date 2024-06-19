@@ -1,0 +1,53 @@
+set shell := ["bash", "-uc"]
+set dotenv-load
+
+project_frontend := "mymooder-frontend"
+project_mymooder := "mymooder"
+flags := env_var_or_default("JUST_FLAGS", "-eo pipefail")
+thumbup := "\\U1F44D"
+check := "\\U2705"
+warn := "\\U26A0"
+# NVM_DIR := "/root/.nvm"
+nvm_dir := env_var_or_default("NVM_DIR", "$HOME/.nvm")
+node_version := "20.10.0"
+
+
+# React Native Environmental Variables
+app_name:= env_var_or_default("APP_NAME", "mymooder")
+node_env := env_var_or_default("NODE_ENV", "test")
+
+
+# Build production Ubuntu amd docker image to be deployed on our local site
+docker-build-ubuntu-amd:
+    #!/usr/bin/env bash
+    set {{flags}}
+    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
+    docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
+
+docker-build-ubuntu-amd-mymooder-dir:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd "{{project_mymooder}}"
+    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
+    docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
+
+# Build production docker image to be deployed on our local site
+docker-build-ios:
+    #!/usr/bin/env bash
+    set {{flags}}
+    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
+    docker buildx build -t mymooder-frontend:latest -f Dockerfile-arm-ios --no-cache .
+
+
+# Start docker-compose file up fro mymyooder-frontend
+docker-compose-up-frontend:
+    #!/usr/bin/env bash
+    set {{flags}}
+    docker compose up
+
+docker-exec:
+    # This throws errors anyway
+    docker exec -it mymooder-frontend bash
