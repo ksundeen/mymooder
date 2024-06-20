@@ -2,7 +2,7 @@ set shell := ["bash", "-uc"]
 set dotenv-load
 
 project_frontend := "mymooder-frontend"
-project_mymooder := "src"
+project_src := "src"
 project_app := "app"
 flags := env_var_or_default("JUST_FLAGS", "-eo pipefail")
 thumbup := "\\U1F44D"
@@ -62,12 +62,27 @@ macos-install-nvm:
     node --version > {{nvm_dir}}/.nvmrc
     npm --version > {{nvm_dir}}/.nvmrc 
 
+
+# Remove previous node_modules and reinstalls from package.json
+START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache:
+    #!/usr/bin/env bash
+    set {{flags}}
+    pushd {{project_src}}
+
+    sudo npm cache clean --force
+
+    rm -rf ./node_modules
+    npm install
+
+    # Apply patched location to leaflet.html
+    {{patch_package}}
+
 # If developing through cloud expo resources, install dependencies
 # This also sets the name of the project to src
 A_expo-setup-install:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_mymooder}}
+    pushd {{project_src}}
 
     # Sign up for expo account
     curl https://expo.dev/signup
@@ -80,17 +95,18 @@ A_expo-setup-install:
     ##############################
 
     # Supports local dev builds with either XCode or Android Studio
-    npm install --save expo-dev-client.
+    npm install --save expo-dev-client
+
+    # Install expo/types for jsx
+    npm install --save --global expo-cli
 
     # Plan to build with Cloud-based Expo tools
     # Install lates EAS cli
     # Installing with cloud building through Expo from https://docs.expo.dev/get-started/set-up-your-environment/?platform=ios&device=physical
     npm install --save --global eas-cli
 
-    # Install expo/types for jsx
-    npm install --save --global expo-cli
-
-    npx --save install patch-package
+    # Create the metro-config.js file to help with APP ROUTing
+    npx expo customize metro.config.js
 
     # Login into Expo Application Service (EAS)
     eas login
@@ -98,25 +114,20 @@ A_expo-setup-install:
     # Confirm you're logged in
     eas whoami
 
-# Remove previous node_modules and reinstalls from package.json
-react-install-clean-cache:
+A1_remove_android_and_ios_previous_builds:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_mymooder}}
+    pushd {{project_src}}
+    rm -rf ./ios
+    rm -rf ./android
 
-    sudo npm cache clean --force
-
-    rm -rf ./node_modules
-    npm install
-
-    # Apply patched location to leaflet.html
-    {{patch_package}}
+A2_configure_and_build_both_platforms: C_expo-build-configure D_expo-local-pre-build
 
 # Run ios app locally
 B1_expo-local-run-ios:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_mymooder}}
+    pushd {{project_src}}
 
     NODE_ENV={{node_env}} npx expo run:ios
 
@@ -124,7 +135,7 @@ B1_expo-local-run-ios:
 B2_expo-local-run-android:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_mymooder}}
+    pushd {{project_src}}
 
     NODE_ENV={{node_env}} npx expo run:android
 
@@ -132,10 +143,7 @@ B2_expo-local-run-android:
 B3_expo-local-run-web:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_mymooder}}
-
-    # Apply patched location to leaflet.html
-    {{patch_package}}
+    pushd {{project_src}}
 
     NODE_ENV={{node_env}} npx expo run:web --clear
 
@@ -143,7 +151,7 @@ B3_expo-local-run-web:
 B4_expo-start:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_mymooder}}
+    pushd {{project_src}}
 
     NODE_ENV={{node_env}} npx expo start
 
@@ -151,7 +159,7 @@ B4_expo-start:
 C_expo-build-configure:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_mymooder}}
+    pushd {{project_src}}
 
     # Create Expo build configuration
     eas build:configure
@@ -162,7 +170,7 @@ C_expo-build-configure:
 D_expo-local-pre-build:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_mymooder}}
+    pushd {{project_src}}
 
     npx expo prebuild
 
@@ -170,7 +178,7 @@ D_expo-local-pre-build:
 E_expo-build:
     #!/usr/bin/env bash
     set {{flags}}
-    pushd {{project_mymooder}}
+    pushd {{project_src}}
 
     # Install dependencies
     # npm install -g eas-cli
@@ -218,7 +226,7 @@ z_DO_NOT_USE_react-native-new_install:
     #!/usr/bin/env bash
     source ~/.bashrc
     set {{flags}}
-    pushd {{project_mymooder}}
+    pushd {{project_src}}
 
     # Apply patched location to leaflet.html
     {{patch_package}}
