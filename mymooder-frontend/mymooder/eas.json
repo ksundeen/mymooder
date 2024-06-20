@@ -5,8 +5,7 @@
             "developmentClient": true,
             "ios": {
                 "enterpriseProvisioning": "adhoc"
-              }
-        
+              }        
         },
         "development": {
             "ios": {
@@ -18,16 +17,6 @@
             "env": {
                 "EXPO_PUBLIC_API_URL": "https://localhost:8081"
             }
-        },
-        "adhoc": {
-            "ios": {
-                "enterpriseProvisioning": "adhoc"
-            },
-            "distribution": "internal",
-            "developmentClient": true,
-            "env": {
-                "EXPO_PUBLIC_API_URL": "https://api.test.com"
-                }
         },
         "test": {
             "ios": {

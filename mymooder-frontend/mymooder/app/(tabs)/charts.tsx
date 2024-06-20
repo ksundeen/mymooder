@@ -1,12 +1,12 @@
-import { StyleSheet, View, Dimensions } from 'react-native';
-import { ChartComponent } from "@/components/ChartComponent";
+import { StyleSheet, View, Dimensions, ScaledSize } from 'react-native';
+import ChartComponent from "@/components/ChartComponent";
 
 export default function Charts() {
-   const dimensions = Dimensions.get("window");
+   const dimensions: ScaledSize = Dimensions.get("window");
    return (
          <View style={styles.container}>
             <ChartComponent
-               dimensions: any = {dimensions}
+               dimensions={dimensions}
             />
          </View>
       );

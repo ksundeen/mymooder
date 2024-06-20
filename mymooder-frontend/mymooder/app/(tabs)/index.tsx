@@ -17,36 +17,45 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Map Mood Coordinates!</ThemedText>
+        <ThemedText type="title">Map Your Mood Coordinates!</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
+        <ThemedText type="subtitle">Step 1: Enter how Happy(10)or Sad(0) you feel as a Mood Value</ThemedText>
         <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
+        Enter you Mood Value in this moment right now for how Happy (max 10) or Sad (minimum 0) you feel in this place, location, season, time, with people, or doing an activity.
         </ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
+        <ThemedText type="subtitle">Step 2: Enter how Angry(10) or Anxious(5) or Calm(0) you feel as a Mood Value</ThemedText>
         <ThemedText>
-          Tap the Map tab to learn more about what's in the map.
+          Enter your Mood Value in this moment right now for how Angry (max 10), or Anxious (5), or Calm (minimum 0) you feel in this place, location, season, time, with people, or doing an activity.
         </ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+        <ThemedText type="subtitle">Step 3: Enter the people with whom you're near and with whom you're interacting right now</ThemedText>
         <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+          Enter a list of people with whom you;re interacting while you experience the Mood Value you entered in #1 and #2.
         </ThemedText>
-      </ThemedView> 
+      </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Step 4: Enter the activity in which you are engaging right now</ThemedText>
+        <ThemedText>
+          Enter a list of activities in which you're engaging while experiencing the Mood Value you entered in #1 and #2.
+        </ThemedText>
+      </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Step 3: Chart Your Mood</ThemedText>
+        <ThemedText>
+        Tap the Charts to see your Mood Values visualized relative to past mood values over time, activity, and people.
+        </ThemedText>
+      </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Step 4: Map Your Mood</ThemedText>
+        <ThemedText>
+        Tap the Maps to see your Mood Values visualized an interative map with popups to remind you what was happening at certain places, times, and activities.
+        </ThemedText>
+      </ThemedView>
     </ParallaxScrollView>
   );
 }
