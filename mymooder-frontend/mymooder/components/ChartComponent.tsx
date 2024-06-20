@@ -1,17 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect, useMemo } from 'react';
-// import { COUNTRIES } from '@/constants/CountryShapes';
+import { COUNTRIES } from '@/assets/data/Countries';
 import Svg, { G, Path, Circle } from "react-native-svg";
 import * as d3 from 'd3';
-import * as geojson from 'geojson';
-import * as topo from 'topojson-client';
-// import {geoAzimuthalEqualArea} from 'd3';
 import { ScaledSize } from 'react-native';
 
-import feature from "geojson";
-import countries_obj from "../assets/data/countries-10m.json";
-
-export const COUNTRIES = topo.feature(countries_obj, countries_obj.objects.countries);
 
 export function ChartComponent(props: { dimensions: ScaledSize; }) {
     const { dimensions } = props;
@@ -28,7 +21,7 @@ export function ChartComponent(props: { dimensions: ScaledSize; }) {
         const projection = d3.geoAzimuthalEqualArea()
             .rotate([0, -90])
             .clipAngle(150)
-            .fitSize([mapExtent,mapExtent], { type: "FeatureCollection", features: COUNTRIES})
+            .fitSize([mapExtent,mapExtent], { type: "GeometryCollection", features: COUNTRIES})
             .translate([dimensions.width / 2, mapExtent / 2]);
     
             const geoPath = d3.geoPath().projection(projection);
@@ -68,7 +61,7 @@ export function ChartComponent(props: { dimensions: ScaledSize; }) {
                     r={mapExtent / 2}
                     fill={"#3b454f"}
                 />
-                {COUNTRIES.map((x: any) => x)}
+                {COUNTRIES((x: any) => x)}
                 </G>
             </Svg>=
         </View>

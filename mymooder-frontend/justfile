@@ -118,8 +118,6 @@ B1_expo-local-run-ios:
     set {{flags}}
     pushd {{project_mymooder}}
 
-    # Apply patched location to leaflet.html
-    {{patch_package}}
     NODE_ENV={{node_env}} npx expo run:ios
 
 # Run android app locally
@@ -127,9 +125,6 @@ B2_expo-local-run-android:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_mymooder}}
-
-    # Apply patched location to leaflet.html
-    {{patch_package}}
 
     NODE_ENV={{node_env}} npx expo run:android
 
@@ -150,9 +145,6 @@ B4_expo-start:
     set {{flags}}
     pushd {{project_mymooder}}
 
-    # Apply patched location to leaflet.html
-    {{patch_package}}
-
     NODE_ENV={{node_env}} npx expo start
 
 # Configures build configurations and set environmental variables
@@ -160,9 +152,6 @@ C_expo-build-configure:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_mymooder}}
-
-    # Apply patched location to leaflet.html
-    {{patch_package}}
 
     # Create Expo build configuration
     eas build:configure
@@ -175,9 +164,6 @@ D_expo-local-pre-build:
     set {{flags}}
     pushd {{project_mymooder}}
 
-    # Apply patched location to leaflet.html
-    {{patch_package}}
-
     npx expo prebuild
 
 # Build App to Be Transfered to a Expo or Dockerfile for deployment through Apps Developer Program
@@ -185,9 +171,6 @@ E_expo-build:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_mymooder}}
-
-    # Apply patched location to leaflet.html
-    {{patch_package}}
 
     # Install dependencies
     # npm install -g eas-cli
