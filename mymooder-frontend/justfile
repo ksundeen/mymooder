@@ -2,7 +2,7 @@ set shell := ["bash", "-uc"]
 set dotenv-load
 
 project_frontend := "mymooder-frontend"
-project_mymooder := "mymooder"
+project_mymooder := "src"
 project_app := "app"
 flags := env_var_or_default("JUST_FLAGS", "-eo pipefail")
 thumbup := "\\U1F44D"
