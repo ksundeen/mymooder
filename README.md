@@ -1,3 +1,4 @@
+![wsl-root-img](LogoWithLargerBackgroundLighter_WorldInfo.png?raw=true)
 # Goal of My Mooder Application
 My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see overtime and space and across activities, people, and weather how their mood fluctuates from negative to positive. With this data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs as a result that will support more positive mood qualities.
 
@@ -108,14 +109,34 @@ To see a list of just
         
 ![wsl-root-img](run-apps.png?raw=true)
 
-        # Install additional react pacakges
+* Install additional react packages and follow instruction in the `~/mymooder/mymooder-frontend/justfile` with:
 
+        just --list
 
-    ## Fast API
+        
+# Monkey Pacthing the Android Leaflet.html file location (and other node_module packages)
+I noticed when building the Android app that the location of the Leakflet.html was incorrect. Finding the right location took some detective working, but the solution is applying this fix to two files:
+1. Install `patch-package` in the `~/mymooder/mymooder-frontend/src` directory with 
+
+        npm install --save patch-package
+
+2. Apply any existing monkey patches to the `~/mymooder/mymooder-frontend/src/patches` directory code with:
+
+        npx run postinstall
+
+3. If you have made any new changes to other node_modules packages and want to save them to the `~/mymooder/mymood-frontend/src/patches` directory, the 
+        
+        npx patch-package react-native-leaflet-view
+
+        # Or of there are other packages that need to have their individual packages saved, then change the package name to 
+        npx patch-package <package name>
+        
+
+# Install and Configure the MyMooder Fast API
 
        ...coming
 
-    ## GeoNode
+# Install and Configure the GeoNode Web Map FrontEnd
 
        ...coming
 
@@ -198,7 +219,7 @@ To see a list of just
 #### 6. If developing on an Ipad, use https://coder.com/blog/a-guide-to-writing-code-on-an-ipad
         
 
-## {PREFERRED DEVELOPMENT ENVIRONMENT for both Windows & IOS}
+## An Alternative to MacOS and Windows WSL - Use Ubuntu Linux
 Instead of trying to support both IOS and Windows WSL, just use Ubuntu, the linux distributions that will natively support docker, node, and react development. It's unclear if XCode could be installed for Ubuntu though. 
 
 ## Install & Configure A Development Environment Using Windows Subsystem for Linux (WSL) in Windows:

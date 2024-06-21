@@ -14,7 +14,7 @@ node_version := "20.10.0"
 
 # React Native Environmental Variables
 app_name:= env_var_or_default("APP_NAME", "mymooder")
-node_env := env_var_or_default("NODE_ENV", "test")
+node_env := env_var_or_default("NODE_ENV", "development")
 eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "preview") # test, development, adhoc
 patch_package := "npx patch-package react-native-leaflet-view"
 
@@ -71,11 +71,11 @@ START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache:
 
     sudo npm cache clean --force
 
-    rm -rf ./node_modules
+    sudo rm -rf ./node_modules
     npm install
 
     # Apply patched location to leaflet.html
-    {{patch_package}}
+    npx run postinstall
 
 # If developing through cloud expo resources, install dependencies
 # This also sets the name of the project to src
@@ -98,7 +98,7 @@ A_expo-setup-install:
     npm install --save expo-dev-client
 
     # Install expo/types for jsx
-    npm install --save --global expo-cli
+    # npm install --save --global expo-cli
 
     # Plan to build with Cloud-based Expo tools
     # Install lates EAS cli
@@ -145,7 +145,7 @@ B3_expo-local-run-web:
     set {{flags}}
     pushd {{project_src}}
 
-    NODE_ENV={{node_env}} npx expo run:web --clear
+    NODE_ENV={{node_env}} npx expo start --web --clear
 
 # Start local app running for debugging on the website
 B4_expo-start:
