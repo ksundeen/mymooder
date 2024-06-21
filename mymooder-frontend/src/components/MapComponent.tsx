@@ -2,12 +2,12 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { LatLng, LeafletView } from 'react-native-leaflet-view';
 
-const DEFAULT_COORDINATE: LatLng = {
-  lat: 43.233224,
-  lng: -89.346395,
-};
 
 export function MapComponent(dimensions: any) {
+  const DEFAULT_COORDINATE: LatLng = {
+    lat: 43.233224,
+    lng: -89.346395,
+  };
   return (
     <View>
         <LeafletView

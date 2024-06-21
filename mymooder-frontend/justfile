@@ -75,7 +75,7 @@ START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache:
     npm install
 
     # Apply patched location to leaflet.html
-    npx run postinstall
+    npm run postinstall
 
 # If developing through cloud expo resources, install dependencies
 # This also sets the name of the project to src

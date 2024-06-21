@@ -2,7 +2,7 @@ set shell := ["bash", "-uc"]
 set dotenv-load
 
 project_frontend := "mymooder-frontend"
-project_mymooder := "mymooder"
+project_src := "src"
 flags := env_var_or_default("JUST_FLAGS", "-eo pipefail")
 thumbup := "\\U1F44D"
 check := "\\U2705"
@@ -21,7 +21,7 @@ node_env := env_var_or_default("NODE_ENV", "test")
 docker-build-ubuntu-amd:
     #!/usr/bin/env bash
     set {{flags}}
-    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t dev:lastest -f {{project_src}}/Dockerfile 
     # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
     docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
 
@@ -29,7 +29,7 @@ docker-build-ubuntu-amd-mymooder-dir:
     #!/usr/bin/env bash
     set {{flags}}
     pushd "{{project_mymooder}}"
-    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t dev:lastest -f {{project_src}}/Dockerfile 
     # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
     docker buildx build -t mymooder-frontend:latest -f Dockerfile-amd --no-cache --progress=plain .
 
@@ -37,7 +37,7 @@ docker-build-ubuntu-amd-mymooder-dir:
 docker-build-ios:
     #!/usr/bin/env bash
     set {{flags}}
-    # docker buildx build -t dev:lastest -f {{project_mymooder}}/{{project_app}}/Dockerfile 
+    # docker buildx build -t dev:lastest -f {{project_src}}/Dockerfile 
     # docker buildx build -t mymooder-dev:lastest -f "Dockerfile-dev" --no-cache --progress "auto" .
     docker buildx build -t mymooder-frontend:latest -f Dockerfile-arm-ios --no-cache .
 
