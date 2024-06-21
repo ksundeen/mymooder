@@ -81,7 +81,7 @@ A_expo-setup-install:
     ##############################
 
     # Supports local dev builds with either XCode or Android Studio
-    npm install --save expo-dev-client.
+    npm install --save expo-dev-client
 
     # Plan to build with Cloud-based Expo tools
     # Install lates EAS cli
