@@ -131,8 +131,28 @@ I noticed when building the Android app that the location of the Leakflet.html w
         # Or of there are other packages that need to have their individual packages saved, then change the package name to 
         npx patch-package <package name>
         
+# Install and Congiure the MyMooder Frontend
+1. Set up all necessary packages, and start building these just file commands. The just commands run regular package.json commands, but just keep them in order for simplicity's sake:
 
-# Install and Configure the MyMooder Fast API
+        # cd to the mymooder-frontend directory
+        cd ~/mymooder/mymooder-frontend
+        just START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache
+
+        # Install expo and login
+        just A_expo-setup-install
+
+        # Remove any previous ios and android builds
+        just A_expo-setup-install
+
+        # Configure the build and make a pre-build of the ios and android apps
+        just A2_configure_and_build_both_platforms
+
+        # Chose which specific platform to run locally. This command runs all web, android, and ios platforms
+        just B4_expo-start
+
+        # Follow any promots to open i for ios, a for android and w for the web
+
+# Install and Configure the MyMooder FastAPI Backend
 
        ...coming
 

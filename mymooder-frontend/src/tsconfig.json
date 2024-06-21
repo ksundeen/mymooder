@@ -14,5 +14,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
 , "assets/data/countries-10m.json"
-, "assets/data/Countries.js"  ]
+, "assets/data/Countries.jsx"  ]
 }
