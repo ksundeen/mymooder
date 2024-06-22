@@ -21,7 +21,9 @@ export function ChartComponent(props: { dimensions: ScaledSize; }) {
         const projection = d3.geoAzimuthalEqualArea()
             .rotate([0, -90])
             .clipAngle(150)
-            .fitSize([mapExtent,mapExtent], { type: "GeometryCollection", features: COUNTRIES})
+            // .fitSize([mapExtent,mapExtent], { type: "GeometryCollection", features: COUNTRIES})
+            .fitSize([mapExtent,mapExtent], { type: "FeatureCollection", features: COUNTRIES})
+            // .fitSize([mapExtent,mapExtent], { type: "GeometryCollection", features: COUNTRIES.countries})
             .translate([dimensions.width / 2, mapExtent / 2]);
     
             const geoPath = d3.geoPath().projection(projection);

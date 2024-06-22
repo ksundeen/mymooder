@@ -118,8 +118,8 @@ A1_remove_android_and_ios_previous_builds:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_src}}
-    rm -rf ./ios
-    rm -rf ./android
+    sudo rm -rf ./ios
+    sudo rm -rf ./android
 
 A2_configure_and_build_both_platforms: C_expo-build-configure D_expo-local-pre-build
 
