@@ -235,4 +235,5 @@ z_DO_NOT_USE_react-native-new_install:
     
     # Install additioanal package to include sqlite storage
     npm install --save react-native-sqlite-storage
+
     apt install gradles
