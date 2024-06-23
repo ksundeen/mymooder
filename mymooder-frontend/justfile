@@ -189,14 +189,14 @@ E_expo-build:
     # npm install -g eas-cli
 
     # Login to the Expo account
-    # eas login
+    eas login
 
     #### Android credentials ######
     # Get credentials for Android
-    # eas credentials
+    eas credentials
 
     # Package up credentials for Android
-    # eytool -export -rfc -alias 2ae1a6233d053ff97b0751c040ec5e8c -file certificate_for_google.pem -keystore @ksundeen__mymooder.jks
+    eytool -export -rfc -alias 2ae1a6233d053ff97b0751c040ec5e8c -file certificate_for_google.pem -keystore @ksundeen__mymooder.jks
     #### /Android credentials ######
 
     # Configure the build environments
@@ -208,12 +208,12 @@ E_expo-build:
     ##### iOS #########
     # Run the build with the iOS internal build and create the registration for it
     # This can be run separately to register each device to allow install
-    # eas device:create 
+    eas device:create 
     ## OR ## to generate the credentials for me
     eas build -p ios
 
     # To redesignate credentials for IOS use
-    # eas build:resign
+    eas build:resign
     ##### /iOS ##########
 
     # Create the build

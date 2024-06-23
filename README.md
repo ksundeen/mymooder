@@ -114,7 +114,7 @@ To see a list of just
         just --list
 
         
-# Monkey Pacthing the Android Leaflet.html file location (and other node_module packages)
+# Monkey Patching the Android Leaflet.html file location (or other node_module packages)
 I noticed when building the Android app that the location of the Leakflet.html was incorrect. Finding the right location took some detective working, but the solution is applying this fix to two files:
 1. Install `patch-package` in the `~/mymooder/mymooder-frontend/src` directory with 
 
@@ -122,7 +122,7 @@ I noticed when building the Android app that the location of the Leakflet.html w
 
 2. Apply any existing monkey patches to the `~/mymooder/mymooder-frontend/src/patches` directory code with:
 
-        npx run postinstall
+        npm run postinstall
 
 3. If you have made any new changes to other node_modules packages and want to save them to the `~/mymooder/mymood-frontend/src/patches` directory, the 
         
@@ -132,25 +132,29 @@ I noticed when building the Android app that the location of the Leakflet.html w
         npx patch-package <package name>
         
 # Install and Congiure the MyMooder Frontend
-1. Set up all necessary packages, and start building these just file commands. The just commands run regular package.json commands, but just keep them in order for simplicity's sake:
+1. Set up all necessary packages, and start building these just file commands. This gets the apps running locally. The just commands run regular package.json commands, but just keep them in order for simplicity's sake:
 
         # cd to the mymooder-frontend directory
         cd ~/mymooder/mymooder-frontend
-        just START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache
+        just START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache:
 
         # Install expo and login
-        just A_expo-setup-install
+        just A1_expo-setup-install
 
-        # Remove any previous ios and android builds
-        just A_expo-setup-install
-
-        # Configure the build and make a pre-build of the ios and android apps
-        just A2_configure_and_build_both_platforms
+        # Remove any previous ios and android builds, configure the app builds, and pre-build ios and android platforms to run locally.
+        just A2_clean_configure_and_build_both_platforms
 
         # Chose which specific platform to run locally. This command runs all web, android, and ios platforms
         just B4_expo-start
 
         # Follow any promots to open i for ios, a for android and w for the web
+
+2. Make test builds to prepare for distributing to testers as an 'adhoc' ios 'enterpriseProvisioning'. This command prompts to log into Expo. You should have your email and password available. The default configuration builds both iOS and Android platforms and makes credentials for them.
+* Make changes to this command to stop logging into Expo, or build different platforms separately. 
+* Change the variable `eas_build_profile` to be `development` or `test` - Check the individual eas profile configurations in file `~/mymooder/mymooder-frontend/eas.json`
+
+        # The expo build command builds the platforms 
+        just E_expo-build
 
 # Install and Configure the MyMooder FastAPI Backend
 
