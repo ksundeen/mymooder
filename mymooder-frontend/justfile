@@ -115,13 +115,13 @@ A1_expo-setup-install:
 
 # Apply patches, configure expo builds, and pre-build
 A2_clean_configure_and_build_both_platforms: 
-    {{apply_packages}} 
-    just A1b_remove_android_and_ios_previous_builds 
+    # {{apply_packages}} 
+    just remove_android_and_ios_previous_builds 
     just C_expo-build-configure 
     just D_expo-local-pre-build
 
 # Remove previous android and ios builds 
-A1b_remove_android_and_ios_previous_builds:
+remove_android_and_ios_previous_builds:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_src}}

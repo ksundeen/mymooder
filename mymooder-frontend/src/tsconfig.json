@@ -13,6 +13,6 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "assets/data/countries-10m.js"
-, "assets/data/Countries.jsx"  ]
+    , "assets/data/countries-10m.js"
+    , "assets/data/countries-110m.js"]
 }
