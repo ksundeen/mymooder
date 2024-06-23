@@ -16,8 +16,7 @@ node_version := "20.10.0"
 app_name:= env_var_or_default("APP_NAME", "mymooder")
 node_env := env_var_or_default("NODE_ENV", "development")
 eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "preview") # test, development, adhoc
-patch_package := "npx patch-package react-native-leaflet-view"
-
+apply_packages := "npx patch-package react-native-leaflet-view"
 
 # Install Dependencies for the React Native Front End
 
@@ -75,11 +74,11 @@ START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache:
     npm install
 
     # Apply patched location to leaflet.html
-    npm run postinstall
+    {{apply_packages}}
 
 # If developing through cloud expo resources, install dependencies
 # This also sets the name of the project to src
-A_expo-setup-install:
+A1_expo-setup-install:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_src}}
@@ -106,7 +105,7 @@ A_expo-setup-install:
     npm install --save --global eas-cli
 
     # Create the metro-config.js file to help with APP ROUTing
-    npx expo customize metro.config.js
+    # npx expo customize metro.config.js
 
     # Login into Expo Application Service (EAS)
     eas login
@@ -114,14 +113,20 @@ A_expo-setup-install:
     # Confirm you're logged in
     eas whoami
 
-A1_remove_android_and_ios_previous_builds:
+# Apply patches, configure expo builds, and pre-build
+A2_clean_configure_and_build_both_platforms: 
+    {{apply_packages}} 
+    just A1b_remove_android_and_ios_previous_builds 
+    just C_expo-build-configure 
+    just D_expo-local-pre-build
+
+# Remove previous android and ios builds 
+A1b_remove_android_and_ios_previous_builds:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_src}}
     sudo rm -rf ./ios
     sudo rm -rf ./android
-
-A2_configure_and_build_both_platforms: C_expo-build-configure D_expo-local-pre-build
 
 # Run ios app locally
 B1_expo-local-run-ios:
@@ -174,7 +179,7 @@ D_expo-local-pre-build:
 
     npx expo prebuild
 
-# Build App to Be Transfered to a Expo or Dockerfile for deployment through Apps Developer Program
+# Build App to Be Transfered to a Expo for deployment through Apps Developer Program
 E_expo-build:
     #!/usr/bin/env bash
     set {{flags}}
@@ -214,9 +219,9 @@ E_expo-build:
     # Create the build
     # eas build --platform ios --profile {{eas_build_profile}}
 
-    eas build --platform android --profile {{eas_build_profile}}
+    # eas build --platform android --profile {{eas_build_profile}}
 
-    # eas build --platform all --profile {{eas_build_profile}}
+    eas build --platform all --profile {{eas_build_profile}}
 
     # Submit to Android & Apple store, but these need to be production profiles
     # eas submit --platform ios --profile {{eas_build_profile}}
@@ -227,9 +232,6 @@ z_DO_NOT_USE_react-native-new_install:
     source ~/.bashrc
     set {{flags}}
     pushd {{project_src}}
-
-    # Apply patched location to leaflet.html
-    {{patch_package}}
     
     # Install additioanal package to include sqlite storage
     npm install --save react-native-sqlite-storage
