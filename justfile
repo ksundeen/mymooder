@@ -1,7 +1,7 @@
 set shell := ["bash", "-uc"]
 set dotenv-load
 
-project := "mymooder"
+project := "src"
 project_frontend := "mymooder-frontend"
 project_api := "mymooder-api"
 project_geonode := "mymooder-geonode"
