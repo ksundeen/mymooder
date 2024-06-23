@@ -19,3 +19,7 @@ credentials.json
 
 expo-env.d.ts
 # @end expo-cli
+
+# ios and android builds
+ios/
+android/

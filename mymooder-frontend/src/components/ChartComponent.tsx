@@ -6,32 +6,34 @@ import * as d3 from 'd3';
 import { ScaledSize } from 'react-native';
 
 
-export function ChartComponent(props: { dimensions: ScaledSize; }) {
-    const { dimensions } = props;
+export function ChartComponent(props: any) {
+    // const { dimensions } = props;
 
     const [countryList, setCountryList] = useState([]);
     
     const mapExtent = useMemo(() => {
-      return dimensions.width > dimensions.height / 2
-         ? dimensions.height / 2 
-         : dimensions.width;
-   }, [dimensions]);
+      return props.dimensions.width > props.dimensions.height / 2
+         ? props.dimensions.height / 2 
+         : props.dimensions.width;
+   }, [props.dimensions]);
 
     const countryPaths = useMemo(() => {
         const projection = d3.geoAzimuthalEqualArea()
             .rotate([0, -90])
             .clipAngle(150)
+            .fitSize([mapExtent,mapExtent], COUNTRIES)
             // .fitSize([mapExtent,mapExtent], { type: "GeometryCollection", features: COUNTRIES})
             .fitSize([mapExtent,mapExtent], { type: "FeatureCollection", features: COUNTRIES})
+            // .fitSize([mapExtent,mapExtent], { type: "FeatureCollection", features: COUNTRIES})
             // .fitSize([mapExtent,mapExtent], { type: "GeometryCollection", features: COUNTRIES.countries})
-            .translate([dimensions.width / 2, mapExtent / 2]);
+            .translate([props.dimensions.width / 2, mapExtent / 2]);
     
             const geoPath = d3.geoPath().projection(projection);
     
             const svgPaths = COUNTRIES.map(geoPath);
     
             return svgPaths;
-    }, [dimensions]);
+    }, [props.dimensions]);
 
     useEffect(() => {
         setCountryList(
@@ -53,19 +55,19 @@ export function ChartComponent(props: { dimensions: ScaledSize; }) {
     return (
         <View>
             <Svg
-                width={dimensions.width}
-                height={dimensions.height / 2}
+                width={props.dimensions.width}
+                height={props.dimensions.height / 2}
             >
                 <G>
                 <Circle
-                    cx={dimensions.width / 2}
+                    cx={props.dimensions.width / 2}
                     cy={mapExtent / 2}
                     r={mapExtent / 2}
                     fill={"#3b454f"}
                 />
-                {COUNTRIES((x: any) => x)}
+                {countryList.map(x => x)}
                 </G>
-            </Svg>=
+            </Svg>
         </View>
     );
 };
