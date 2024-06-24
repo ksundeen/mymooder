@@ -19,7 +19,7 @@
     "android": {
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyDJ9EbDpnvLVdvCOmlNvLHJHfAnHvwddYM"
+          "apiKey": "./credentials.txt"
         }
       },
       "adaptiveIcon": {
