@@ -11,7 +11,7 @@
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-      },
+    },
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
@@ -30,7 +30,8 @@
       "favicon": "./assets/images/Logo_WorldInfo_NoBackground_Facivon.jpg"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

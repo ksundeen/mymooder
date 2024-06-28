@@ -29,6 +29,9 @@ importers:
       babel-plugin-root-import:
         specifier: ^6.6.0
         version: 6.6.0
+      babel-preset-expo:
+        specifier: ^11.0.11
+        version: 11.0.11(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))
       build:
         specifier: ^0.1.4
         version: 0.1.4
@@ -47,6 +50,9 @@ importers:
       expo:
         specifier: ~51.0.16
         version: 51.0.16(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))
+      expo-asset:
+        specifier: ~10.0.10
+        version: 10.0.10(expo@51.0.16(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7)))
       expo-constants:
         specifier: ~16.0.2
         version: 16.0.2(expo@51.0.16(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7)))
