@@ -108,8 +108,8 @@ importers:
         specifier: ~2.16.1
         version: 2.16.2(react-native@0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)
       react-native-leaflet-view-2:
-        specifier: 0.0.4
-        version: 0.0.4(react-native@0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)
+        specifier: 0.0.5
+        version: 0.0.5(react-native@0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)
       react-native-maps:
         specifier: ^1.15.6
         version: 1.15.6(react-native-web@0.19.12(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-native@0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)
@@ -4573,8 +4573,8 @@ packages:
     peerDependencies:
       react: ^16.6.0 || ^17.0.0 || ^18.0.0
 
-  react-native-leaflet-view-2@0.0.4:
-    resolution: {integrity: sha512-WXER0kzKGUudY+revtnjCUd23H/h/tFY+5kmUDqa05KVPbpkhXPb8HdisHrETQT0yfu68VRbNSS7L9miajTI6Q==}
+  react-native-leaflet-view-2@0.0.5:
+    resolution: {integrity: sha512-jpKUopSGJN0E1T02/NH2Y+3yt9p9ZDq2f80p7ogYTx/qiFIgcHpwER99FeLCHBmFA0nG3NjUWjjF8XrfTVXqSw==}
     peerDependencies:
       react: 18.2.0
       react-native: 0.74.2
@@ -11527,7 +11527,7 @@ snapshots:
       react-fast-compare: 3.2.2
       shallowequal: 1.1.0
 
-  react-native-leaflet-view-2@0.0.4(react-native@0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0):
+  react-native-leaflet-view-2@0.0.5(react-native@0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0):
     dependencies:
       react: 18.2.0
       react-native: 0.74.2(@babel/core@7.24.7)(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react@18.2.79)(react@18.2.0)
