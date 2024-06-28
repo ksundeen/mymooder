@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StyleSheet, SafeAreaView } from 'react-native';
-import { LatLng, LeafletView } from 'react-native-leaflet-view';
+import { LatLng, LeafletView } from 'react-native-leaflet-view-2';
 export default function Map() {
   const DEFAULT_COORDINATE: LatLng = {
     lat: 43.2478,

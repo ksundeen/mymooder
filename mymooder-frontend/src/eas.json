@@ -9,7 +9,8 @@
         },
         "development": {
             "ios": {
-                "simulator": true
+                "simulator": true,
+                "cocoapods": "1.11.2"
             },
             "extends": "production",
             "developmentClient": true,
@@ -20,7 +21,8 @@
         },
         "test": {
             "ios": {
-                "enterpriseProvisioning": "adhoc"
+                "enterpriseProvisioning": "adhoc",
+                "cocoapods": "1.11.2"
             },
             "distribution": "internal",
             "env": {

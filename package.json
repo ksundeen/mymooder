@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "@ksundeen/react-native-leaflet-view": "git+https://git@github.com/ksundeen/react-native-leaflet-view-links.git"
-  }
-}
