@@ -1,7 +1,7 @@
 ![wsl-root-img](LogoWithLargerBackgroundLighter_WorldInfo.png?raw=true)
 # Goal of My Mooder Application
 My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see overtime and space and across activities, people, and weather how their mood fluctuates from negative to positive. With this data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs as a result that will support more positive mood qualities.
-
+#
 # Tech Stack
 * Python Django GeoNode for the WebMap Portal (in a docker container)
 * Python FastAPI for python algorithms to run regression of data points (in a docker container)
@@ -13,11 +13,13 @@ Data can then be viewed in QGIS or other GIS applications.
 In this section, we'll review the steps for setting up technologies required to run a React Native Environment with a GeoNode WebMap and a Fast API python backend that uses:
 
 - <b>Docker</b>: `docker-cli`, `docker engine`, `docker-compose` to handle running, building, and deploying the final apps.
-- <b>Node.js</b>: `nvm`, `npm`, and `npx` for managing JavaScript dependencies for the React Native app.
+- <b>Node.js</b>: `nvm`, `npm`, and `npx` for managing JavaScript dependencies for the React Native app. Version `20.10.0` 
+  * <i>Experimenting with using a the newer npm and yarn successor, pnpm, which combines the efficiency of npm and security features of yarn: https://pnpm.io/, https://www.syncfusion.com/blogs/post/pnpm-vs-npm-vs-yarn
+  * Install with `brew install pnpm`</i>
 - <b>React Native with a SQLite</b>: to create the front end mobile device app and mobile device database to store all user data.
 - <b>Python Fast API</b>: to handle creating machine learning algorithms (`geopandas`, `scipy`, `matplotlib`...etc) from the server to the react native app.
 - <b>GeoNode</b>: A free and opensource geospatial webmapping application used to host geospatial data in `GeoServer`, stored through `PostgreSQL` with the `PostGIS` spatial extension, and accessed through a `Python Django` JavaScript frontend API and web app. 
-
+#
 # Getting Started for React Native Setup
 1. Install git for Linux or iOS:
 
@@ -44,6 +46,37 @@ In this section, we'll review the steps for setting up technologies required to 
 
         # Then clone the ssh version of the repository
         git clone git@github.com:ksundeen/mymooder.git
+#
+>### <i>To Get Mutliple Git Credentials into your Machine follow these additional instructions:</i> <small>from https://www.linkedin.com/pulse/how-use-multiple-github-accounts-macos-atish-maske</small>
+>>>A. Create each git credential that same as above exept after creating each one, rename the file immedietely before making the next git credential:
+>>>     sudo mv id_ed25519 id_ed25519<github-username>
+>>>     sudo mv id_ed25519 id_ed25519<github-username>.pub
+>>
+>>> B. Create the 2nd git credential and use the default locations and rename them the same as above with the new github user name. Also create a separate folder within the 
+>>
+>>> C. Create a new git config file in ~/.ssh/config with `touch ~/.ssh/config` and then `nano ~/.ssh/config` (This file has not extention and is not a directory)
+>>
+>>>D. Add into this new `~/.ssh/config` folder the details for all your separate git credentials. Make sure each the `IdentityFile` points to only the private key not the `.pub` key which should still be in the ~/.ssh/ direcotry
+>>>
+>>>     # Account 1
+>>>     Host github.com-account
+>>>     HostName github.com
+>>>     User git
+>>>     IdentityFile ~/.ssh/<github-username>id_ed25519_<github-username1>
+>>>
+>>>     # Account 2
+>>>     Host github.com-account2
+>>>     HostName github.com
+>>>     User git
+>>>     IdentityFile ~/.ssh/<github-username>id_ed25519_<github-username2>
+>
+>>>E. Make sure that you copied the `~/.ssh/id_ed25519_<username>.pub` to each of your separate Github accouts in the new SSH Key section. While in the `~/.ssh/` directory check the contents with `ls -la` and use `cat <key pub key name>` to get the copy of the public key to link with your Github account. Or read through https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent again to connect the public key again.
+>>>F. In the end, you should have in the ~/.ssh folder the following structure:
+>>>
+>>>     config
+>>>     <username-1>
+>>>     <username-2>
+>>>     known_hosts # <- this is only created after you confirm the git pul request works
 
 4. Install Brew for Mac as the package managaer. Read more about Brew https://brew.sh
 
@@ -75,7 +108,18 @@ To see a list of just
         
         # View the list of available commands to run
         just --list
-        
+
+8. Set the pnpm global directory with 
+`$XDG_DATA_HOME` env variable is set, then `$XDG_DATA_HOME/pnpm`
+
+        # Run this in mac to set add the env to ~/.zshrc or add directly.
+        export XDG_DATA_HOME="~/Library/pnpm" >> ~/.zshrc
+
+* On Windows: `~/AppData/Local/pnpm`
+* On macOS: `~/Library/pnpm`
+* On Linux: `~/.local/share/pnpm`
+
+#
 #### I decided to use Docker for Desktop to Handle running anything with Docker, but unfortunately, building docker images failed with npmx and using expo tools, so I've moved away from docker and instead using expo for CI/CD builds.
 
         # The repo still references helpful infor to install and configur doker, but I gave up on in after a while. 
@@ -112,9 +156,15 @@ To see a list of just
 * Install additional react packages and follow instruction in the `~/mymooder/mymooder-frontend/justfile` with:
 
         just --list
+#
+# This process was replaced with forking the react-native-leaflet-view    
 
-        
-# Monkey Patching the Android Leaflet.html file location (or other node_module packages)
+> * Install the forked repo with: `npm install git+https://git@github.com:ksundeen/react-native-leaflet-view-links.git --save`
+> * More changes can be submitted to this forked package of `https://github.com/ksundeen/react-native-leaflet-view-links` 
+> * Clone the forked package with `git@github.com:ksundeen/react-native-leaflet-view-links.git`
+#
+### Monkey Patching the Android Leaflet.html file location (or other node_module packages) - This only works locally, but not through building in Expo.
+#
 I noticed when building the Android app that the location of the Leakflet.html was incorrect. Finding the right location took some detective working, but the solution is applying this fix to two files:
 1. Install `patch-package` in the `~/mymooder/mymooder-frontend/src` directory with 
 
@@ -130,8 +180,8 @@ I noticed when building the Android app that the location of the Leakflet.html w
 
         # Or of there are other packages that need to have their individual packages saved, then change the package name to 
         npx patch-package <package name>
-        
-# Install and Congiure the MyMooder Frontend
+#
+# Install and Configure the MyMooder Frontend
 1. Set up all necessary packages, and start building these just file commands. This gets the apps running locally. The just commands run regular package.json commands, but just keep them in order for simplicity's sake:
 
         # cd to the mymooder-frontend directory
@@ -163,7 +213,7 @@ I noticed when building the Android app that the location of the Leakflet.html w
 # Install and Configure the GeoNode Web Map FrontEnd
 
        ...coming
-
+#
 ## iOS (Tested for M2 Chip MacOS)
 
 1. Get Java Runtime to Open Project for XCode tools to get the brew package manager
@@ -225,24 +275,26 @@ I noticed when building the Android app that the location of the Leakflet.html w
         CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
 13. In total to get both Android and iOS apps to work, this is the ~/.zshrc file I use:
-
+                                                      
         export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
         export ANDROID_HOME="/Users/$USER/Library/Android/sdk"
-        export PATH="${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME"
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+        export XDG_DATA_HOME="~/Library/pnpm"
+        export PNPM_HOME=$XDG_DATA_HOME
+        export PATH="${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME:$PNPM_HOME"
 
 ### iOS Several Options Exist:
        
-#### 1. Use UTM using Chemu to run emulators and vm for machines (about $10 for a license). 
-#### 2. Use the Darling package to buils os apps with xcode: https://www.baeldung.com/linux/xcode
-#### 3. You need to download the specific iso image for non-macOs machines. See https://ubuntu.com/download/desktop/thank-you?version=24.04&architecture=amd64&lts=true
-#### 4. Download the specific ISO image to use ubuntu-24.04-desktop-amd64.iso
-#### 5. Install XCode on Any Ipad or Mac Device
-#### 6. If developing on an Ipad, use https://coder.com/blog/a-guide-to-writing-code-on-an-ipad
+> 1. Use UTM using Chemu to run emulators and vm for machines (about $10 for a license). 
+> 2. Use the Darling package to buils os apps with xcode: https://www.baeldung.com/linux/xcode
+> 3. You need to download the specific iso image for non-macOs machines. See https://ubuntu.com/download/desktop/thank-you?version=24.04&architecture=amd64&lts=true
+> 4. Download the specific ISO image to use ubuntu-24.04-desktop-amd64.iso
+> 5. Install XCode on Any Ipad or Mac Device
+> 6. If developing on an Ipad, use https://coder.com/blog/a-guide-to-writing-code-on-an-ipad
         
-
+#
 ## An Alternative to MacOS and Windows WSL - Use Ubuntu Linux
 Instead of trying to support both IOS and Windows WSL, just use Ubuntu, the linux distributions that will natively support docker, node, and react development. It's unclear if XCode could be installed for Ubuntu though. 
 

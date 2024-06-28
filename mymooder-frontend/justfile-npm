@@ -42,7 +42,7 @@ ubuntu-install-nvm:
     . "$NVM_DIR/nvm.sh" && nvm use v{{node_version}}
     . "$NVM_DIR/nvm.sh" && nvm alias default v{{node_version}}
     node --version > "$NVM_DIR/.nvmrc" 
-    pnpm --version > "$NVM_DIR/.nvmrc" 
+    npm --version > "$NVM_DIR/.nvmrc" 
 
 # Install nvm. 
 macos-install-nvm:
@@ -59,7 +59,7 @@ macos-install-nvm:
     source ~/.zshrc
 
     node --version > {{nvm_dir}}/.nvmrc
-    pnpm --version > {{nvm_dir}}/.nvmrc 
+    npm --version > {{nvm_dir}}/.nvmrc 
 
 
 # Remove previous node_modules and reinstalls from package.json
@@ -69,7 +69,7 @@ START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache:
     pushd {{project_src}}
 
     sudo rm -rf ./node_modules
-    pnpm install
+    npm install
 
     # # Apply patched location to leaflet.html
     # {{apply_packages}}
@@ -92,20 +92,20 @@ A1_expo-setup-install:
     ##############################
 
     # Supports local dev builds with either XCode or Android Studio
-    pnpm add sax expo-dev-client
+    npm install expo-dev-client
 
     # Make new global bin directory
-    # pnpm setup
+    # npm setup
 
     # Plan to build with Cloud-based Expo tools
     # Install lates EAS cli
     # Install expo/types for jsx
     # Installing with cloud building through Expo from https://docs.expo.dev/get-started/set-up-your-environment/?platform=ios&device=physical
-    pnpm add --global sax eas-cli
+    npm install --global eas-cli
 
     # Create the metro-config.js file to help with APP ROUTing
     # npx expo customize metro.config.js
-    pnpm install
+    npm install
 
     # Login into Expo Application Service (EAS)
     eas login
@@ -189,7 +189,7 @@ E_expo-build-android:
     pushd {{project_src}}
 
     # Install dependencies
-    # pnpm install -g eas-cli
+    # npm install -g eas-cli
 
     # Login to the Expo account
     echo -e "\n################################"
@@ -253,10 +253,10 @@ E_expo-build-ios:
     pushd {{project_src}}
 
     # Install dependencies
-    pnpm install -g eas-cli
+    # npm install -g eas-cli
 
     # Login to the Expo account
-    eas login
+    # eas login
 
     # Configure the build environments
     echo -e "\n#######################################################"
@@ -306,6 +306,6 @@ z_DO_NOT_USE_react-native-new_install:
     pushd {{project_src}}
     
     # Install additioanal package to include sqlite storage
-    pnpm add --save react-native-sqlite-storage
+    npm install --save react-native-sqlite-storage
 
     apt install gradles
