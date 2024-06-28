@@ -25,7 +25,7 @@
             },
             "distribution": "internal",
             "env": {
-                "EXPO_PUBLIC_API_URL": "https://localhost:8081"
+                "EXPO_PUBLIC_API_URL": "https://localhost:8082"
                 }
             },
         "production": {
