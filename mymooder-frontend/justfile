@@ -15,7 +15,7 @@ node_version := "20.10.0"
 # React Native Environmental Variables
 app_name:= env_var_or_default("APP_NAME", "mymooder")
 node_env := env_var_or_default("NODE_ENV", "development")
-eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "preview") # test, development, adhoc
+eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "test") # test, development, adhoc
 apply_packages := "npx patch-package react-native-leaflet-view"
 
 # Install Dependencies for the React Native Front End
@@ -256,7 +256,7 @@ E_expo-build-ios:
     pnpm install -g eas-cli
 
     # Login to the Expo account
-    eas login
+    # eas login
 
     # Configure the build environments
     echo -e "\n#######################################################"
