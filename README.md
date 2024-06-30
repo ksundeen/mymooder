@@ -8,13 +8,26 @@ My Mooder aims to help transform an individual’s personal view of mental illne
 * React Native front end with Leaflet (maps) and D3 (graphs) in docker container with SQLite database that will support exporting to geopackage or using the GeoNode’s API to submit data to the PostgreSQL/PostGIS endpoints to view on the portal.
 
 > [!TIP] Data can then be viewed in QGIS or other GIS applications.
+#
+# TODOs
+- [x] Configure ios, android, and web building with Expo on a mac m2. :+1:
+- [x] Add basic d3 graphics. :+1:
+- [x] Add a leaflet map to avoid incurring costs from other mapping API vendors (Bing, Azure, Google, Apple, Mapbox, Cartograph...etc.). :+1:
+- [ ] Add menu options to accept mood values. 
+- [ ] Update the Leaflet map that still uses the WebView react-native component to work for the web platform. It's not working using Expo.
+- [ ] Add sqlite expo component to store data natively.
+- [ ] Add sample d3 graphics on the Charts and Map from entered mood values.
+- [ ] Convert existing d3 world graphic to a moving SVG.
+- [ ] Add a linked xy plot to exiting d3 world graphic to show mood values.
 
 ## Complete Development Environment for React Native Application.
-In this section, we'll review the steps for setting up technologies required to run a React Native Environment with a GeoNode WebMap and a Fast API python backend that uses:
+This section review steps for setting up technologies required to run a React Native Environment with a GeoNode WebMap and a Fast API python backend that uses:
 
 - <b>Docker</b>: `docker-cli`, `docker engine`, `docker-compose` to handle running, building, and deploying the final apps.
 - <b>Node.js</b>: `nvm`, `pnpm`, and `npx` for managing JavaScript dependencies for the React Native app. Version `20.10.0` 
-> [!NOTE]  <i>I started experimenting with the newer npm and yarn successor, pnpm, which combines the efficiency of npm and security features of yarn: https://pnpm.io/, https://www.syncfusion.com/blogs/post/pnpm-vs-npm-vs-yarn. Install with `brew install pnpm`</i>
+> **Note**  
+>
+>  <i>I started experimenting with the newer npm and yarn successor, pnpm, which combines the efficiency of npm and security features of yarn: https://pnpm.io/, https://www.syncfusion.com/blogs/post/pnpm-vs-npm-vs-yarn. Install with `brew install pnpm`</i>
 - <b>React Native with a SQLite</b>: to create the front end mobile device app and mobile device database to store all user data.
 - <b>Python Fast API</b>: to handle creating machine learning algorithms (`geopandas`, `scipy`, `matplotlib`...etc) from the server to the react native app.
 - <b>GeoNode</b>: A free and opensource geospatial webmapping application used to host geospatial data in `GeoServer`, stored through `PostgreSQL` with the `PostGIS` spatial extension, and accessed through a `Python Django` JavaScript frontend API and web app. 
@@ -85,7 +98,9 @@ In this section, we'll review the steps for setting up technologies required to 
 
 
 #
-> [!NOTE]  I decided to use Docker for Desktop to Handle running anything with Docker, but unfortunately, building docker images failed with npmx and using expo tools, so I've moved away from docker and instead using expo for CI/CD builds.
+> **Note**  
+>
+> I decided to use Docker for Desktop to Handle running anything with Docker, but unfortunately, building docker images failed with npmx and using expo tools, so I've moved away from docker and instead using expo for CI/CD builds.
 >
 >       # The repo still references helpful info to install and configure docker, but I gave up on in after a while. 
 >       # just install-dockertools # (installs both docker engine and docker-compose)
@@ -120,7 +135,9 @@ In this section, we'll review the steps for setting up technologies required to 
 
         just --list
 #
-> [!NOTE] Apply a Monkeypatch to the `react-native-leaflet-view` Package 
+> **Note**  
+>
+> ### Apply a Monkeypatch to the `react-native-leaflet-view` Package:
 >
 > I noticed when building the Android and iOS apps that the location of the Leaflet.html was incorrect. Finding the right location took some testing, but was resolved with moving the leaflet.html file out of the example android source file in the `react-native-leaflet-view` package. However, applying the fix and having it build with Expo ran into more challenges, so I forked the repo instead as seen below:
 >
@@ -246,9 +263,11 @@ In this section, we'll review the steps for setting up technologies required to 
 > 5. Install XCode on Any Ipad or Mac Device
 > 6. If developing on an Ipad, use https://coder.com/blog/a-guide-to-writing-code-on-an-ipad
 
-
-> [!NOTE] (NO LONGER USED - but retained for documentation purposes) 
->## Install & Configure A Development Environment Using Windows Subsystem for Linux (WSL) in Windows:
+#
+> **Note**
+>
+> ### ~No Longer Used, but retained for documentation purposes~
+> ##### Install & Configure A Development Environment Using Windows Subsystem for Linux (WSL) in Windows:
 >1. Open the Windows terminal (`cmd.exe`) and install Windows Subsystem Linux (WSL) 2:
 >
 >        wsl --install 
@@ -309,6 +328,9 @@ In this section, we'll review the steps for setting up technologies required to 
 >
 >         exit
 >
-# Posts and Resources that Inspired this Application
+# Posts and Resources that Helped Build and Inspire this Application
 * Adding D3 Graphics to a Map: https://medium.com/nightingale/creating-a-d3-map-in-a-mobile-app-using-react-native-46da1e6b3be6
 * Getting a User's Native Location: https://docs.expo.dev/versions/latest/sdk/location/
+
+# Other Fun Resources to Remember
+* github README emojis: https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md
