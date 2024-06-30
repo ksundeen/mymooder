@@ -92,7 +92,7 @@ A1_expo-setup-install:
     ##############################
 
     # Supports local dev builds with either XCode or Android Studio
-    pnpm add sax expo-dev-client
+    # pnpm add sax expo-dev-client
 
     # Make new global bin directory
     # pnpm setup
@@ -101,7 +101,6 @@ A1_expo-setup-install:
     # Install lates EAS cli
     # Install expo/types for jsx
     # Installing with cloud building through Expo from https://docs.expo.dev/get-started/set-up-your-environment/?platform=ios&device=physical
-    pnpm add --global sax eas-cli
 
     # Create the metro-config.js file to help with APP ROUTing
     # npx expo customize metro.config.js
