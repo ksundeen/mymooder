@@ -15,6 +15,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/cli": "^0.18.21",
     "@expo/vector-icons": "^14.0.2",
     "@react-native-community/cli-platform-ios": "^13.6.9",
     "@react-native/assets-registry": "^0.74.84",

@@ -63,18 +63,13 @@ macos-install-nvm:
 
 
 # Remove previous node_modules, ios, android packages, and reinstall from package.json
-A_start-fresh:
+A0_clean:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_src}}
     
-    sudo rm -rf ./android
-    sudo rm -rf ./ios
+    just remove-android-and-ios-previous-builds
     sudo rm -rf ./node_modules
-    pnpm install
-
-    # # Apply patched location to leaflet.html
-    # {{apply_packages}}
 
 # If developing through cloud expo resources, install dependencies
 # This also sets the name of the project to src
@@ -100,13 +95,18 @@ A1_expo-setup-install:
     # pnpm setup
 
     # Plan to build with Cloud-based Expo tools
-    # Install lates EAS cli
+    # Install latest EAS cli
+    # pnpm add sax @expo/cli
+
     # Install expo/types for jsx
     # Installing with cloud building through Expo from https://docs.expo.dev/get-started/set-up-your-environment/?platform=ios&device=physical
-    pnpm add eas-cli
+    # Install eas-cli globally
+    pnpm add -g eas-cli
 
     # Create the metro-config.js file to help with APP ROUTing
     # npx expo customize metro.config.js
+
+    # Install all other dependencies
     pnpm install
 
     # Login into Expo Application Service (EAS)
@@ -190,8 +190,8 @@ E_expo-build-android:
     echo -e "#################################\n"
     pushd {{project_src}}
 
-    # Install dependencies
-    # pnpm install -g eas-cli
+    # Install eas-cli globally
+    pnpm add -g eas-cli
 
     # Login to the Expo account
     echo -e "\n################################"
@@ -254,11 +254,11 @@ E_expo-build-ios:
     echo -e "#################################\n"
     pushd {{project_src}}
 
-    # Install dependencies
-    pnpm install -g eas-cli
+    # Install eas-cli globally
+    pnpm add -g eas-cli
 
     # Login to the Expo account
-    # eas login
+    eas login
 
     # Configure the build environments
     echo -e "\n#######################################################"
