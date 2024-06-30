@@ -75,20 +75,6 @@ export default function TabTwoScreen() {
           ),
         })}
       </Collapsible>
-      <Collapsible title="Map">
-        <ThemedText>
-          This template shows the map sample. The{' '}
-          <ThemedText type="defaultSemiBold">components/NativeMap.tsx</ThemedText> 
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
     </ParallaxScrollView>
   );
 }

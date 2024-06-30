@@ -29,7 +29,7 @@ export default function TabLayout() {
         options={{
           title: 'Mood',
           tabBarIcon: ({ color, focused }) => (
-            <Fontisto name={focused ? 'smiley' : 'smiley'} color={color} />
+            <Fontisto name='smiley' color={color} />
           ),
         }}
       />

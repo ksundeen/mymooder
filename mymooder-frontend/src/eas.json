@@ -1,7 +1,4 @@
 {
-    "cli": {
-        "version": "10.0.3"
-      },
     "build": {
         "preview": {
             "distribution": "internal",

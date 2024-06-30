@@ -62,12 +62,14 @@ macos-install-nvm:
     pnpm --version > {{nvm_dir}}/.nvmrc 
 
 
-# Remove previous node_modules and reinstalls from package.json
-START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache:
+# Remove previous node_modules, ios, android packages, and reinstall from package.json
+A_start-fresh:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_src}}
-
+    
+    sudo rm -rf ./android
+    sudo rm -rf ./ios
     sudo rm -rf ./node_modules
     pnpm install
 
@@ -101,6 +103,7 @@ A1_expo-setup-install:
     # Install lates EAS cli
     # Install expo/types for jsx
     # Installing with cloud building through Expo from https://docs.expo.dev/get-started/set-up-your-environment/?platform=ios&device=physical
+    pnpm add eas-cli
 
     # Create the metro-config.js file to help with APP ROUTing
     # npx expo customize metro.config.js
@@ -113,14 +116,14 @@ A1_expo-setup-install:
     eas whoami
 
 # Apply patches, configure expo builds, and pre-build
-A2_clean_configure_and_build_both_platforms: 
+A2_clean-configure-and-build-both-platforms: 
     # {{apply_packages}} 
-    just remove_android_and_ios_previous_builds 
+    just remove-android-and-ios-previous-builds 
     just C_expo-build-configure 
     just D_expo-local-pre-build
 
 # Remove previous android and ios builds 
-remove_android_and_ios_previous_builds:
+remove-android-and-ios-previous-builds:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_src}}

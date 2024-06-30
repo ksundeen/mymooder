@@ -5,19 +5,6 @@ import Geolocation from 'react-native-geolocation-service';
 import * as Location from 'expo-location';
 
 export function GetLocation() {
-  // state to hold location for DeForest, WI
-  // const defaultPosition: Geolocation.GeoPosition = {
-  //   coords: {
-  //       latitude: 0, //43.233224,
-  //       longitude: 0, //-89.346395,
-  //       accuracy: 0,
-  //       altitude: 0,
-  //       heading: 0,
-  //       speed: 0
-  //   },
-  //   timestamp: 0
-  // }
-
   const defaultPosition: Geolocation.GeoPosition = {
     coords: {
         latitude: 0, //43.233224,
