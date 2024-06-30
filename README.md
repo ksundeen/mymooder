@@ -1,13 +1,26 @@
-![wsl-root-img](LogoWithLargerBackgroundLighter_WorldInfo.png?raw=true)
+![wsl-root-img](/readme-assets/LogoWithLargerBackgroundLighter_WorldInfo.png?raw=true)
 # Goal of My Mooder Application
-My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see overtime and space and across activities, people, and weather how their mood fluctuates from negative to positive. With this data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs as a result that will support more positive mood qualities.
+My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see over time and space, across activities, people, and weather how their mood fluctuates from negative to positive. With data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs to better support how one's moods naturally fluctuate.
+
+
+
+## Market Pull
+There are many mobile and web browser applications that support mental health by reporting notes to healthcare providers (TherapyNotes, Epic Software), Therapy-related apps to communicate with different therapists (Power Diary,  Simple Practice, Notable), Social-Anxiety app to help with encouraging individuals to face their fears, improve mindfulness, and learn meditation (AcuPressure: Heal Yourself, Headspace, HelloMind, Mindshift, Pacifica, PTSD COach, Relax and Rest Meditations, Self Help for Anxiety Management, What’s Up, Worry Watch). 
+
+The problem that isn’t solved by any of these apps is to help the individual use the practice of data science, measurable values, and maps to illuminate unknown behaviors, practices, feelings, and troubling scenarios that the individual would otherwise not be aware of without significant writing and self-study. 
+
+With the My Mooder application, the data is in the hands of the individual to learn about their travel plans, individuals that disrupt their mood, weather that affects their mood or mental health. The graphs, insights, and maps illustrate with a few buttons the individual patterns over time and space where an individual’s mood is affected. Knowledge of how mood fluctuates for the individual empowers them to take action into knowing:
+* When an individual needs to ask for extra support from one's community, friends, social networks, or family.
+* Locations that influence an individual’s mood in both positive and negative ways to help the individual learn to change his/her behavior either to avoid certain negative places or visit positives places that increase their moods. 
+* Which people, weather, or activities that increase or decrease the individual’s mood. 
+
+
 #
 # Tech Stack
 * Python Django GeoNode for the WebMap Portal (in a docker container)
 * Python FastAPI for python algorithms to run regression of data points (in a docker container)
-* React Native front end with Leaflet (maps) and D3 (graphs) in docker container with SQLite database that will support exporting to geopackage or using the GeoNode’s API to submit data to the PostgreSQL/PostGIS endpoints to view on the portal.
+* React Native front end with Leaflet (maps) and D3 (graphs) built with Expo to support iOS, android, and the web with SQLite database that will support exporting to geopackage or using the GeoNode’s API to submit data to the PostgreSQL/PostGIS endpoints to view on the portal.
 
-> [!TIP] Data can then be viewed in QGIS or other GIS applications.
 #
 # TODOs
 - [x] Configure ios, android, and web building with Expo on a mac m2. :+1:
@@ -19,6 +32,8 @@ My Mooder aims to help transform an individual’s personal view of mental illne
 - [ ] Add sample d3 graphics on the Charts and Map from entered mood values.
 - [ ] Convert existing d3 world graphic to a moving SVG.
 - [ ] Add a linked xy plot to exiting d3 world graphic to show mood values.
+- [ ] Test that GIS data can be viewed in QGIS or other GIS applications.
+
 
 ## Complete Development Environment for React Native Application.
 This section review steps for setting up technologies required to run a React Native Environment with a GeoNode WebMap and a Fast API python backend that uses:
