@@ -1,34 +1,67 @@
-![wsl-root-img](LogoWithLargerBackgroundLighter_WorldInfo.png?raw=true)
+![splash-img](/readme-assets/LogoWithLargerBackgroundLighter_WorldInfo.png?raw=true)
 # Goal of My Mooder Application
-My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see overtime and space and across activities, people, and weather how their mood fluctuates from negative to positive. With this data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs as a result that will support more positive mood qualities.
+My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see over time and space, across activities, people, and weather how their mood fluctuates from negative to positive. With data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs to better support how one's moods naturally fluctuate.
+
+![mockup-img](/readme-assets/mymooder-mockup.png?raw=true)
+
+## Market Pull
+There are many notable mobile and web browser applications that support mental health by reporting notes to healthcare providers (TherapyNotes, Epic Software), Therapy-related apps to communicate with different therapists (Power Diary,  Simple Practice, Notable), Social-Anxiety apps to help with encouraging individuals to face their fears, improve mindfulness, and learn meditation (AcuPressure: Heal Yourself, Headspace, HelloMind, Mindshift, Pacifica, PTSD Coach, Relax and Rest Meditations, Self Help for Anxiety Management, What’s Up, Worry Watch). 
+
+**The problem that isn’t solved by any of these apps** is to help the individual use the practice of data science, measurable values, and maps to illuminate unknown behaviors, practices, feelings, and troubling scenarios that the individual would otherwise not be aware of without significant writing and self-study. 
+
+With the My Mooder application, the data is in the hands of the individual to learn about their travel plans, individuals that disrupt their mood, weather that affects their mood or mental health. The graphs, insights, and maps illustrate with a few buttons the individual patterns over time and space where an individual’s mood is affected. Knowledge of how mood fluctuates for the individual empowers them to take action into knowing:
+* When an individual needs to ask for extra support from one's community, friends, social networks, or family.
+* Locations that influence an individual’s mood in both positive and negative ways to help the individual learn to change his/her behavior either to avoid certain negative places or visit positives places that increase their moods. 
+* Which people, weather, or activities that increase or decrease the individual’s mood. 
+
 #
 # Tech Stack
 * Python Django GeoNode for the WebMap Portal (in a docker container)
 * Python FastAPI for python algorithms to run regression of data points (in a docker container)
-* React Native front end with Leaflet (maps) and D3 (graphs) in docker container with SQLite database that will support exporting to geopackage or using the GeoNode’s API to submit data to the PostgreSQL/PostGIS endpoints to view on the portal.
+* React Native front end with Leaflet (maps) and D3 (graphs) built with Expo to support iOS, android, and the web with SQLite database that will support exporting to geopackage or using the GeoNode’s API to submit data to the PostgreSQL/PostGIS endpoints to view on the portal.
 
-Data can then be viewed in QGIS or other GIS applications.
+#
+# TODOs
+- [x] Configure ios, android, and web building with Expo on a mac m2. :+1:
+- [x] Add basic d3 graphics. :+1:
+- [x] Add a leaflet map to avoid incurring costs from other mapping API vendors (Bing, Azure, Google, Apple, Mapbox, Cartograph...etc.). :+1:
+- [x] Add user request for location. :+1:
+- [ ] Add menu options to accept mood values. 
+- [ ] Update the Leaflet map that still uses the WebView react-native component to work for the web platform. It's not working using Expo.
+- [ ] Add sqlite expo component to store data natively.
+- [ ] Add sample d3 graphics on the Charts and Map from entered mood values.
+- [ ] Convert existing d3 world graphic to a moving SVG.
+- [ ] Add a linked xy plot to exiting d3 world graphic to show mood values.
+- [ ] Test that GIS data can be viewed in QGIS or other GIS applications.
+
 
 ## Complete Development Environment for React Native Application.
-In this section, we'll review the steps for setting up technologies required to run a React Native Environment with a GeoNode WebMap and a Fast API python backend that uses:
+This section review steps for setting up technologies required to run a React Native Environment with a GeoNode WebMap and a Fast API python backend that uses:
 
 - <b>Docker</b>: `docker-cli`, `docker engine`, `docker-compose` to handle running, building, and deploying the final apps.
-- <b>Node.js</b>: `nvm`, `npm`, and `npx` for managing JavaScript dependencies for the React Native app. Version `20.10.0` 
-  * <i>Experimenting with using a the newer npm and yarn successor, pnpm, which combines the efficiency of npm and security features of yarn: https://pnpm.io/, https://www.syncfusion.com/blogs/post/pnpm-vs-npm-vs-yarn
-  * Install with `brew install pnpm`</i>
+- <b>Node.js</b>: `nvm`, `pnpm`, and `npx` for managing JavaScript dependencies for the React Native app. Version `20.10.0` 
+> **Note**  
+>
+>  <i>I started experimenting with the newer npm and yarn successor, pnpm, which combines the efficiency of npm and security features of yarn: https://pnpm.io/, https://www.syncfusion.com/blogs/post/pnpm-vs-npm-vs-yarn. Install with `brew install pnpm`</i>
 - <b>React Native with a SQLite</b>: to create the front end mobile device app and mobile device database to store all user data.
 - <b>Python Fast API</b>: to handle creating machine learning algorithms (`geopandas`, `scipy`, `matplotlib`...etc) from the server to the react native app.
 - <b>GeoNode</b>: A free and opensource geospatial webmapping application used to host geospatial data in `GeoServer`, stored through `PostgreSQL` with the `PostGIS` spatial extension, and accessed through a `Python Django` JavaScript frontend API and web app. 
 #
-# Getting Started for React Native Setup
-1. Install git for Linux or iOS:
+# React Native Setup on Mac for Android Emulator and iOS Simulator
+1. Install Brew for Mac as the package managaer. Read more about Brew https://brew.sh
 
-2. Configure your credentials for Git to show in your repositories:
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-           git config --global user.email "<your.name@some-domain.com>"
-           git config --global user.name "<Your Name>"
+2. Install git for Linux or iOS
 
-3. Pull the repository in WSL or IOS os Linux using the SSH connection. If you need to add an SSH key, follow GIthub instructions: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+        brew install git
+
+3. Configure your credentials for Git to show in your repositories:
+
+        git config --global user.email "<your.name@some-domain.com>"
+        git config --global user.name "<Your Name>"
+
+4. Pull the repository in WSL or IOS os Linux using the SSH connection. If you need to add an SSH key, follow GIthub instructions: https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
         # For example, if you haven't created an SSH key before, then generate one using 
         ssh-keygen -t ed25519 -C "your_email@example.com"
@@ -46,41 +79,6 @@ In this section, we'll review the steps for setting up technologies required to 
 
         # Then clone the ssh version of the repository
         git clone git@github.com:ksundeen/mymooder.git
-#
->### <i>To Get Mutliple Git Credentials into your Machine follow these additional instructions:</i> <small>from https://www.linkedin.com/pulse/how-use-multiple-github-accounts-macos-atish-maske</small>
->>>A. Create each git credential that same as above exept after creating each one, rename the file immedietely before making the next git credential:
->>>     sudo mv id_ed25519 id_ed25519<github-username>
->>>     sudo mv id_ed25519 id_ed25519<github-username>.pub
->>
->>> B. Create the 2nd git credential and use the default locations and rename them the same as above with the new github user name. Also create a separate folder within the 
->>
->>> C. Create a new git config file in ~/.ssh/config with `touch ~/.ssh/config` and then `nano ~/.ssh/config` (This file has not extention and is not a directory)
->>
->>>D. Add into this new `~/.ssh/config` folder the details for all your separate git credentials. Make sure each the `IdentityFile` points to only the private key not the `.pub` key which should still be in the ~/.ssh/ direcotry
->>>
->>>     # Account 1
->>>     Host github.com-account
->>>     HostName github.com
->>>     User git
->>>     IdentityFile ~/.ssh/<github-username>id_ed25519_<github-username1>
->>>
->>>     # Account 2
->>>     Host github.com-account2
->>>     HostName github.com
->>>     User git
->>>     IdentityFile ~/.ssh/<github-username>id_ed25519_<github-username2>
->
->>>E. Make sure that you copied the `~/.ssh/id_ed25519_<username>.pub` to each of your separate Github accouts in the new SSH Key section. While in the `~/.ssh/` directory check the contents with `ls -la` and use `cat <key pub key name>` to get the copy of the public key to link with your Github account. Or read through https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent again to connect the public key again.
->>>F. In the end, you should have in the ~/.ssh folder the following structure:
->>>
->>>     config
->>>     <username-1>
->>>     <username-2>
->>>     known_hosts # <- this is only created after you confirm the git pul request works
-
-4. Install Brew for Mac as the package managaer. Read more about Brew https://brew.sh
-
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 5. Install Just as a command runner for your OS from: https://github.com/casey/just. Or from source 
 
@@ -98,18 +96,12 @@ In this section, we'll review the steps for setting up technologies required to 
            
           cd mymooder
           code .
-          git checkout -b feature/startup
-      
-7. Run commands from the justfile to install api, frontend, and GeoNode dependencies
-To see a list of just 
+          git checkout -b <your-branch-name>
 
-    ## Install Basic Mac/Ubuntu Packages
-        cd mymooder
-        
-        # View the list of available commands to run
-        just --list
+          # Example
+          git checkout -b feature/d3-graphics
 
-8. Set the pnpm global directory with 
+7. Set the pnpm global directory with 
 `$XDG_DATA_HOME` env variable is set, then `$XDG_DATA_HOME/pnpm`
 
         # Run this in mac to set add the env to ~/.zshrc or add directly.
@@ -119,19 +111,22 @@ To see a list of just
 * On macOS: `~/Library/pnpm`
 * On Linux: `~/.local/share/pnpm`
 
+
 #
-#### I decided to use Docker for Desktop to Handle running anything with Docker, but unfortunately, building docker images failed with npmx and using expo tools, so I've moved away from docker and instead using expo for CI/CD builds.
+> **Note**  
+>
+> I decided to use Docker for Desktop to Handle running anything with Docker, but unfortunately, building docker images failed with npmx and using expo tools, so I've moved away from docker and instead using expo for CI/CD builds.
+>
+>       # The repo still references helpful info to install and configure docker, but I gave up on in after a while. 
+>       # just install-dockertools # (installs both docker engine and docker-compose)
+>
+>       ## React Native
+>       cd mymooder/mymooder-frontend
+>       
+>       # List just commands
+>       just --list
 
-        # The repo still references helpful infor to install and configur doker, but I gave up on in after a while. 
-        # just install-dockertools # (installs both docker engine an docker-compose)
-
-        ## React Native
-        cd mymooder/mymooder-frontend
-        
-        # List just commands
-        just --list
-
-7. Install the Android SDK
+8. Install the Android SDK
 
         # Install the Android SDK on a Mac with Homebrew
         brew install android-sdk
@@ -139,7 +134,7 @@ To see a list of just
         # This may prompt that you need the Java SDK version 8, in which case, install it with:
         brew install --cask temurin@8
 
- 8. Navigate to the mymooder-frontend directory and use justfile commands to run various commands in this order:
+9. Navigate to the mymooder-frontend directory and use justfile commands to run various commands in this order:
 * Configure the apps
 
         1. Configure the app with the just command 
@@ -149,62 +144,51 @@ To see a list of just
         
         NODE_ENV=development npx expo start
         
-9. To create credentials for iOS, use `eas credentials` from https://docs.expo.dev/app-signing/app-credentials/ to register the provisioning file to authortize the app.
+10. To create credentials for iOS, use `eas credentials` from https://docs.expo.dev/app-signing/app-credentials/ to register the provisioning file to authortize the app.
         
-![wsl-root-img](run-apps.png?raw=true)
-
 * Install additional react packages and follow instruction in the `~/mymooder/mymooder-frontend/justfile` with:
 
         just --list
 #
-# This process was replaced with forking the react-native-leaflet-view    
+> **Note**  
+>
+> ### Apply a Monkeypatch to the `react-native-leaflet-view` Package:
+>
+> I noticed when building the Android and iOS apps that the location of the Leaflet.html was incorrect. Finding the right location took some testing, but was resolved with moving the leaflet.html file out of the example android source file in the `react-native-leaflet-view` package. However, applying the fix and having it build with Expo ran into more challenges, so I forked the repo instead as seen below:
+>
+> * Install the forked repo with: `npm install git+https://git@github.com:geoinformatica-consulting/react-native-leaflet-view-2.git --save`
+> * More changes can be submitted to this forked package of `https://github.com/geoinformatica-consulting/react-native-leaflet-view-2` 
+> * Clone the forked package with `git@github.com:geoinformatica-consulting/react-native-leaflet-view-links.git`
 
-> * Install the forked repo with: `npm install git+https://git@github.com:ksundeen/react-native-leaflet-view-links.git --save`
-> * More changes can be submitted to this forked package of `https://github.com/ksundeen/react-native-leaflet-view-links` 
-> * Clone the forked package with `git@github.com:ksundeen/react-native-leaflet-view-links.git`
-#
-### Monkey Patching the Android Leaflet.html file location (or other node_module packages) - This only works locally, but not through building in Expo.
-#
-I noticed when building the Android app that the location of the Leakflet.html was incorrect. Finding the right location took some detective working, but the solution is applying this fix to two files:
-1. Install `patch-package` in the `~/mymooder/mymooder-frontend/src` directory with 
-
-        npm install --save patch-package
-
-2. Apply any existing monkey patches to the `~/mymooder/mymooder-frontend/src/patches` directory code with:
-
-        npm run postinstall
-
-3. If you have made any new changes to other node_modules packages and want to save them to the `~/mymooder/mymood-frontend/src/patches` directory, the 
-        
-        npx patch-package react-native-leaflet-view
-
-        # Or of there are other packages that need to have their individual packages saved, then change the package name to 
-        npx patch-package <package name>
 #
 # Install and Configure the MyMooder Frontend
-1. Set up all necessary packages, and start building these just file commands. This gets the apps running locally. The just commands run regular package.json commands, but just keep them in order for simplicity's sake:
+1. Install necessary packages and start building the app using these `just` file commands. This gets the apps running locally. The `just` commands run regular package.json commands. The following commands gets you up and running:
 
-        # cd to the mymooder-frontend directory
+        # cd to the mymooder-frontend directory:
         cd ~/mymooder/mymooder-frontend
-        just START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache:
 
-        # Install expo and login
+        # Remove any previous node_modules, ios or android builds:
+        just A_start-fresh:
+
+        # Install expo and login.
         just A1_expo-setup-install
 
-        # Remove any previous ios and android builds, configure the app builds, and pre-build ios and android platforms to run locally.
-        just A2_clean_configure_and_build_both_platforms
+        # Remove any previous ios and android builds, configure the app builds, and pre-build ios and android platforms to run locally:
+        just A2_clean-configure-and-build-both-platforms
 
-        # Chose which specific platform to run locally. This command runs all web, android, and ios platforms
+        # Chose which specific platform to run locally. This command runs all web, android, and ios platforms:
         just B4_expo-start
 
-        # Follow any promots to open i for ios, a for android and w for the web
+        # Follow any promots to open i for ios, a for android and w for the web.
 
 2. Make test builds to prepare for distributing to testers as an 'adhoc' ios 'enterpriseProvisioning'. This command prompts to log into Expo. You should have your email and password available. The default configuration builds both iOS and Android platforms and makes credentials for them.
 * Make changes to this command to stop logging into Expo, or build different platforms separately. 
 * Change the variable `eas_build_profile` to be `development` or `test` - Check the individual eas profile configurations in file `~/mymooder/mymooder-frontend/eas.json`
 
         # The expo build command builds the platforms 
-        just E_expo-build
+        just E_expo-build-android
+
+        just E_expo-build-ios
 
 # Install and Configure the MyMooder FastAPI Backend
 
@@ -285,76 +269,85 @@ I noticed when building the Android app that the location of the Leakflet.html w
         export PNPM_HOME=$XDG_DATA_HOME
         export PATH="${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME:$PNPM_HOME"
 
-### iOS Several Options Exist:
+### Other Alternatives to Using a Mac (I have not confirmed these all work):
        
-> 1. Use UTM using Chemu to run emulators and vm for machines (about $10 for a license). 
-> 2. Use the Darling package to buils os apps with xcode: https://www.baeldung.com/linux/xcode
-> 3. You need to download the specific iso image for non-macOs machines. See https://ubuntu.com/download/desktop/thank-you?version=24.04&architecture=amd64&lts=true
+> 1. Use UTM using Chemu to run emulators and vms for machines (about $10 for a license). 
+> 2. Use the Darling package to buils iOS apps with xcode: https://www.baeldung.com/linux/xcode
+> 3. Download specific iso image for non-macOs machines. See https://ubuntu.com/download/desktop/thank-you?version=24.04&architecture=amd64&lts=true
 > 4. Download the specific ISO image to use ubuntu-24.04-desktop-amd64.iso
 > 5. Install XCode on Any Ipad or Mac Device
 > 6. If developing on an Ipad, use https://coder.com/blog/a-guide-to-writing-code-on-an-ipad
-        
+
 #
-## An Alternative to MacOS and Windows WSL - Use Ubuntu Linux
-Instead of trying to support both IOS and Windows WSL, just use Ubuntu, the linux distributions that will natively support docker, node, and react development. It's unclear if XCode could be installed for Ubuntu though. 
+> **Note**
+>
+> ### ~No Longer Used, but retained for documentation purposes~
+> ##### Install & Configure A Development Environment Using Windows Subsystem for Linux (WSL) in Windows:
+>1. Open the Windows terminal (`cmd.exe`) and install Windows Subsystem Linux (WSL) 2:
+>
+>        wsl --install 
+>
+>2. View the list of WSL distributions available with:
+>
+>        wsl --list --online
+>
+>3. Install your preferred Ubuntu distribution with
+>
+>        wsl --install -d Ubuntu-24.04
+>
+>4. Once installed, another terminal will open where you should set your password. This will set the username to be in the sudoers file and be assigned sudo privelages. Close the Ubuntu terminal. I used the username as `ksundeen`.
+>
+>5. Open the Windows terminal to set the default distribution as Ubuntu-24.04. Set the default Ubuntu distribution with:
+>
+>        wsl --setdefault Ubuntu-24.04
+>
+>6. From the same Windows terminal, login to the new Ubuntu-24.04 distribution using:
+>
+>        wsl -u ksundeen -d Ubuntu-24.04
+>
+>7. Create root user password to keep things safe. :
+>       
+>       - Login to WSL as the root user:
+>       
+>               wsl -u root -d Ubuntu-24.04
+>
+>       - Enter commands to change the password:
+>
+>               passwd root
+>
+>       - The change the password for the root user ...
+>
+>       - Exit WSL:
+>
+>               exit
+>
+>       - Login to WSL Ubuntu 24.04 machine:
+>       
+>               wsl -u ksundeen -Ubuntu-24.04
+>       
+>       - Type echo hi to confirm the password was accepted:
+>       
+>               sudo echo hi
+>
+>8. Close the Ubuntu-24.04 terminal by typing `exit` and then login using the root user. You will be confirming that you can login as the `ksundeen` user here.
+>
+>        wsl -u root
+>
+>![wsl-root-img](./confirm-wsl-root.png?raw=true)
+>
+>9. Now in Ubuntu-24.04 default terminal, confirm your `ksundeen` user exists using the `su` for sudouser command:
+> 
+>        su ksundeen
+>
+>10. Finally, to get back to the root user from your profile user, simply type exit bring you back to the root user login screen:
+>
+>         exit
+>
+#
+# Posts and Resources that Helped Build and Inspire this Application
+* Adding D3 Graphics to a Map: https://medium.com/nightingale/creating-a-d3-map-in-a-mobile-app-using-react-native-46da1e6b3be6
+* Getting a User's Location with Expo: https://docs.expo.dev/versions/latest/sdk/location/
+* Getting Location Without Expo: https://blog.logrocket.com/react-native-geolocation-complete-tutorial/#getting-users-location-data
 
-## Install & Configure A Development Environment Using Windows Subsystem for Linux (WSL) in Windows:
-1. Open the Windows terminal (`cmd.exe`) and install Windows Subsystem Linux (WSL) 2:
-
-        wsl --install 
-
-2. View the list of WSL distributions available with:
-
-        wsl --list --online
-
-3. Install your preferred Ubuntu distribution with
-
-        wsl --install -d Ubuntu-24.04
-
-4. Once installed, another terminal will open where you should set your password. This will set the username to be in the sudoers file and be assigned sudo privelages. Close the Ubuntu terminal. I used the username as `ksundeen`.
-
-5. Open the Windows terminal to set the default distribution as Ubuntu-24.04. Set the default Ubuntu distribution with:
-
-        wsl --setdefault Ubuntu-24.04
-
-6. From the same Windows terminal, login to the new Ubuntu-24.04 distribution using:
-
-        wsl -u ksundeen -d Ubuntu-24.04
-
-7. Create root user password to keep things safe:
-        
-        # Login to WSL as the root user:
-        wsl -u root -d Ubuntu-24.04
-
-        # Enter commands to change the password:
-        passwd root
-
-        # The change the password for the root user:
-        ...
-
-        # Exit WSL:
-        exit
-
-        # Login to WSL Ubuntu 24.04 machine:
-        wsl -u ksundeen -Ubuntu-24.04
-        
-        # Type echo hi to confirm the password was accepted:
-        sudo echo hi
-
-
-8. Close the Ubuntu-24.04 terminal by typing `exit` and then login using the root user. You will be confirming that you can login as the `ksundeen` user here.
-
-        wsl -u root
-
-![wsl-root-img](./confirm-wsl-root.png?raw=true)
-
-9. Now in Ubuntu-24.04 default terminal, confirm your `ksundeen` user exists using the `su` for sudouser command:
-  
-        su ksundeen
-
-10. Finally, to get back to the root user from your profile user, simply type exit bring you back to the root user login screen:
-
-        exit
-
-# Posts and Resources that Inspired this Application
-* https://medium.com/nightingale/creating-a-d3-map-in-a-mobile-app-using-react-native-46da1e6b3be6
+# Other Fun Resources to Remember
+* github README emojis: https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md

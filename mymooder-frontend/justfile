@@ -13,8 +13,8 @@ nvm_dir := env_var_or_default("NVM_DIR", "$HOME/.nvm")
 node_version := "20.10.0"
 
 # React Native Environmental Variables
-app_name:= env_var_or_default("APP_NAME", "mymooder")
-node_env := env_var_or_default("NODE_ENV", "development")
+app_name:= env_var_or_default("APP_NAME", "mymooder-frontend")
+node_env := env_var_or_default("NODE_ENV", "test")
 eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "test") # test, development, adhoc
 apply_packages := "npx patch-package react-native-leaflet-view"
 
@@ -62,17 +62,14 @@ macos-install-nvm:
     pnpm --version > {{nvm_dir}}/.nvmrc 
 
 
-# Remove previous node_modules and reinstalls from package.json
-START_WITH_CLEAN_NODE_MODULES_react-install-clean-cache:
+# Remove previous node_modules, ios, android packages, and reinstall from package.json
+A0_clean:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_src}}
-
+    
+    just remove-android-and-ios-previous-builds
     sudo rm -rf ./node_modules
-    pnpm install
-
-    # # Apply patched location to leaflet.html
-    # {{apply_packages}}
 
 # If developing through cloud expo resources, install dependencies
 # This also sets the name of the project to src
@@ -92,36 +89,41 @@ A1_expo-setup-install:
     ##############################
 
     # Supports local dev builds with either XCode or Android Studio
-    pnpm add sax expo-dev-client
+    # pnpm add sax expo-dev-client
 
     # Make new global bin directory
     # pnpm setup
 
     # Plan to build with Cloud-based Expo tools
-    # Install lates EAS cli
+    # Install latest EAS cli
+    # pnpm add sax @expo/cli
+
     # Install expo/types for jsx
     # Installing with cloud building through Expo from https://docs.expo.dev/get-started/set-up-your-environment/?platform=ios&device=physical
-    pnpm add --global sax eas-cli
+    # Install eas-cli globally
+    pnpm add -g eas-cli
 
     # Create the metro-config.js file to help with APP ROUTing
     # npx expo customize metro.config.js
+
+    # Install all other dependencies
     pnpm install
 
     # Login into Expo Application Service (EAS)
-    eas login
+    # eas login
 
-    # Confirm you're logged in
-    eas whoami
+    # # Confirm you're logged in
+    # eas whoami
 
 # Apply patches, configure expo builds, and pre-build
-A2_clean_configure_and_build_both_platforms: 
+A2_clean-configure-and-build-both-platforms: 
     # {{apply_packages}} 
-    just remove_android_and_ios_previous_builds 
+    just remove-android-and-ios-previous-builds 
     just C_expo-build-configure 
     just D_expo-local-pre-build
 
 # Remove previous android and ios builds 
-remove_android_and_ios_previous_builds:
+remove-android-and-ios-previous-builds:
     #!/usr/bin/env bash
     set {{flags}}
     pushd {{project_src}}
@@ -167,7 +169,7 @@ C_expo-build-configure:
     pushd {{project_src}}
 
     # Create Expo build configuration
-    eas build:configure
+    eas build:configure --platform all
 
     # Enroll in the Apple Developer Program for a personal device 
 
@@ -177,25 +179,17 @@ D_expo-local-pre-build:
     set {{flags}}
     pushd {{project_src}}
 
-    npx expo prebuild
+    npx expo prebuild --platform all
 
 # Build Android App to Be Transfered to a Expo for deployment through Apps Developer Program
-E_expo-build-android:
+
+configure-android-credentials:
     #!/usr/bin/env bash
     set {{flags}}
     echo -e "\n#################################"
     echo "#### Switching to ./src directory"
     echo -e "#################################\n"
     pushd {{project_src}}
-
-    # Install dependencies
-    # pnpm install -g eas-cli
-
-    # Login to the Expo account
-    echo -e "\n################################"
-    echo "#### RUNNING COMMAND: eas login"
-    echo -e "################################\n"
-    eas login
 
     #### Android credentials ######
     # Get credentials for Android
@@ -212,27 +206,37 @@ E_expo-build-android:
     
     #### /Android credentials ######
 
+E_expo-build-android:
+    #!/usr/bin/env bash
+    set {{flags}}
+    echo -e "\n#################################"
+    echo "#### Switching to ./src directory"
+    echo -e "#################################\n"
+    pushd {{project_src}}
+
+    # Install eas-cli globally
+    pnpm add -g eas-cli
+
+    # Login to the Expo account
+    echo -e "\n################################"
+    echo "#### RUNNING COMMAND: eas login"
+    echo -e "################################\n"
+    eas login
+
+    # Do you need to configure credentials? Use
+    # just configure-android-credentials
+
     # Configure the build environments
     echo -e "\n############################################################"
     echo "#### RUNNING COMMAND: eas build:configure --platform android"
     echo -e "############################################################\n"
     eas build:configure --platform android
 
-    # To redesignate credentials for Android use
-    echo -e "\n#######################################################################################"
-    echo "#### RUNNING COMMAND: eas build:resign --platform android --profile {{eas_build_profile}}"
-    echo -e "#######################################################################################\n"
-    eas build:resign --platform android --profile {{eas_build_profile}}
-
     # Pre-build the app
     echo -e "\n#########################################################################################"
-    echo "#### RUNNING COMMAND: npx expo prebuild --platform android --profile {{eas_build_profile}}"
+    echo "#### RUNNING COMMAND: npx expo prebuild"
     echo -e "#########################################################################################\n"
-
-    echo -e "\n#########################################################################################"
-    echo "#### RUNNING COMMAND: npx expo prebuild --platform android --profile {{eas_build_profile}}"
-    echo -e "#########################################################################################\n"
-    npx expo prebuild --platform android --profile {{eas_build_profile}}
+    npx expo prebuild
 
     # Create the build
     echo -e "\n#################################################################################"
@@ -252,11 +256,11 @@ E_expo-build-ios:
     echo -e "#################################\n"
     pushd {{project_src}}
 
-    # Install dependencies
-    pnpm install -g eas-cli
+    # Install eas-cli globally
+    pnpm add -g eas-cli
 
     # Login to the Expo account
-    # eas login
+    eas login
 
     # Configure the build environments
     echo -e "\n#######################################################"
@@ -280,18 +284,18 @@ E_expo-build-ios:
     ##### iOS #########
     # Run the build with the iOS internal build and create the registration for it
     # This can be run separately to register each device to allow install
-    echo -e "\n#####################################################################################"
-    echo "#### RUNNING COMMAND: eas device:create --platform ios --profile {{eas_build_profile}}"
-    echo -e "#####################################################################################\n"
-    eas device:create --platform ios --profile {{eas_build_profile}}
-    ## OR ## to generate the credentials for me
-    # eas build --platform ios
+    # echo -e "\n#####################################################################################"
+    # echo "#### RUNNING COMMAND: eas device:create --platform ios --profile {{eas_build_profile}}"
+    # echo -e "#####################################################################################\n"
+    # eas device:create --platform ios --profile {{eas_build_profile}}
+    # ## OR ## to generate the credentials for me
+    # # eas build --platform ios
 
-    # To redesignate credentials for IOS use
-    echo -e "\n#####################################################################################"
-    echo "#### RUNNING COMMAND: eas build:resign --platform ios --profile {{eas_build_profile}}"
-    echo -e "#####################################################################################\n"
-    eas build:resign --platform ios --profile {{eas_build_profile}}
+    # # To redesignate credentials for IOS use
+    # echo -e "\n#####################################################################################"
+    # echo "#### RUNNING COMMAND: eas build:resign --platform ios --profile {{eas_build_profile}}"
+    # echo -e "#####################################################################################\n"
+    # eas build:resign --platform ios --profile {{eas_build_profile}}
 
     ##### /iOS ##########
 

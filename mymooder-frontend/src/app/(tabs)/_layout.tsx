@@ -1,12 +1,10 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 
-import { TabBarIcon, TabMapIcon } from '@/components/navigation/TabBarIcon';
+import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
-
-
+import { AntDesign, FontAwesome, Fontisto } from '@expo/vector-icons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -27,11 +25,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="mood"
         options={{
-          title: 'Explore',
+          title: 'Mood',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <Fontisto name='smiley' color={color} />
           ),
         }}
       />

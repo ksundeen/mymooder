@@ -9,10 +9,8 @@
         },
         "development": {
             "ios": {
-                "simulator": true,
-                "cocoapods": "1.11.2"
+                "simulator": true
             },
-            "extends": "production",
             "developmentClient": true,
             "distribution": "internal",
             "env": {

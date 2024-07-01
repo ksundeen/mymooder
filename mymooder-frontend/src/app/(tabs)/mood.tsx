@@ -6,7 +6,7 @@ import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import React from 'react';
+import { GetLocationExpo2 } from '@/components/locationsExpo/GetLocationExpo2';
 
 export default function TabTwoScreen() {
   return (
@@ -14,23 +14,11 @@ export default function TabTwoScreen() {
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Map</ThemedText>
+        <ThemedText type="title">Enter Your Mood Details</ThemedText>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has 3 screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-          <ThemedText type="defaultSemiBold">app/(tabs)/LeafletMap.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
+      <ThemedText>Send your map location.</ThemedText>
+      <Collapsible title="Map Location">
+        <GetLocationExpo2/>
       </Collapsible>
       <Collapsible title="Android, iOS, and web support">
         <ThemedText>
@@ -76,20 +64,6 @@ export default function TabTwoScreen() {
           <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
           the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText> library
           to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-      <Collapsible title="Map">
-        <ThemedText>
-          This template shows the map sample. The{' '}
-          <ThemedText type="defaultSemiBold">components/NativeMap.tsx</ThemedText> 
         </ThemedText>
         {Platform.select({
           ios: (
