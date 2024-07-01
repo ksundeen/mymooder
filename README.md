@@ -9,7 +9,7 @@ My Mooder aims to help transform an individual’s personal view of mental illne
 <img src="/readme-assets/app-home.png" width=25% height=25%>
 <img src="/readme-assets/app-mood-location.png" width=25% height=25%>
 <img src="/readme-assets/app-chart-world-d3.png" width=25% height=25%>
-<img src="/readme-assetsapp-leaflet-map.png" width=25% height=25%>
+<img src="/readme-assets/app-leaflet-map.png" width=25% height=25%>
 
 
 ## Market Pull
