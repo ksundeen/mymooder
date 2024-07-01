@@ -182,6 +182,30 @@ D_expo-local-pre-build:
     npx expo prebuild --platform all
 
 # Build Android App to Be Transfered to a Expo for deployment through Apps Developer Program
+
+configure-android-credentials:
+    #!/usr/bin/env bash
+    set {{flags}}
+    echo -e "\n#################################"
+    echo "#### Switching to ./src directory"
+    echo -e "#################################\n"
+    pushd {{project_src}}
+
+    #### Android credentials ######
+    # Get credentials for Android
+    echo -e "\n#####################################"
+    echo "#### RUNNING COMMAND: eas credentials"
+    echo -e "#####################################\n"
+    eas credentials
+
+    # Package up credentials for Android
+    echo -e "\n#####################################################################################"
+    echo "#### RUNNING COMMAND: eytool -export -rfc -alias 2ae1a6233d053ff97b0751c040ec5e8c -file certificate_for_google.pem -keystore @ksundeen__mymooder.jks"
+    echo -e "#################################################################################\n"
+    eytool -export -rfc -alias 2ae1a6233d053ff97b0751c040ec5e8c -file certificate_for_google.pem -keystore @ksundeen__mymooder.jks
+    
+    #### /Android credentials ######
+
 E_expo-build-android:
     #!/usr/bin/env bash
     set {{flags}}
@@ -199,20 +223,8 @@ E_expo-build-android:
     echo -e "################################\n"
     eas login
 
-    #### Android credentials ######
-    # Get credentials for Android
-    echo -e "\n#####################################"
-    echo "#### RUNNING COMMAND: eas credentials"
-    echo -e "#####################################\n"
-    eas credentials
-
-    # Package up credentials for Android
-    echo -e "\n#####################################################################################"
-    echo "#### RUNNING COMMAND: eytool -export -rfc -alias 2ae1a6233d053ff97b0751c040ec5e8c -file certificate_for_google.pem -keystore @ksundeen__mymooder.jks"
-    echo -e "#################################################################################\n"
-    eytool -export -rfc -alias 2ae1a6233d053ff97b0751c040ec5e8c -file certificate_for_google.pem -keystore @ksundeen__mymooder.jks
-    
-    #### /Android credentials ######
+    # Do you need to configure credentials? Use
+    # just configure-android-credentials
 
     # Configure the build environments
     echo -e "\n############################################################"
@@ -220,21 +232,11 @@ E_expo-build-android:
     echo -e "############################################################\n"
     eas build:configure --platform android
 
-    # To redesignate credentials for Android use
-    echo -e "\n#######################################################################################"
-    echo "#### RUNNING COMMAND: eas build:resign --platform android --profile {{eas_build_profile}}"
-    echo -e "#######################################################################################\n"
-    eas build:resign --platform android --profile {{eas_build_profile}}
-
     # Pre-build the app
     echo -e "\n#########################################################################################"
-    echo "#### RUNNING COMMAND: npx expo prebuild --platform android --profile {{eas_build_profile}}"
+    echo "#### RUNNING COMMAND: npx expo prebuild"
     echo -e "#########################################################################################\n"
-
-    echo -e "\n#########################################################################################"
-    echo "#### RUNNING COMMAND: npx expo prebuild --platform android --profile {{eas_build_profile}}"
-    echo -e "#########################################################################################\n"
-    npx expo prebuild --platform android --profile {{eas_build_profile}}
+    npx expo prebuild
 
     # Create the build
     echo -e "\n#################################################################################"
@@ -282,18 +284,18 @@ E_expo-build-ios:
     ##### iOS #########
     # Run the build with the iOS internal build and create the registration for it
     # This can be run separately to register each device to allow install
-    echo -e "\n#####################################################################################"
-    echo "#### RUNNING COMMAND: eas device:create --platform ios --profile {{eas_build_profile}}"
-    echo -e "#####################################################################################\n"
-    eas device:create --platform ios --profile {{eas_build_profile}}
-    ## OR ## to generate the credentials for me
-    # eas build --platform ios
+    # echo -e "\n#####################################################################################"
+    # echo "#### RUNNING COMMAND: eas device:create --platform ios --profile {{eas_build_profile}}"
+    # echo -e "#####################################################################################\n"
+    # eas device:create --platform ios --profile {{eas_build_profile}}
+    # ## OR ## to generate the credentials for me
+    # # eas build --platform ios
 
-    # To redesignate credentials for IOS use
-    echo -e "\n#####################################################################################"
-    echo "#### RUNNING COMMAND: eas build:resign --platform ios --profile {{eas_build_profile}}"
-    echo -e "#####################################################################################\n"
-    eas build:resign --platform ios --profile {{eas_build_profile}}
+    # # To redesignate credentials for IOS use
+    # echo -e "\n#####################################################################################"
+    # echo "#### RUNNING COMMAND: eas build:resign --platform ios --profile {{eas_build_profile}}"
+    # echo -e "#####################################################################################\n"
+    # eas build:resign --platform ios --profile {{eas_build_profile}}
 
     ##### /iOS ##########
 
