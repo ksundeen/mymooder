@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Platform, Text, View, StyleSheet } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
 
 import * as Location from 'expo-location';
 
-export function GetLocation() {
-  const defaultPosition: Geolocation.GeoPosition = {
+export function GetLocationExpo() {
+  const defaultPosition: {} = {
     coords: {
         latitude: 0, //43.233224,
         longitude: 0, //-89.346395,
@@ -18,12 +17,11 @@ export function GetLocation() {
   }
 
   const [location, setLocation] = useState(defaultPosition);
-  const [errorMsg, setErrorMsg] = useState('');
-
+  const [errorMsg, setErrorMsg] = useState('Just starting...');
 
   useEffect(() => {
     (async () => {
-      
+      console.log(`Location: ${Location}`);
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -62,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GetLocation;
+export default GetLocationExpo;

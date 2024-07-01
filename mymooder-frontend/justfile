@@ -13,8 +13,8 @@ nvm_dir := env_var_or_default("NVM_DIR", "$HOME/.nvm")
 node_version := "20.10.0"
 
 # React Native Environmental Variables
-app_name:= env_var_or_default("APP_NAME", "mymooder")
-node_env := env_var_or_default("NODE_ENV", "development")
+app_name:= env_var_or_default("APP_NAME", "mymooder-frontend")
+node_env := env_var_or_default("NODE_ENV", "test")
 eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "test") # test, development, adhoc
 apply_packages := "npx patch-package react-native-leaflet-view"
 
@@ -110,10 +110,10 @@ A1_expo-setup-install:
     pnpm install
 
     # Login into Expo Application Service (EAS)
-    eas login
+    # eas login
 
-    # Confirm you're logged in
-    eas whoami
+    # # Confirm you're logged in
+    # eas whoami
 
 # Apply patches, configure expo builds, and pre-build
 A2_clean-configure-and-build-both-platforms: 
@@ -169,7 +169,7 @@ C_expo-build-configure:
     pushd {{project_src}}
 
     # Create Expo build configuration
-    eas build:configure
+    eas build:configure --platform all
 
     # Enroll in the Apple Developer Program for a personal device 
 
@@ -179,7 +179,7 @@ D_expo-local-pre-build:
     set {{flags}}
     pushd {{project_src}}
 
-    npx expo prebuild
+    npx expo prebuild --platform all
 
 # Build Android App to Be Transfered to a Expo for deployment through Apps Developer Program
 E_expo-build-android:

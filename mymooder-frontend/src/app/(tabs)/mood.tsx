@@ -6,8 +6,7 @@ import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import React from 'react';
-import { GetLocation } from '@/components/GetLocation';
+import { GetLocationExpo2 } from '@/components/locationsExpo/GetLocationExpo2';
 
 export default function TabTwoScreen() {
   return (
@@ -19,7 +18,7 @@ export default function TabTwoScreen() {
       </ThemedView>
       <ThemedText>Send your map location.</ThemedText>
       <Collapsible title="Map Location">
-        <GetLocation/>
+        <GetLocationExpo2/>
       </Collapsible>
       <Collapsible title="Android, iOS, and web support">
         <ThemedText>

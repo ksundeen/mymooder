@@ -342,9 +342,11 @@ This section review steps for setting up technologies required to run a React Na
 >
 >         exit
 >
+#
 # Posts and Resources that Helped Build and Inspire this Application
 * Adding D3 Graphics to a Map: https://medium.com/nightingale/creating-a-d3-map-in-a-mobile-app-using-react-native-46da1e6b3be6
-* Getting a User's Native Location: https://docs.expo.dev/versions/latest/sdk/location/
+* Getting a User's Location with Expo: https://docs.expo.dev/versions/latest/sdk/location/
+* Getting Location Without Expo: https://blog.logrocket.com/react-native-geolocation-complete-tutorial/#getting-users-location-data
 
 # Other Fun Resources to Remember
 * github README emojis: https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md
