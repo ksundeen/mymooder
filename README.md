@@ -1,16 +1,17 @@
-<img src="/readme-assets/LogoWithLargerBackgroundLighter_WorldInfo.png" width=25% height=25%>
+<img src="/readme-assets/LogoWithLargerBackgroundLighter_WorldInfo.png" width=25% height=25% float=center>
 # Goal of My Mooder Application
 My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see over time and space, across activities, people, and weather how their mood fluctuates from negative to positive. With data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs to better support how one's moods naturally fluctuate.
 
 ### The Mockup
-<img src="/readme-assets/mymooder-mockup.png" width=25% height=25%>
+<img src="/readme-assets/mymooder-mockup.png" float=center width=50% height=50%>
 
 ### The App Currently
+<div float=left height=25% width=25% padding=5px;>
 <img src="/readme-assets/app-home.png" width=25% height=25%>
 <img src="/readme-assets/app-mood-location.png" width=25% height=25%>
 <img src="/readme-assets/app-chart-world-d3.png" width=25% height=25%>
 <img src="/readme-assets/app-leaflet-map.png" width=25% height=25%>
-
+</div>
 
 ## Market Pull
 There are many notable mobile and web browser applications that support mental health by reporting notes to healthcare providers (TherapyNotes, Epic Software), Therapy-related apps to communicate with different therapists (Power Diary,  Simple Practice, Notable), Social-Anxiety apps to help with encouraging individuals to face their fears, improve mindfulness, and learn meditation (AcuPressure: Heal Yourself, Headspace, HelloMind, Mindshift, Pacifica, PTSD Coach, Relax and Rest Meditations, Self Help for Anxiety Management, What’s Up, Worry Watch). 
