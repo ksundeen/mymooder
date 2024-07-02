@@ -2,8 +2,7 @@ import { useState } from "react";
 import * as Location from "expo-location";
 import { View, Text, StyleSheet, Button, Linking } from "react-native";
 
-
-export function RequestPermissions() {
+export function GetLocation() {
     const defaultPosition: Location.LocationObject = {
         coords: {
             latitude: 0, //43.233224,
@@ -104,4 +103,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default RequestPermissions;
+export default GetLocation;

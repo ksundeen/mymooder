@@ -160,7 +160,7 @@ B4_expo-start:
     set {{flags}}
     pushd {{project_src}}
 
-    NODE_ENV={{node_env}} npx expo start
+    NODE_ENV={{node_env}} npx expo start --clear
 
 # Configures build configurations and set environmental variables
 C_expo-build-configure:
@@ -221,7 +221,7 @@ E_expo-build-android:
     echo -e "\n################################"
     echo "#### RUNNING COMMAND: eas login"
     echo -e "################################\n"
-    eas login
+    # eas login
 
     # Do you need to configure credentials? Use
     # just configure-android-credentials
@@ -301,6 +301,8 @@ E_expo-build-ios:
 
     # Submit to Android & Apple store, but these need to be production profiles
     # eas submit --platform ios --profile {{eas_build_profile}}
+
+
 
 # Install React Native Sample App
 z_DO_NOT_USE_react-native-new_install:

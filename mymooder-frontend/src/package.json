@@ -13,13 +13,22 @@
     "lint": "npx expo lint"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "verbose": true,
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?@?react-native|@react-native-community|)"
+    ],
+    "transform": {
+      "^.+\\.ts?$": "ts-jest",
+      "^.+\\.(js|jsx)$": "babel-jest"
+    }
   },
   "dependencies": {
     "@expo/cli": "^0.18.21",
     "@expo/vector-icons": "^14.0.2",
     "@react-native-community/cli-platform-ios": "^13.6.9",
     "@react-native-community/geolocation": "^3.2.1",
+    "@react-native-community/slider": "^4.5.2",
     "@react-native/assets-registry": "^0.74.84",
     "@react-navigation/native": "^6.0.2",
     "art": "^0.10.3",
@@ -40,6 +49,7 @@
     "expo-location": "^17.0.1",
     "expo-router": "~3.5.15",
     "expo-splash-screen": "~0.27.5",
+    "expo-sqlite": "^14.0.4",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.6",
     "expo-web-browser": "^13.0.3",
@@ -63,6 +73,8 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/runtime": "^7.24.7",
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^12.5.1",
     "@types/d3": "^7.4.3",
     "@types/jest": "^29.5.12",
     "@types/leaflet": "^1.9.12",
@@ -76,14 +88,8 @@
     "react-test-renderer": "18.2.0",
     "sax": "^1.4.1",
     "source-map-loader": "^5.0.0",
+    "ts-jest": "^29.1.5",
     "typescript": "~5.3.3"
-  },
-  "expo": {
-    "autolinking": {
-      "searchPaths": [
-        "../../@react-native-community/geolocation"
-      ]
-    }
   },
   "private": true
 }

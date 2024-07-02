@@ -1,10 +1,8 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
+import { Image, StyleSheet } from 'react-native';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import React from 'react';
 
 export default function HomeScreen() {
   return (
@@ -45,16 +43,13 @@ export default function HomeScreen() {
         </ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Chart Your Mood</ThemedText>
+        <ThemedText type="subtitle">Step 5: Chart Your Mood</ThemedText>
         <ThemedText>
         Tap the Charts to see your Mood Values visualized relative to past mood values over time, activity, and people.
         </ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 4: Map Your Mood</ThemedText>
-        <ThemedText>
-        Tap the Maps to see your Mood Values visualized an interative map with popups to remind you what was happening at certain places, times, and activities.
-        </ThemedText>
+        <ThemedText type="subtitle">Step 6: Map Your Mood</ThemedText>
       </ThemedView>
     </ParallaxScrollView>
   );

@@ -6,74 +6,62 @@ import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { GetLocationExpo2 } from '@/components/locationsExpo/GetLocationExpo2';
+import { GetLocation } from '@/components/locationsExpo/GetLocation';
+import { MoodSlider } from '@/components/MoodSlider';
 
 export default function TabTwoScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Enter Your Mood Details</ThemedText>
-      </ThemedView>
-      <ThemedText>Send your map location.</ThemedText>
-      <Collapsible title="Map Location">
-        <GetLocationExpo2/>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
+      
+      <Collapsible title="Step 1: Enter How Happy or Sad You Feel">
         <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
+        Enter your <ThemedText type="defaultSemiBold">Mood Value</ThemedText> in this moment right now for how Happy (max 10) or Sad (minimum 0) you feel in this place, location, season, time, with people, or doing an activity.
+        </ThemedText>
+        <MoodSlider/>
+      </Collapsible>
+      
+      <Collapsible title="Step 2: Enter How Calm, Anxious, or Angry You Feel">
+        <ThemedText>
+        Enter how calm or angry you feel in this moment. Enter your <ThemedText type="defaultSemiBold">Mood Value</ThemedText> in this moment right now for how Angry (minimum 0), or Anxious (5), or Calm (max 10) you feel in this place, location, season, time, with people, or doing an activity.
+        </ThemedText>
+        <MoodSlider/>
+      </Collapsible>
+      
+      <Collapsible title="Step 3: Enter People with whom You're Interacting">
+        <ThemedText>
+        Enter people with whom you're interacting while you experience the <ThemedText type="defaultSemiBold">Mood Value</ThemedText> you entered in #1 and #2.
+        </ThemedText>
+        <ThemedText>TODO: Create a component that allows the user to create their own checkboxes of people.</ThemedText>
+      </Collapsible>
+      
+      <Collapsible title="Step 4: Enter In Which Activities are You Engaging?">
+        <ThemedText>
+        Enter your activities in which you're engaging while experiencing the <ThemedText type="defaultSemiBold">Mood Value</ThemedText> you entered in #1 and #2.
+        </ThemedText>
+        <ThemedText>TODO: Create a component that allows the user to create their own checkboxes of activities.</ThemedText>
+      </Collapsible>
+
+      <Collapsible title="Step 5: Enter the Weather That You Feel?">
+        <ThemedText>
+        Enter the weather where you are and how you feel the weather is. Is it sunny, cloudy, rainy, windy/rainy, windy? Weather can be a big factor affecting one's mood. Let's track it alongside the <ThemedText type="defaultSemiBold">Mood Values</ThemedText>.
+        </ThemedText>
+        <ThemedText>TODO: get multivalue checkboxes for type of weather: sunny, partly sunny, partly cloudy, cloudy, rainy, windy</ThemedText>
+      </Collapsible>
+
+      <Collapsible title="Step 6: Chart Your Mood">
+        <ThemedText>
+        Tap the Charts to see your <ThemedText type="defaultSemiBold">Mood Values</ThemedText> visualized relative to past values over time, activity, and people.
         </ThemedText>
       </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
+
+      <Collapsible title="Step 7: Map Your Mood">
+        <ThemedText>Tap the Maps to see your Mood Values visualized in an interative map with popups to remind you what was happening at certain places, times, and activities.
         </ThemedText>
-        <Image source={require('@/assets/images/splash.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
+        <GetLocation/>
       </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText> library
-          to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
+
     </ParallaxScrollView>
   );
 }

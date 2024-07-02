@@ -1,35 +1,33 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect, useMemo } from 'react';
 import { COUNTRIES } from '@/assets/data/Countries';
 import Svg, { G, Path, Circle } from "react-native-svg";
 import * as d3 from 'd3';
-import { ScaledSize } from 'react-native';
 
-
-export function ChartComponent(props: any) {
-    // const { dimensions } = props;
+export function ChartComponent(props: {width: number, height: number}) {
+    const { width, height } = props;
 
     const [countryList, setCountryList] = useState([]);
     
     const mapExtent = useMemo(() => {
-      return props.dimensions.width > props.dimensions.height / 2
-         ? props.dimensions.height / 2 
-         : props.dimensions.width;
-   }, [props.dimensions]);
+      return width > height / 2
+         ? height / 2 
+         : width;
+   }, [width, height]);
 
     const countryPaths = useMemo(() => {
         const projection = d3.geoAzimuthalEqualArea()
             .rotate([0, -90])
             .clipAngle(150)
             .fitSize([mapExtent,mapExtent], { type: "FeatureCollection", features: COUNTRIES})
-            .translate([props.dimensions.width / 2, mapExtent / 2]);
+            .translate([width / 2, mapExtent / 2]);
     
             const geoPath = d3.geoPath().projection(projection);
     
             const svgPaths = COUNTRIES.map(geoPath);
     
             return svgPaths;
-    }, [props.dimensions]);
+    }, [props.width, props.height]);
 
     useEffect(() => {
         setCountryList(
@@ -51,12 +49,12 @@ export function ChartComponent(props: any) {
     return (
         <View>
             <Svg
-                width={props.dimensions.width}
-                height={props.dimensions.height / 2}
+                width={width}
+                height={height / 2}
             >
                 <G>
                 <Circle
-                    cx={props.dimensions.width / 2}
+                    cx={width / 2}
                     cy={mapExtent / 2}
                     r={mapExtent / 2}
                     fill={"#3b454f"}
