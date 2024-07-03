@@ -5,8 +5,8 @@ import { Colors } from '@/constants/Colors';
 
 export function MapComponent() {
   const DEFAULT_COORDINATE: LatLng = {
-    lat: 43.233007, 
-    lng: -89.3339404,
+    lat: 45.04105544754055,
+    lng: -90.8013689517975, 
   };
 
   let mapMarkers: MapMarker[] = []
@@ -27,6 +27,8 @@ export function MapComponent() {
       <LeafletView
           mapMarkers={mapMarkers}
           mapCenterPosition={DEFAULT_COORDINATE}
+          zoomControl={true}
+          zoom={7}
       />
   );
 }
