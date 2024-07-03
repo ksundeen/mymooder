@@ -1,16 +1,24 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Slider, { SliderProps } from '@react-native-community/slider';
+import { Colors } from '@/constants/Colors';
 
-export function MoodSlider() {
-    
+export function MoodSlider(props: {clearState: boolean}) {
+    const { clearState } = props
+
     const SliderBasic = (props: SliderProps) => {
         const [value, setValue] = useState(props.value ?? 0);
+
+        // Set value based on clearState value sent from parent component
+        if (clearState){
+            setValue(0)
+        }
+
         return (
           <View style={{alignItems: 'center'}}>
             <Text style={styles.text}>{value && +value.toFixed(3)}</Text>
             <Slider
-              step={0.5}
+              step={1.0}
               style={[styles.slider, props.style]}
               {...props}
               value={value}
@@ -42,7 +50,7 @@ export function MoodSlider() {
                 );
               }}
               minimumTrackTintColor={'#112233'} // black
-              maximumTrackTintColor={'#7FFF00'} // light green
+              maximumTrackTintColor={Colors.lightGreen} // light green
             />
           </View>
         );
@@ -69,7 +77,7 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         borderRadius: 10,
-        backgroundColor: '#0E86D4', // light blue
+        backgroundColor: Colors.lightBlue, // light blue
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -77,7 +85,7 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         borderRadius: 10,
-        backgroundColor: '#ACE1AF', //light green
+        backgroundColor: Colors.lightGreen, //light green
         justifyContent: 'center',
         alignItems: 'center',
       },
@@ -91,6 +99,6 @@ const styles = StyleSheet.create({
         width: 10,
         height: 10,
         borderRadius: 5,
-        backgroundColor: '#0E86D4', //light blue
+        backgroundColor: Colors.lightBlue, //light blue
       },
 })
