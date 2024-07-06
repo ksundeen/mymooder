@@ -1,18 +1,18 @@
 # My Mooder App
-<img src="/readme-assets/LogoWithLargerBackgroundLighter_WorldInfo.png" width=75% height=75% display=flex justify-content=center>
+<img src="/assets/images/readme-assets/LogoWithLargerBackgroundLighter_WorldInfo.png" width=75% height=75% display=flex justify-content=center>
 
 # Goal of My Mooder Application
 My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see over time and space, across activities, people, and weather how their mood fluctuates from negative to positive. With data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs to better support how one's moods naturally fluctuate.
 
 ### The Mockup
-<img src="/readme-assets/mymooder-mockup.png" width=50% height=50% display=flex justify-content=center>
+<img src="/assets/images/readme-assets/mymooder-mockup.png" width=50% height=50% display=flex justify-content=center>
 
 ### The App Currently
 <div float=center height=25% width=25% padding=5px;>
-        <img src="/readme-assets/app-home.png" width=20% height=20%>
-        <img src="/readme-assets/app-mood-location.png" width=20% height=20%>
-        <img src="/readme-assets/app-chart-world-d3.png" width=20% height=20%>
-        <img src="/readme-assets/app-leaflet-map.png" width=20% height=20%>
+        <img src="/assets/images/readme-assets/app-home.png" width=20% height=20%>
+        <img src="/assets/images/readme-assets/app-mood-location.png" width=20% height=20%>
+        <img src="/assets/images/readme-assets/app-chart-world-d3.png" width=20% height=20%>
+        <img src="/assets/images/readme-assets/app-leaflet-map.png" width=20% height=20%>
 </div>
 
 ## Market Pull
@@ -137,16 +137,23 @@ This section review steps for setting up technologies required to run a React Na
 >       # List just commands
 >       just --list
 
-8. Install the Android SDK: follow instructions through Expo android page: https://docs.expo.dev/workflow/android-studio-emulator/
+8. Install the Android Studio and SDK: follow instructions through Expo android page: https://docs.expo.dev/workflow/android-studio-emulator/ to set up the Android Emulator, and set environmental variables. Update Android
 
         # Install the Android File-Watching Service, Watchman
         brew install watchman
 
-        # Install the Android SDK on a Mac with Homebrew
-        brew install android-sdk
+        # Install the Android SDK on a Mac with Homebrew from https://formulae.brew.sh/cask/android-studio
+        brew install --cask android-studio
 
-        # This may prompt that you need the Java SDK version 8, in which case, install it with:
+        # Install the Java SDK with:
         brew install --cask zulu@17
+* After installing Android Studio, update the SDK location through the menu -> Android Studio -> Settings
+<img src="/assets/images/readme-assets/android-studio-gradle.png" width=50% height=50% display=flex justify-content=center>
+
+* To debug build errors with Android you can use the partially-built android app's `gradlew` command to run a build directly to get more details on the failure.
+        
+        # Run Gradle command with debugging from the `android/app/src/debug/AndroidManifest.xml`. Many of the errors relate to malformed xml values like `/Users/Kim/.gradle/caches/8.8/transforms/2d25df3f84f57ddef23473fe23d310a7/transformed/material-1.6.1/res/values/values.xml:224:4: Invalid <color> for given resource value.`
+        gradle :app:mergeDebugResources
 
 9. Navigate to the mymooder-frontend directory and use justfile commands to run various commands in this order:
 * Configure the apps
@@ -216,6 +223,7 @@ This section review steps for setting up technologies required to run a React Na
 
 1. Get Java Runtime to Open Project for XCode tools to get the brew package manager
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
 2. Run commands to add brew to your path
 
         (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/Kim/.zprofile
@@ -272,16 +280,33 @@ This section review steps for setting up technologies required to run a React Na
         # You should see something like this if you have not running containers:
         CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
-13. In total to get both Android and iOS apps to work, this is the ~/.zshrc file I use:
+13. If using `pnpm`, this is the final ~/.zshrc:
                                                       
         export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
         export ANDROID_HOME="/Users/$USER/Library/Android/sdk"
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-        export XDG_DATA_HOME="~/Library/pnpm"
+        export XDG_DATA_HOME="$HOME/Library"
+        export XDG_STATE_HOME="$HOME/.pnpm-state"
+        export XDG_CACHE_HOME="$HOME/Library/Caches/pnpm"
         export PNPM_HOME=$XDG_DATA_HOME
-        export PATH="${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME:$PNPM_HOME"
+        export PATH="${PATH}:$XDG_DATA_HOME:$XDG_STATE_HOME:XDG_CACHE_HOME=:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME"
+        export PATH=$PATH:$ANDROID_HOME/emulator
+        export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+14. If using `npm`, this is the final ~/.zhrc:
+
+        export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+        export ANDROID_HOME=$HOME/Library/Android/sdk
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+        export XDG_DATA_HOME="$HOME/Library"
+        export ANDROID_TOOLS=$ANDROID_HOME/tools
+        export ANDROID_EMULATOR=$ANDROID_HOME/emulator
+        export ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools
+        export PATH="${PATH}:$XDG_DATA_HOME:$ANDROID_HOME:$ANDROID_TOOLS:$ANDROID_EMULATOR:$ANDROID_PLATFORM_TOOLS:$JAVA_HOME"
 
 ### Other Alternatives to Using a Mac (I have not confirmed these all work):
        
@@ -346,8 +371,6 @@ This section review steps for setting up technologies required to run a React Na
 >8. Close the Ubuntu-24.04 terminal by typing `exit` and then login using the root user. You will be confirming that you can login as the `ksundeen` user here.
 >
 >        wsl -u root
->
->![wsl-root-img](./confirm-wsl-root.png?raw=true)
 >
 >9. Now in Ubuntu-24.04 default terminal, confirm your `ksundeen` user exists using the `su` for sudouser command:
 > 
