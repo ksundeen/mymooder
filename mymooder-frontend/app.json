@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "My Mooder Frontend",
+    "name": "My Mooder",
     "slug": "mymooder-frontend",
     "description": "My Mooder is an application that aims to help transform an individual’s personal view of 'mental illness' from an issue of 'mental health' to 'mood awareness' through data analytics and mood value tracking across time and space.",
     "version": "0.0.4",
@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ksundeen.mymooderfrontend",
-      "buildNumber": "6"
+      "buildNumber": "11"
     },
     "android": {
       "adaptiveIcon": {

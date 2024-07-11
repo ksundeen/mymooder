@@ -70,8 +70,10 @@ clean_npm_cache:
     echo -e "## Clearing npm cache and package-lock.json ##"
     echo -e "##############################################\n"
     npm cache clean --force
-    sudo rm ./package-lock.json
 
+    if [-d ./package-lock.json ]; then
+        sudo rm ./package-lock.json
+    fi
 
 # Remove previous node_modules, ios, android packages, and reinstall from package.json
 A0_clean clean_cache:
@@ -127,9 +129,15 @@ A1_expo-setup-install eas_login="do_not_login":
     echo -e "########################################\n"
     if [ {{package_manager}}  == "npm" ]
     then
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        fi
         npm install -g eas-cli
     elif [ {{package_manager}} == "pnpm" ]
     then 
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        fi
         pnpm add -g eas-cli
     fi
 
@@ -151,7 +159,7 @@ A1_expo-setup-install eas_login="do_not_login":
 # Apply patches, configure expo builds, and pre-build
 A2_clean-configure-and-build-both-platforms: 
     # {{apply_packages}}
-    watchman watch-del '/Users/Kim/Documents/repos/my-mooder-frontend' ; watchman watch-project '/Users/Kim/Documents/repos/my-mooder-frontend'
+    # watchman watch-del '/Users/Kim/Documents/repos/my-mooder-frontend' ; watchman watch-project '/Users/Kim/Documents/repos/my-mooder-frontend'
     just remove-android-and-ios-expo-previous-builds
     just C_expo-build-configure 
     just D_expo-local-pre-build
@@ -161,9 +169,17 @@ remove-android-and-ios-expo-previous-builds:
     #!/usr/bin/env bash
     set {{flags}}
 
-    sudo rm -rf ./ios
-    sudo rm -rf ./android
-    sudo rm -rf ./expo
+    if [ -d ./ios ]; then
+        sudo rm -rf ./ios
+    fi
+
+    if [ -d ./android ]; then
+        sudo rm -rf ./android
+    fi
+
+    if [ -d ./expo ]; then
+        sudo rm -rf ./expo
+    fi
 
 # Run ios app locally
 B1_expo-local-run-ios:
@@ -205,13 +221,12 @@ C_expo-build-configure:
     eas build:configure --platform all
 
     # Enroll in the Apple Developer Program for a personal device 
-
 # Create native Android or iOS directories for the local project - preparing to publish to Expo
 D_expo-local-pre-build:
     #!/usr/bin/env bash
     set {{flags}}
 
-    npx expo prebuild --platform all --skip-dependency-update react-native,react --clean
+    npx expo prebuild --platform all --skip-dependency-update react-native,react #--clean
 
 # Build Android App to Be Transfered to a Expo for deployment through Apps Developer Program
 # Runs complete clear of node_modules and reinstalls packages. Then rebuilds local ios and android apps.
@@ -251,9 +266,15 @@ E_local-expo-build-android:
     echo -e "\n#### Using {{package_manager}} ####"
     if [ {{package_manager}} == "npm" ]
     then
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        fi
         npm install -g eas-cli
     elif [ {{package_manager}} == "pnpm" ]
     then 
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        fi
         pnpm add -g eas-cli
     fi
 
@@ -292,9 +313,15 @@ E_local-expo-build-ios:
     echo -e "\n#### Using {{package_manager}} ####"
     if [ {{package_manager}} == "npm" ]
     then
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        fi
         npm install -g eas-cli
     elif [ {{package_manager}} == "pnpm" ]
     then 
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        fi
         pnpm add -g eas-cli
     fi
     # Login to the Expo account
@@ -315,7 +342,7 @@ E_local-expo-build-ios:
     echo -e "\n#####################################"
     echo "#### RUNNING COMMAND: eas credentials"
     echo -e "#####################################\n"
-    eas credentials
+    # eas credentials
 
     # Create the build
     echo -e "\n#############################################################################"
