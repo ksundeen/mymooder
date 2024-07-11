@@ -264,15 +264,17 @@ E_local-expo-build-android:
 
     # Install eas-cli globally
     echo -e "\n#### Using {{package_manager}} ####"
-    if [ {{package_manager}} == "npm" ]
+    if [ {{package_manager}} == "npm" ];
     then
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; 
+        then
             sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
         fi
         npm install -g eas-cli
-    elif [ {{package_manager}} == "pnpm" ]
+    elif [ {{package_manager}} == "pnpm" ];
     then 
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; 
+        then
             sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
         fi
         pnpm add -g eas-cli
@@ -295,11 +297,15 @@ E_local-expo-build-android:
 
     # Pre-build the app
     echo -e "\n#########################################################################################"
-    echo "#### RUNNING COMMAND: npx expo prebuild --platform android --skip-dependency-update react-native,react --clean"
+    echo "#### RUNNING COMMAND: npx expo prebuild --platform android --skip-dependency-update react-native,react #--clean"
     echo -e "#########################################################################################\n"
-    npx expo prebuild --platform android --skip-dependency-update react-native,react --clean
+    npx expo prebuild --platform android --skip-dependency-update react-native,react #--clean
 
-    eas build --platform android --profile test --local
+    # Create the LOCAL build
+    echo -e "\n#############################################################################"
+    echo "#### RUNNING COMMAND: eas build --platform android --profile {{eas_build_profile}} --local"
+    echo -e "#############################################################################\n"
+    eas build --platform android --profile {{eas_build_profile}} --local
 
     # Submit to Android & Apple store, but these need to be production profiles
     # eas submit --platform ios --profile {{eas_build_profile}}
@@ -313,13 +319,13 @@ E_local-expo-build-ios:
     echo -e "\n#### Using {{package_manager}} ####"
     if [ {{package_manager}} == "npm" ]
     then
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; then
             sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
         fi
         npm install -g eas-cli
     elif [ {{package_manager}} == "pnpm" ]
     then 
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; then
             sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
         fi
         pnpm add -g eas-cli
@@ -335,18 +341,18 @@ E_local-expo-build-ios:
 
     # Pre-build the apps
     echo -e "\n#######################################################"
-    echo "#### RUNNING COMMAND: npx expo prebuild --platform ios --skip-dependency-update react-native,react --clean"
+    echo "#### RUNNING COMMAND: npx expo prebuild --platform ios --skip-dependency-update react-native,react #--clean"
     echo -e "#######################################################\n"
-    npx expo prebuild --platform ios --skip-dependency-update react-native,react --clean
+    npx expo prebuild --platform ios --skip-dependency-update react-native,react #--clean
 
     echo -e "\n#####################################"
     echo "#### RUNNING COMMAND: eas credentials"
     echo -e "#####################################\n"
     # eas credentials
 
-    # Create the build
+    # Create the LOCAL build
     echo -e "\n#############################################################################"
-    echo "#### RUNNING COMMAND: eas build --platform ios --profile {{eas_build_profile}}" --local
+    echo "#### RUNNING COMMAND: eas build --platform ios --profile {{eas_build_profile}} --local"
     echo -e "#############################################################################\n"
     eas build --platform ios --profile {{eas_build_profile}} --local
 

@@ -39,7 +39,7 @@ export function ChartComponent(props: {width: number, height: number}) {
     const { width, height } = props;
 
     const [countryList, setCountryList] = useState<string[]>([]);
-    const [happyPointList, setHappyPointList] = useState<string[]>([]);
+    const [happyPointList, setHappyPointList] = useState<JSX.Element[]>([]);
     const [happyPointsVisible, setHappyPointsVisibility] = useState(true);
 
     let moodPointsGeojson: any = favoritePlaceData
@@ -57,10 +57,10 @@ export function ChartComponent(props: {width: number, height: number}) {
     // }, [moodPointsGeojson.features]);
 
     const colorize = useMemo(() => {
-        const colorScale = d3.scaleSequentialSymlog(d3.interpolateReds)
+        // const colorScale = d3.scaleSequentialSymlog(d3.interpolateReds)
         //     .domain([0, maxHappyScoreY]);
             
-        // const colorScale = d3.scaleLinear(["red", "blue"])
+        const colorScale = d3.scaleLinear(["red", "blue"])
             // .domain([0, maxHappyScoreY])
             .domain([0, 10])
             .clamp(true)
@@ -72,22 +72,8 @@ export function ChartComponent(props: {width: number, height: number}) {
         setHappyPointsVisibility(!happyPointsVisible);
     }
 
-    // Add a scale for bubble size of Happy(10)/Sad(0) Score Mood Value
-    /* Accessor function to get the land temperature from the datum */
-    // const yHappyAccessorFn = (d: MoodTypeFeature["properties"]) => parseFloat(d.happy_score)
-
+    // Retrieve only happy_score mood values
     // const allHappyScoreValues = MoodPoints.map((x: MoodTypeFeature["properties"]) => x.happy_score)
-
-    // const drawHappyScore = (data) => {
-    //     /* Retrieve the lowest and highest Calmness/Anger Score Mood Value from data */
-    //     const happyScoreDomain = d3.extent(allHappyScoreValues, yHappyAccessorFn) // result: [0, 10]
-
-    //     // Create a color scale for the Calmness(10)/Anger(0) Score Mood Value
-    //     const color: d3.ScaleLinear<string, string, never> = d3
-    //         .scaleLinear([0, 10], ["red", "blue"])
-    //         .domain(happyScoreDomain)
-    //         .clamp(true)
-    // }
 
     // Original Countries using Azimuthal Equal Area projection
     const countryPaths = useMemo(() => {
@@ -106,8 +92,8 @@ export function ChartComponent(props: {width: number, height: number}) {
     }, [props.width, props.height]);
 
     const moodPointPaths: string[] = useMemo(() => {
-        console.log('Data: ' + moodPointsGeojson)        
-        console.log('MoodPointsGeojson.features: ' + JSON.stringify(moodPointsGeojson));
+        // console.log('Data: ' + moodPointsGeojson)        
+        // console.log('MoodPointsGeojson.features: ' + JSON.stringify(moodPointsGeojson));
 
         // Mood Value Mood Points
         const projection = d3.geoNaturalEarth1()
@@ -118,36 +104,35 @@ export function ChartComponent(props: {width: number, height: number}) {
             .translate([width / 2, mapExtent / 2]);
 
         const geoPath = d3.geoPath().projection(projection);
-        const features: GeoJSON.Feature[] = moodPointsGeojson.features
-        const svgPaths: string[] = features.map(geoPath);
-
+        const features: any = moodPointsGeojson.features
+        const svgPaths: string = features.map(geoPath);
+        // console.log(`features: ${JSON.stringify(features)}`);
+        // console.log(svgPaths);
         return svgPaths;
     }, [props.width, props.height]);
 
     // Return paths for mood points
     useEffect(() => {
-        if (moodPointsGeojson) {
-            setHappyPointList(
-                moodPointPaths.map((path: string, i: number) => {
-                    const curHappyScore = moodPointsGeojson.features[i].properties.happy_score;
-                    // const isDataAvailable = curHappyScore.some(data: any => data.datetime === date);
+        const newHappyPointList: JSX.Element[] = moodPointPaths.map((path: string, i: number) => {
+            const curHappyScore = moodPointsGeojson.features[i].properties.happy_score;
+            const curIndex = moodPointsGeojson.features[i].properties.index;
+            // const isDataAvailable = curHappyScore.some(data: any => data.datetime === date);
+            return (
+                <Path
+                    key={curIndex}
+                    d={path}
+                    // stroke={Colors.lightBlue}
+                    strokeOpacity={0.3}
+                    strokeWidth={0.6}
+                    // strokeWidth={curHappyScore}
+                    // fill={colorize(curHappyScore[dateIndex])}
+                    fill={colorize(curHappyScore)}
+                    // fill={Colors.lightGrey}
+                    opacity={0.4} />
+            );
+        });
 
-                    return (
-                    <Path
-                        key={moodPointsGeojson.features[i].properties.index}
-                        d={path}
-                        // stroke={Colors.lightBlue}
-                        strokeOpacity={0.3}
-                        strokeWidth={0.6}
-                        // strokeWidth={curHappyScore}
-                        // fill={colorize(curHappyScore[dateIndex])}
-                        fill={colorize(curHappyScore)}
-                        // fill={Colors.lightGrey}
-                        opacity={0.4} 
-                    />
-                    )
-                }));
-        }
+        setHappyPointList(newHappyPointList);
     }, [props.width, props.height]); 
 
     // Return paths for countries
@@ -174,9 +159,7 @@ export function ChartComponent(props: {width: number, height: number}) {
                 width={width}
                 height={height / 2}
             >
-                <G
-                    // transform={`translate(${translateX},${translateY})`}
-                >
+                <G>
                 {/* Background world fill */}
                 {/* <Circle
                     cx={width / 2}

@@ -1,15 +1,15 @@
 import GeoJSON from "geojson";
 
 export const favoritePlaceData = {
-    type: "FeatureCollection",
-    features: [
+    "type": "FeatureCollection",
+    "features": [
         {
-            type: "Feature",
-            geometry: {
-                type: "Point",
-                coordinates: [-89.34438319725115, 43.22725275517992]
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-89.34438319725115, 43.22725275517992]
             },
-            properties: {
+            "properties": {
                 "index": 1,
                 "name": "Running Innovation Dr Gravel Path",
                 "datetime": "2024-07-03T18:00:00.000Z",
@@ -24,12 +24,12 @@ export const favoritePlaceData = {
             }
         },
         {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-90.5015765597762, 43.97032780504746]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-90.5015765597762, 43.97032780504746]
             },
-            properties: {
+            "properties": {
                 "index": 2,
                 "name": "Visiting Tiff",
                 "datetime": "2024-07-04T22:00:00.000Z",
@@ -44,12 +44,12 @@ export const favoritePlaceData = {
             }
         },
         {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-92.18381747168274, 47.01642034121482]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-92.18381747168274, 47.01642034121482]
             },
-            properties: {
+            "properties": {
                 "index": 3,
                 "name": "Island Lake",
                 "datetime": "2024-07-05T14:30:00.000Z",
@@ -64,12 +64,12 @@ export const favoritePlaceData = {
             }
         },
         {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-89.33897124415822, 43.218706669142655]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-89.33897124415822, 43.218706669142655]
             },
-            properties: {
+            "properties": {
                 "index": 4,
                 "name": "Church",
                 "datetime": "2024-06-30T15:00:00.000Z",
@@ -84,12 +84,12 @@ export const favoritePlaceData = {
             }
         },
         {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-89.35650678656674, 43.241811927557336]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-89.35650678656674, 43.241811927557336]
             },
-            properties: {
+            "properties": {
                 "index": 5,
                 "name": "Running on Yahara Trail",
                 "datetime": "2024-07-01T17:30:00.000Z",
@@ -104,12 +104,12 @@ export const favoritePlaceData = {
             }
         },
         {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-82.29039238, 44.75130024]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-82.29039238, 44.75130024]
             },
-            properties: {
+            "properties": {
                 "index": 6,
                 "name": "Visting Friends",
                 "datetime": "2024-04-10T17:30:00.000Z",
@@ -124,12 +124,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-94.85150598, 41.77688166]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-94.85150598, 41.77688166]
             },
-            properties: {
+            "properties": {
                 "index": 7,
                 "name": "Visting Family",
                 "datetime": "2024-06-23T17:30:00.000Z",
@@ -144,12 +144,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-88.78590038, 51.01817921]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-88.78590038, 51.01817921]
             },
-            properties: {
+            "properties": {
                 "index": 8,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-06-11T17:30:00.000Z",
@@ -164,12 +164,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-94.02132582, 40.18909839]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-94.02132582, 40.18909839]
             },
-            properties: {
+            "properties": {
                 "index": 9,
                 "name": "Alone Coding Time",
                 "datetime": "2024-04-04T17:30:00.000Z",
@@ -184,12 +184,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-98.88804647, 42.62818492]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-98.88804647, 42.62818492]
             },
-            properties: {
+            "properties": {
                 "index": 10,
                 "name": "Running on Yahara Trail",
                 "datetime": "2024-07-02T17:30:00.000Z",
@@ -204,12 +204,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-93.09821094, 38.32986761]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-93.09821094, 38.32986761]
             },
-            properties: {
+            "properties": {
                 "index": 11,
                 "name": "Visting Friends",
                 "datetime": "2024-07-05T17:30:00.000Z",
@@ -224,12 +224,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-84.61145634, 49.25484934]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-84.61145634, 49.25484934]
             },
-            properties: {
+            "properties": {
                 "index": 12,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-06-07T17:30:00.000Z",
@@ -244,12 +244,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-84.17902502, 42.03961384]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-84.17902502, 42.03961384]
             },
-            properties: {
+            "properties": {
                 "index": 13,
                 "name": "Visting Family",
                 "datetime": "2024-04-15T17:30:00.000Z",
@@ -264,12 +264,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-99.65373051, 48.35627704]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-99.65373051, 48.35627704]
             },
-            properties: {
+            "properties": {
                 "index": 14,
                 "name": "Gardening with Kids",
                 "datetime": "2024-06-13T17:30:00.000Z",
@@ -284,12 +284,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-87.00910403, 43.19781326]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-87.00910403, 43.19781326]
             },
-            properties: {
+            "properties": {
                 "index": 15,
                 "name": "Visting Friends",
                 "datetime": "2024-07-02T17:30:00.000Z",
@@ -304,12 +304,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-85.71021503, 45.2652178]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-85.71021503, 45.2652178]
             },
-            properties: {
+            "properties": {
                 "index": 16,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-05-14T17:30:00.000Z",
@@ -324,12 +324,12 @@ export const favoritePlaceData = {
             }
             },
            {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-94.210631, 39.76113574]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-94.210631, 39.76113574]
             },
-            properties: {
+            "properties": {
                 "index": 17,
                 "name": "Visting Family",
                 "datetime": "2024-05-21T17:30:00.000Z",
@@ -344,12 +344,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-92.07925004, 49.85365002]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-92.07925004, 49.85365002]
             },
-            properties: {
+            "properties": {
                 "index": 18,
                 "name": "Visting Friends",
                 "datetime": "2024-05-16T17:30:00.000Z",
@@ -364,12 +364,12 @@ export const favoritePlaceData = {
             }
             },
            {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-95.46893919, 50.34060417]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-95.46893919, 50.34060417]
             },
-            properties: {
+            "properties": {
                 "index": 19,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-04-15T17:30:00.000Z",
@@ -384,12 +384,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-84.71841001, 42.62970331]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-84.71841001, 42.62970331]
             },
-            properties: {
+            "properties": {
                 "index": 20,
                 "name": "Visting Family",
                 "datetime": "2024-04-24T17:30:00.000Z",
@@ -404,12 +404,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-99.85375341, 47.48374853]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-99.85375341, 47.48374853]
             },
-            properties: {
+            "properties": {
                 "index": 21,
                 "name": "Alone Coding Time",
                 "datetime": "2024-07-10T17:30:00.000Z",
@@ -424,12 +424,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-85.62506423, 46.16902751]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-85.62506423, 46.16902751]
             },
-            properties: {
+            "properties": {
                 "index": 22,
                 "name": "Visting Friends",
                 "datetime": "2024-04-10T17:30:00.000Z",
@@ -444,12 +444,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-94.42103062, 49.99855093]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-94.42103062, 49.99855093]
             },
-            properties: {
+            "properties": {
                 "index": 23,
                 "name": "Alone Coding Time",
                 "datetime": "2024-06-12T17:30:00.000Z",
@@ -464,12 +464,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-97.81580299, 42.13067355]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-97.81580299, 42.13067355]
             },
-            properties: {
+            "properties": {
                 "index": 24,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-05-25T17:30:00.000Z",
@@ -484,12 +484,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-96.33831486, 44.59335013]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-96.33831486, 44.59335013]
             },
-            properties: {
+            "properties": {
                 "index": 25,
                 "name": "Visting Family",
                 "datetime": "2024-07-06T17:30:00.000Z",
@@ -504,12 +504,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-86.25428925, 51.46767483]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-86.25428925, 51.46767483]
             },
-            properties: {
+            "properties": {
                 "index": 26,
                 "name": "Gardening",
                 "datetime": "2024-04-11T17:30:00.000Z",
@@ -524,12 +524,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-85.2922921, 46.87558953]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-85.2922921, 46.87558953]
             },
-            properties: {
+            "properties": {
                 "index": 27,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-04-12T17:30:00.000Z",
@@ -544,12 +544,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-92.42818835, 45.17597169]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-92.42818835, 45.17597169]
             },
-            properties: {
+            "properties": {
                 "index": 28,
                 "name": "Visting Friends",
                 "datetime": "2024-05-25T17:30:00.000Z",
@@ -564,12 +564,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-87.00141025, 41.70903137]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-87.00141025, 41.70903137]
             },
-            properties: {
+            "properties": {
                 "index": 29,
                 "name": "Playing at a park with kids",
                 "datetime": "2024-06-03T17:30:00.000Z",
@@ -584,12 +584,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-88.58408286, 51.60051362]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-88.58408286, 51.60051362]
             },
-            properties: {
+            "properties": {
                 "index": 30,
                 "name": "Alone Gardening",
                 "datetime": "2024-07-09T17:30:00.000Z",
@@ -604,12 +604,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-81.97046003, 42.3502291]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-81.97046003, 42.3502291]
             },
-            properties: {
+            "properties": {
                 "index": 31,
                 "name": "Visting Family",
                 "datetime": "2024-06-29T17:30:00.000Z",
@@ -624,12 +624,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-84.54599396, 48.41228051]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-84.54599396, 48.41228051]
             },
-            properties: {
+            "properties": {
                 "index": 32,
                 "name": "Visting Friends",
                 "datetime": "2024-07-08T17:30:00.000Z",
@@ -644,12 +644,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-89.31630753, 42.87191957]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-89.31630753, 42.87191957]
             },
-            properties: {
+            "properties": {
                 "index": 33,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-06-28T17:30:00.000Z",
@@ -664,12 +664,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-89.0660289, 50.7146463]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-89.0660289, 50.7146463]
             },
-            properties: {
+            "properties": {
                 "index": 34,
                 "name": "Alone Coding Time",
                 "datetime": "2024-06-15T17:30:00.000Z",
@@ -684,12 +684,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-86.43858674, 38.58760924]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-86.43858674, 38.58760924]
             },
-            properties: {
+            "properties": {
                 "index": 35,
                 "name": "Running on Yahara Trail",
                 "datetime": "2024-05-15T17:30:00.000Z",
@@ -704,12 +704,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-86.54094759, 44.10561048]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-86.54094759, 44.10561048]
             },
-            properties: {
+            "properties": {
                 "index": 36,
                 "name": "Running on Yahara Trail",
                 "datetime": "2024-06-20T17:30:00.000Z",
@@ -724,12 +724,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-99.62393163, 48.85014843]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-99.62393163, 48.85014843]
             },
-            properties: {
+            "properties": {
                 "index": 37,
                 "name": "Visting Friends",
                 "datetime": "2024-07-08T17:30:00.000Z",
@@ -744,12 +744,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-92.84918988, 38.80867305]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-92.84918988, 38.80867305]
             },
-            properties: {
+            "properties": {
                 "index": 38,
                 "name": "Visting Family",
                 "datetime": "2024-04-03T17:30:00.000Z",
@@ -764,12 +764,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-93.82087375, 42.44149667]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-93.82087375, 42.44149667]
             },
-            properties: {
+            "properties": {
                 "index": 39,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-04-30T17:30:00.000Z",
@@ -784,12 +784,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-99.0558875, 49.32359098]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-99.0558875, 49.32359098]
             },
-            properties: {
+            "properties": {
                 "index": 40,
                 "name": "Visting Friends",
                 "datetime": "2024-06-10T17:30:00.000Z",
@@ -804,12 +804,12 @@ export const favoritePlaceData = {
             }
             },
            {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [ 83.42881998, 43.05719576]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [ 83.42881998, 43.05719576]
             },
-            properties: {
+            "properties": {
                 "index": 41,
                 "name": "Alone Coding Time",
                 "datetime": "2024-06-17T17:30:00.000Z",
@@ -824,12 +824,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-88.55665159, 45.23534133]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-88.55665159, 45.23534133]
             },
-            properties: {
+            "properties": {
                 "index": 42,
                 "name": "Visting Family",
                 "datetime": "2024-05-15T17:30:00.000Z",
@@ -844,12 +844,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-94.84611502, 40.28726685]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-94.84611502, 40.28726685]
             },
-            properties: {
+            "properties": {
                 "index": 43,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-06-10T17:30:00.000Z",
@@ -864,12 +864,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-91.79145201, 39.61957268]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-91.79145201, 39.61957268]
             },
-            properties: {
+            "properties": {
                 "index": 44,
                 "name": "Visting Friends",
                 "datetime": "2024-05-30T17:30:00.000Z",
@@ -884,12 +884,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-84.11623844, 48.54884026]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-84.11623844, 48.54884026]
             },
-            properties: {
+            "properties": {
                 "index": 45,
                 "name": "Alone Gardening",
                 "datetime": "2024-04-24T17:30:00.000Z",
@@ -904,12 +904,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-97.01180227, 44.92790511]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-97.01180227, 44.92790511]
             },
-            properties: {
+            "properties": {
                 "index": 46,
                 "name": "Going to Church",
                 "datetime": "2024-05-19T17:30:00.000Z",
@@ -924,12 +924,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-85.8756102, 43.08146632]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-85.8756102, 43.08146632]
             },
-            properties: {
+            "properties": {
                 "index": 47,
                 "name": "Going to Church",
                 "datetime": "2024-05-05T17:30:00.000Z",
@@ -945,12 +945,12 @@ export const favoritePlaceData = {
             },
 
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-96.35034443, 47.80073297]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-96.35034443, 47.80073297]
             },
-            properties: {
+            "properties": {
                 "index": 48,
                 "name": "Visting Family",
                 "datetime": "2024-05-01T17:30:00.000Z",
@@ -966,12 +966,12 @@ export const favoritePlaceData = {
             },
 
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-86.83756276, 43.49986001]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-86.83756276, 43.49986001]
             },
-            properties: {
+            "properties": {
                 "index": 49,
                 "name": "Visting Friends",
                 "datetime": "2024-04-13T17:30:00.000Z",
@@ -987,12 +987,12 @@ export const favoritePlaceData = {
             },
 
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-85.12883555, 43.58523675]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-85.12883555, 43.58523675]
             },
-            properties: {
+            "properties": {
                 "index": 50,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-04-01T17:30:00.000Z",
@@ -1008,12 +1008,12 @@ export const favoritePlaceData = {
             },
 
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-89.01023036, 45.27408041]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-89.01023036, 45.27408041]
             },
-            properties: {
+            "properties": {
                 "index": 51,
                 "name": "Visting Family",
                 "datetime": "2024-03-01T17:30:00.000Z",
@@ -1029,12 +1029,12 @@ export const favoritePlaceData = {
             },
 
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-91.51105218, 42.20907124]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-91.51105218, 42.20907124]
             },
-            properties: {
+            "properties": {
                 "index": 52,
                 "name": "Going to Church",
                 "datetime": "2024-06-02T17:30:00.000Z",
@@ -1050,12 +1050,12 @@ export const favoritePlaceData = {
             },
 
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-86.53341872, 40.18958366]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-86.53341872, 40.18958366]
             },
-            properties: {
+            "properties": {
                 "index": 53,
                 "name": "Running on a Hiking Trail",
                 "datetime": "2024-06-05T17:30:00.000Z",
@@ -1071,12 +1071,12 @@ export const favoritePlaceData = {
             },
 
            {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-96.36150418, 42.07127542]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-96.36150418, 42.07127542]
             },
-            properties: {
+            "properties": {
                 "index": 54,
                 "name": "Visting Family",
                 "datetime": "2024-03-31T17:30:00.000Z",
@@ -1091,12 +1091,12 @@ export const favoritePlaceData = {
             }
             },
             {
-            type: GeoJSON.Feature,
-            geometry: {
-                type: "Point",
-                coordinates: [-93.98061042, 43.77662656]
+            "type": GeoJSON.Feature,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-93.98061042, 43.77662656]
             },
-            properties: {
+            "properties": {
                 "index": 55,
                 "name": "Visting Friends",
                 "datetime": "2024-04-20T17:30:00.000Z",

@@ -54,9 +54,9 @@ export function MapComponent() {
     lng: -90.8013689517975, 
   };
 
-  // const pinInnerCircleRadius = 48
-  // const mapIconColor = '#cc756b';
-  // const mapIconColorInnerCircle = '#ffffff';
+  const pinInnerCircleRadius = 48
+  const mapIconColor = '#cc756b';
+  const mapIconColorInnerCircle = '#ffffff';
 
   // const iconSettings = {
   //   mapIconUrl: '<svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 149 178"><path fill="${mapIconColor}" stroke="#FFFFFF" stroke-width="6" stroke-miterlimit="10"><circle cx="50" cy="50" r="{pinInnerCircleRadius}" fill="{mapIconColorInnerCircle}"</circle></svg>',
@@ -74,7 +74,7 @@ export function MapComponent() {
   //     popupAnchor: [0, -28],
   // });
 
-  // var customSvg = `<svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 149 178"><path fill="${mapIconColor}" stroke="#FFFFFF" stroke-width="6" stroke-miterlimit="10"><circle cx="50" cy="50" r="${pinInnerCircleRadius}" fill="${mapIconColorInnerCircle}"</circle></svg>`
+  var customSvg = `<svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 149 178"><path fill="${mapIconColor}" stroke="#FFFFFF" stroke-width="6" stroke-miterlimit="10"><circle cx="50" cy="50" r="${pinInnerCircleRadius}" fill="${mapIconColorInnerCircle}"</circle></svg>`
   // // var iconUrl = 'data:image/svg+xml;base64,' + btoa(customSvg);
 
   // var icon = L.icon( {
@@ -83,21 +83,20 @@ export function MapComponent() {
   
   // Testing adding mapMarkers
   let mapMarkers: MapMarker[] = []
-  for (let i = 0; i < favoritePlaceData.features.length; i++) {
+  favoritePlaceData.features.forEach(feature => {
     mapMarkers.push({
-      id: favoritePlaceData.features[i].properties.index.toString(),
+      id: feature.properties.index.toString(),
       positions: {
-        lng: favoritePlaceData.features[i].geometry.coordinates[0], 
-        lat: favoritePlaceData.features[i].geometry.coordinates[1]
+        lng: feature.geometry.coordinates[0], 
+        lat: feature.geometry.coordinates[1]
       },
       // divIcon: _divIcon,
-      // icon: customSvg, //iconUrl,//'📍',
-      icon: '📍',
+      icon: customSvg, //iconUrl,//'📍',
+      // icon: '📍',
       // icon: Svg()
       size: [32, 32],
       // color: Colors.lightBlue
-    })
-  }
+    })});
 
   const colorize = useMemo(() => {
       // const colorScale = d3.scaleSequentialSymlog(d3.interpolateReds)
@@ -115,26 +114,25 @@ export function MapComponent() {
     // Load shapes for each location
     let mapShapes: MapShape[] = []
 
-    // Adjust size of shapes based on zoom scale
-    for (let i = 0; i < favoritePlaceData.features.length; i++) {
-      let curHappyScore = favoritePlaceData.features[i].properties.happy_score;
-      let curCalmScore = favoritePlaceData.features[i].properties.calmness_score;
+    // Add a scale for bubble size of Happy(10)/Sad(0) Score Mood Value
+    favoritePlaceData.features.forEach(feature => {
+      let curHappyScore = feature.properties.happy_score;
+      let curCalmScore = feature.properties.calmness_score;
       mapShapes.push({
           // color: Colors.lightGreen,
-          id: favoritePlaceData.features[i].properties.index.toString(),
+          id: feature.properties.index.toString(),
           color: colorize(curHappyScore),
           positions: {
-            lng: favoritePlaceData.features[i].geometry.coordinates[0], 
-            lat: favoritePlaceData.features[i].geometry.coordinates[1]
+            lng: feature.geometry.coordinates[0],
+            lat: feature.geometry.coordinates[1]
           },
           center: {
-            lng: favoritePlaceData.features[i].geometry.coordinates[0], 
-            lat: favoritePlaceData.features[i].geometry.coordinates[1]
+            lng: feature.geometry.coordinates[0],
+            lat: feature.geometry.coordinates[1]
           },
           radius: curCalmScore * 1000,// * zoomLevel,
           shapeType: MapShapeType.CIRCLE
-    })
-  };
+    })});
 
   return (
     <SafeAreaView style={styles.container}>
