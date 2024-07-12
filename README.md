@@ -1,18 +1,18 @@
 # My Mooder App
-<img src="/assets/images/readme-assets/LogoWithLargerBackgroundLighter_WorldInfo.png" width=75% height=75% display=flex justify-content=center>
+<img src="../mymooder/mymooder-frontend/assets/images/readme-assets/LogoWithLargerBackgroundLighter_WorldInfo.png" width=75% height=75% display=flex justify-content=center>
 
 # Goal of My Mooder Application
 My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see over time and space, across activities, people, and weather how their mood fluctuates from negative to positive. With data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs to better support how one's moods naturally fluctuate.
 
 ### The Mockup
-<img src="/assets/images/readme-assets/mymooder-mockup.png" width=50% height=50% display=flex justify-content=center>
+<img src="../mymooder/mymooder-frontend/assets/images/readme-assets/mymooder-mockup.png" width=50% height=50% display=flex justify-content=center>
 
 ### The App Currently
 <div float=center height=25% width=25% padding=5px;>
-        <img src="/assets/images/readme-assets/app-home.png" width=20% height=20%>
-        <img src="/assets/images/readme-assets/app-mood-location.png" width=20% height=20%>
-        <img src="/assets/images/readme-assets/app-chart-world-d3.png" width=20% height=20%>
-        <img src="/assets/images/readme-assets/app-leaflet-map.png" width=20% height=20%>
+        <img src="../mymooder/mymooder-frontend/assets/images/readme-assets/app-home.png" width=20% height=20%>
+        <img src="../mymooder/mymooder-frontend/assets/images/readme-assets/app-mood-location.png" width=20% height=20%>
+        <img src="../mymooder/mymooder-frontend/assets/images/readme-assets/app-chart-world-d3.png" width=20% height=20%>
+        <img src="../mymooder/mymooder-frontend/assets/images/readme-assets/app-leaflet-map.png" width=20% height=20%>
 </div>
 
 ## Market Pull
