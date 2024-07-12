@@ -176,6 +176,22 @@ This section review steps for setting up technologies required to run a React Na
 * Install additional react packages and follow instruction in the `~/mymooder/mymooder-frontend/justfile` with:
 
         just --list
+
+11. NOTE: If using pnpm instead of npm, then ensure the global directory is initialized for the environmental variable `$XDG_DATA_HOME` env variable is set, then `$XDG_DATA_HOME/pnpm`
+
+        # Run this in mac to set add the env to ~/.zshrc or add directly.
+        export XDG_DATA_HOME="$HOME/Library/pnpm" >> ~/.zshrc
+        export PNPM_HOME=$XDG_DATA_HOME >> ~/.zshrc
+
+        # Or add manually
+        export XDG_DATA_HOME="$HOME/Library/pnpm"
+        export PNPM_HOME=$XDG_DATA_HOME
+
+ * On Windows: `~/AppData/Local/pnpm`
+ * On macOS: `~/Library/pnpm`
+ * On Linux: `~/.local/share/pnpm`
+
+ #
 #
 > **Note**  
 >

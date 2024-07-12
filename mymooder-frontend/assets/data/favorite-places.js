@@ -807,7 +807,7 @@ export const favoritePlaceData = {
             "type": GeoJSON.Feature,
             "geometry": {
                 "type": "Point",
-                "coordinates": [ 83.42881998, 43.05719576]
+                "coordinates": [-83.42881998, 43.05719576]
             },
             "properties": {
                 "index": 41,

@@ -1,75 +1,80 @@
 {
-    "build": {
-        "preview": {
-            "distribution": "internal",
-            "ios": {
-                "enterpriseProvisioning": "adhoc"
-              },
-              "env": {
-                "NODE_ENV": "preview",
-                "ENVIRONMENT": "preview",
-                "PRODUCT_NAME": "mymooder-frontend",
-                "APP_NAME": "mymooder-frontend",
-                "EAS_BUILD_PROFILE": "preview"
-              }
-        },
-        "development": {
-            "ios": {
-                "simulator": true
-            },
-            "developmentClient": true,
-            "distribution": "internal",
-            "env": {
-                "EXPO_PUBLIC_API_URL": "https://localhost:8081",
-                "NODE_ENV": "development",
-                "ENVIRONMENT": "development",
-                "PRODUCT_NAME": "mymooder-frontend",
-                "APP_NAME": "mymooder-frontend",
-                "EAS_BUILD_PROFILE": "test"
-            },
-            "autoIncrement": true
-        },
-        "test": {
-            "ios": {
-                "enterpriseProvisioning": "adhoc"
-            },
-            "distribution": "internal",
-            "env": {
-                "EXPO_PUBLIC_API_URL": "https://localhost:8082",
-                "NODE_ENV": "test",
-                "ENVIRONMENT": "test",
-                "PRODUCT_NAME": "mymooder-frontend",
-                "APP_NAME": "mymooder-frontend",
-                "EAS_BUILD_PROFILE": "test"
-            },
-            "node": "20.10.0",
-            "autoIncrement": true
-        },
-        "test2": {
-            "ios": {
-                "enterpriseProvisioning": "adhoc"
-            },
-            "distribution": "internal",
-            "android": {
-                "buildType": "apk"
-            },
-            "env": {
-                "EXPO_PUBLIC_API_URL": "https://localhost:8082",
-                "NODE_ENV": "test2"
-            },
-            "node": "20.10.0"
-        },
-        "production": {
-            "autoIncrement": true,
-            "node": "20.10.0",
-            "env": {
-                "EXPO_PUBLIC_API_URL": "https://notsure",
-                "NODE_ENV": "production",
-                "ENVIRONMENT": "production",
-                "PRODUCT_NAME": "mymooder-frontend",
-                "APP_NAME": "mymooder-frontend",
-                "EAS_BUILD_PROFILE": "production"
-            }
-        }
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "enterpriseProvisioning": "adhoc"
+      },
+      "env": {
+        "NODE_ENV": "preview",
+        "ENVIRONMENT": "preview",
+        "PRODUCT_NAME": "mymooder-frontend",
+        "APP_NAME": "mymooder-frontend",
+        "EAS_BUILD_PROFILE": "preview"
+      },
+      "channel": "preview"
+    },
+    "development": {
+      "ios": {
+        "simulator": true
+      },
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://localhost:8081",
+        "NODE_ENV": "development",
+        "ENVIRONMENT": "development",
+        "PRODUCT_NAME": "mymooder-frontend",
+        "APP_NAME": "mymooder-frontend",
+        "EAS_BUILD_PROFILE": "test"
+      },
+      "autoIncrement": true,
+      "channel": "development"
+    },
+    "test": {
+      "ios": {
+        "enterpriseProvisioning": "adhoc"
+      },
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://localhost:8082",
+        "NODE_ENV": "test",
+        "ENVIRONMENT": "test",
+        "PRODUCT_NAME": "mymooder-frontend",
+        "APP_NAME": "mymooder-frontend",
+        "EAS_BUILD_PROFILE": "test"
+      },
+      "node": "20.10.0",
+      "autoIncrement": true,
+      "channel": "test"
+    },
+    "test2": {
+      "ios": {
+        "enterpriseProvisioning": "adhoc"
+      },
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://localhost:8082",
+        "NODE_ENV": "test2"
+      },
+      "node": "20.10.0",
+      "channel": "test2"
+    },
+    "production": {
+      "autoIncrement": true,
+      "node": "20.10.0",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://notsure",
+        "NODE_ENV": "production",
+        "ENVIRONMENT": "production",
+        "PRODUCT_NAME": "mymooder-frontend",
+        "APP_NAME": "mymooder-frontend",
+        "EAS_BUILD_PROFILE": "production"
+      },
+      "channel": "production"
     }
   }
+}

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, ScaledSize } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import ChartComponent from "../components/ChartComponent";
 
 export default function Charts() {

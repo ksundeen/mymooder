@@ -1,15 +1,16 @@
 import { LatLng, LeafletView, MapMarker, MapShape, MapShapeType, WebViewLeafletEvents, WebviewLeafletMessage } from 'react-native-leaflet-view-2';
 import { favoritePlaceData } from '@/assets/data/favorite-places';
-import { Colors } from '@/app/constants/Colors';
+// import { Colors } from '@/app/constants/Colors';
 import ChartComponent from './ChartComponent';
 import { Dimensions, View, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { useMemo, useState } from 'react';
 import * as d3 from 'd3';
-import { DivIcon } from 'leaflet';
+// import { DivIcon } from 'leaflet';
 // import { DivIcon } from 'leaflet';
 // import Svg, { G, Path, Circle } from "react-native-svg";
 // import { DivIcon, Util } from 'leaflet';
 // import Loader from '@app/assets/images/loading-svgrepo-com.svg'
+// import { IFrameWebView } from './IFrameWebView';
 
 export function MapComponent() {
   // const [zoomLevel, setZoomLevel] = useState(7); // initial zoom level provided for MapContainer
@@ -87,8 +88,8 @@ export function MapComponent() {
     mapMarkers.push({
       id: feature.properties.index.toString(),
       positions: {
-        lng: feature.geometry.coordinates[0], 
-        lat: feature.geometry.coordinates[1]
+        lng: [feature.geometry.coordinates[0]], 
+        lat: [feature.geometry.coordinates[1]]
       },
       // divIcon: _divIcon,
       icon: customSvg, //iconUrl,//'📍',
@@ -134,20 +135,48 @@ export function MapComponent() {
           shapeType: MapShapeType.CIRCLE
     })});
 
+    const mapLayers = [
+      {
+        baseLayerName: 'Openstreet Map',  // the name of the layer, this will be seen in the layer selection control
+        baseLayerIsChecked: 'false',  // if the layer is selected in the layer selection control
+        layerType: 'TileLayer',  // Optional: a MapLayerType enum specifying the type of layer see "Types of Layers" below. Defaults to TILE_LAYER
+        baseLayer: true,
+        // url of tiles
+        url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        // attribution string to be shown for this layer
+        attribution:
+          '&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
+      }
+    //   ,{
+    //   baseLayerName: 'Mapbox Aerial',  // the name of the layer, this will be seen in the layer selection control
+    //   baseLayerIsChecked: 'false',  // if the layer is selected in the layer selection control
+    //   layerType: 'TileLayer',  // Optional: a MapLayerType enum specifying the type of layer see "Types of Layers" below. Defaults to TILE_LAYER
+    //   baseLayer: true,
+    //   // url of tiles
+    //   url: `https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=${process.env.MAPBOX_TOKEN}`,
+    //   attribution: ''
+    // }
+  ]
+
   return (
     <SafeAreaView style={styles.container}>
       <ChartComponent height={height} width={width}/>
-      <LeafletView
-          onMessageReceived={onMessageReceived}
-          doDebug={true}
-          // mapMarkers={mapMarkers}
-          // renderLoading={loader}
-          mapShapes={mapShapes}
-          // mapLayers={mapLayers}
-          mapCenterPosition={DEFAULT_COORDINATE}
-          zoomControl={true}
-          zoom={7}
-      />
+      {/* <IFrameWebView 
+          source={ */}
+          <LeafletView
+            onMessageReceived={onMessageReceived}
+            doDebug={true}
+            // mapMarkers={mapMarkers}
+            // renderLoading={loader}
+            mapShapes={mapShapes}
+            // mapLayers={mapLayers}
+            mapCenterPosition={DEFAULT_COORDINATE}
+            zoomControl={true}
+            zoom={7}
+          ></LeafletView>
+         {/* }
+       >
+       </IFrameWebView> */}
     </SafeAreaView>
   );
 };

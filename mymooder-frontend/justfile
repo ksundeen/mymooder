@@ -18,6 +18,20 @@ node_env := env_var_or_default("NODE_ENV", "test")
 eas_build_profile := env_var_or_default("EAS_BUILD_PROFILE", "test") # test, development, adhoc
 apply_packages := "npx patch-package react-native-leaflet-view"
 
+##########################################################
+# Post-Install Notes for Expo Android:
+# Update /android/app/src/main/AndroidManifest.xml 
+#   <application ... android:usesCleartextTraffic="true" ... >
+#
+# Tried adding js function to add directly to manifest, but failed
+# Added in app.json in plugins section:
+#,
+#      [
+#        "./plugins/UpdateClearTextAndroid"
+#      ]
+#
+##########################################################
+
 # Install Dependencies for the React Native Front End
 
 # Start the React Native Front End
@@ -90,10 +104,10 @@ A0_clean clean_cache:
         just clean_npm_cache
     fi
 
-    echo -e "\n########################################"
-    echo -e "#### Deleting previous builds & .expo ######"
-    echo -e "########################################\n"
-    just remove-android-and-ios-expo-previous-builds
+    # echo -e "\n########################################"
+    # echo -e "#### Deleting previous builds & .expo ######"
+    # echo -e "########################################\n"
+    # just remove-android-and-ios-expo-previous-builds
 
 # If developing through cloud expo resources, install dependencies
 # This also sets the name of the project to src
@@ -129,15 +143,15 @@ A1_expo-setup-install eas_login="do_not_login":
     echo -e "########################################\n"
     if [ {{package_manager}}  == "npm" ]
     then
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
-            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
-        fi
+        # if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+        #     sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        # fi
         npm install -g eas-cli
     elif [ {{package_manager}} == "pnpm" ]
     then 
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
-            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
-        fi
+        # if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli']; then
+        #     sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        # fi
         pnpm add -g eas-cli
     fi
 
@@ -160,7 +174,7 @@ A1_expo-setup-install eas_login="do_not_login":
 A2_clean-configure-and-build-both-platforms: 
     # {{apply_packages}}
     # watchman watch-del '/Users/Kim/Documents/repos/my-mooder-frontend' ; watchman watch-project '/Users/Kim/Documents/repos/my-mooder-frontend'
-    just remove-android-and-ios-expo-previous-builds
+    # just remove-android-and-ios-expo-previous-builds
     just C_expo-build-configure 
     just D_expo-local-pre-build
 
@@ -217,6 +231,9 @@ C_expo-build-configure:
     #!/usr/bin/env bash
     set {{flags}}
 
+    # Configure Updates for any local changes made in ios or android apps
+    eas update:configure --platform all
+
     # Create Expo build configuration
     eas build:configure --platform all
 
@@ -266,17 +283,17 @@ E_local-expo-build-android:
     echo -e "\n#### Using {{package_manager}} ####"
     if [ {{package_manager}} == "npm" ];
     then
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; 
-        then
-            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
-        fi
+        # if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; 
+        # then
+        #     sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        # fi
         npm install -g eas-cli
     elif [ {{package_manager}} == "pnpm" ];
     then 
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; 
-        then
-            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
-        fi
+        # if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; 
+        # then
+        #     sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        # fi
         pnpm add -g eas-cli
     fi
 
@@ -288,6 +305,11 @@ E_local-expo-build-android:
 
     # Do you need to configure credentials? Use
     # just configure-android-credentials
+
+    echo -e "\n#######################################################"
+    echo "#### RUNNING COMMAND: eas update:configure --platform all"
+    echo -e "#########################################################\n
+    eas update:configure --platform all
 
     # Configure the build environments
     echo -e "\n############################################################"
@@ -319,19 +341,24 @@ E_local-expo-build-ios:
     echo -e "\n#### Using {{package_manager}} ####"
     if [ {{package_manager}} == "npm" ]
     then
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; then
-            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
-        fi
+        # if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; then
+        #     sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        # fi
         npm install -g eas-cli
     elif [ {{package_manager}} == "pnpm" ]
     then 
-        if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; then
-            sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
-        fi
+        # if [ -d '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli' ]; then
+        #     sudo rm -rf '/Users/$USER/.nvm/versions/node/v20.10.0/lib/node_modules/eas-cli'
+        # fi
         pnpm add -g eas-cli
     fi
     # Login to the Expo account
     # eas login
+
+    echo -e "\n#######################################################"
+    echo "#### RUNNING COMMAND: eas update:configure --platform all"
+    echo -e "#########################################################\n
+    eas update:configure --platform all
 
     # Configure the build environments
     echo -e "\n#######################################################"
@@ -376,24 +403,6 @@ E_local-expo-build-ios:
 
     # Submit to Android & Apple store, but these need to be production profiles
     # eas submit --platform ios --profile {{eas_build_profile}}
-
-
-# Install React Native Sample App
-z_DO_NOT_USE_react-native-new_install:
-    #!/usr/bin/env bash
-    source ~/.bashrc
-    set {{flags}}
-    
-    # Install additioanal package to include sqlite storage
-    if [ {{package_manager}} == "npm" ]
-    then
-        npm install --save react-native-sqlite-storage
-    elif [ {{package_manager}} == "pnpm" ]
-    then 
-        pnpm add sax react-native-sqlite-storage
-    fi
-
-    apt install gradles
 
 clear-cache:
     #!/usr/bin/env bash
