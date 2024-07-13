@@ -1,20 +1,15 @@
 import { LatLng, LeafletView, MapMarker, MapShape, MapShapeType, WebViewLeafletEvents, WebviewLeafletMessage } from 'react-native-leaflet-view-2';
 import { favoritePlaceData } from '@/assets/data/favorite-places';
-// import { Colors } from '@/app/constants/Colors';
 import ChartComponent from './ChartComponent';
-import { Dimensions, View, StyleSheet, SafeAreaView, Alert } from 'react-native';
-import { useMemo, useState } from 'react';
+import { Dimensions, StyleSheet, SafeAreaView, Alert } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
 import * as d3 from 'd3';
-// import { DivIcon } from 'leaflet';
-// import { DivIcon } from 'leaflet';
-// import Svg, { G, Path, Circle } from "react-native-svg";
-// import { DivIcon, Util } from 'leaflet';
-// import Loader from '@app/assets/images/loading-svgrepo-com.svg'
 // import { IFrameWebView } from './IFrameWebView';
 
 export function MapComponent() {
   // const [zoomLevel, setZoomLevel] = useState(7); // initial zoom level provided for MapContainer
   const [mapMessage, setMapMessage] = useState(''); // initial zoom level provided for MapContainer
+  const [mapMarkers, setMapMarkers] = useState<MapMarker[]>([]);
 
   const onMessageReceived = (message: WebviewLeafletMessage) => {
     switch (message.event) {
@@ -55,49 +50,25 @@ export function MapComponent() {
     lng: -90.8013689517975, 
   };
 
-  const pinInnerCircleRadius = 48
+  const circleRadius = 30
+  const innerCircleRadius = 5
   const mapIconColor = '#cc756b';
   const mapIconColorInnerCircle = '#ffffff';
 
-  // const iconSettings = {
-  //   mapIconUrl: '<svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 149 178"><path fill="${mapIconColor}" stroke="#FFFFFF" stroke-width="6" stroke-miterlimit="10"><circle cx="50" cy="50" r="{pinInnerCircleRadius}" fill="{mapIconColorInnerCircle}"</circle></svg>',
-  //   mapIconColor: '#cc756b',
-  //   mapIconColorInnerCircle: '#fff',
-  //   pinInnerCircleRadius: 48
-  // }
-
-  // icon normal state
-  // const _divIcon = new DivIcon({
-  //     className: "leaflet-data-marker",
-  //     html: '<svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 149 178"><path fill="${mapIconColor}" stroke="#FFFFFF" stroke-width="6" stroke-miterlimit="10"><circle cx="50" cy="50" r="{pinInnerCircleRadius}" fill="{mapIconColorInnerCircle}"</circle></svg>',
-  //     iconAnchor: [12, 32],
-  //     iconSize: [25, 30],
-  //     popupAnchor: [0, -28],
-  // });
-
-  var customSvg = `<svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 149 178"><path fill="${mapIconColor}" stroke="#FFFFFF" stroke-width="6" stroke-miterlimit="10"><circle cx="50" cy="50" r="${pinInnerCircleRadius}" fill="${mapIconColorInnerCircle}"</circle></svg>`
-  // // var iconUrl = 'data:image/svg+xml;base64,' + btoa(customSvg);
-
-  // var icon = L.icon( {
-  //           iconUrl: iconUrl,
-  //       } );
+  // https://www.svgrepo.com/svg/174809/empty-circle?edit=true
+  // const customSvg = `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+  //           <svg fill="${mapIconColor}" height="${circleRadius}px" width="${circleRadius}px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-24 -24 348.00 348.00" xml:space="preserve" stroke="${mapIconColorInnerCircle}" stroke-width="${innerCircleRadius}">
+  //           <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#fdfcfc" stroke-width="40"> <path d="M150,0C67.29,0,0,67.29,0,150s67.29,150,150,150s150-67.29,150-150S232.71,0,150,0z M150,270c-66.169,0-120-53.832-120-120 S83.831,30,150,30s120,53.832,120,120S216.168,270,150,270z"/> </g>
+  //           <g id="SVGRepo_iconCarrier"> <path d="M150,0C67.29,0,0,67.29,0,150s67.29,150,150,150s150-67.29,150-150S232.71,0,150,0z M150,270c-66.169,0-120-53.832-120-120 S83.831,30,150,30s120,53.832,120,120S216.168,270,150,270z"/> </g>
+  //           </svg>`
   
-  // Testing adding mapMarkers
-  let mapMarkers: MapMarker[] = []
-  favoritePlaceData.features.forEach(feature => {
-    mapMarkers.push({
-      id: feature.properties.index.toString(),
-      positions: {
-        lng: [feature.geometry.coordinates[0]], 
-        lat: [feature.geometry.coordinates[1]]
-      },
-      // divIcon: _divIcon,
-      icon: customSvg, //iconUrl,//'📍',
-      // icon: '📍',
-      // icon: Svg()
-      size: [32, 32],
-      // color: Colors.lightBlue
-    })});
+  const customSvgMaker = (color: string, size: number, innerColor: string=mapIconColorInnerCircle, innCircleRadius: number=innerCircleRadius) => {
+    return `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+            <svg fill="${color}" height="${size}px" width="${size}px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-24 -24 348.00 348.00" xml:space="preserve" stroke="${mapIconColorInnerCircle}" stroke-width="${innerCircleRadius}">
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#fdfcfc" stroke-width="40"> <path d="M150,0C67.29,0,0,67.29,0,150s67.29,150,150,150s150-67.29,150-150S232.71,0,150,0z M150,270c-66.169,0-120-53.832-120-120 S83.831,30,150,30s120,53.832,120,120S216.168,270,150,270z"/> </g>
+            <g id="SVGRepo_iconCarrier"> <path d="M150,0C67.29,0,0,67.29,0,150s67.29,150,150,150s150-67.29,150-150S232.71,0,150,0z M150,270c-66.169,0-120-53.832-120-120 S83.831,30,150,30s120,53.832,120,120S216.168,270,150,270z"/> </g>
+            </svg>`
+  }
 
   const colorize = useMemo(() => {
       // const colorScale = d3.scaleSequentialSymlog(d3.interpolateReds)
@@ -110,30 +81,48 @@ export function MapComponent() {
 
       return colorScale;
     }, [])
-
+  
+  let _mapMarkers: MapMarker[] = []
+  useEffect(() => {
+    // Testing adding mapMarkers
+    favoritePlaceData.features.forEach(feature => {
+      const colorVal = colorize(feature.properties.happy_score);
+      const sizeVal = feature.properties.calmness_score;
+        _mapMarkers.push({
+        id: feature.properties.index.toString(),
+        position: {
+          lng: feature.geometry.coordinates[0], 
+          lat: feature.geometry.coordinates[1]
+        },
+        icon: customSvgMaker(colorVal, sizeVal * 10), 
+        // icon: '○', //'📍',
+        size: [32, 32]
+      })});
+      setMapMarkers(_mapMarkers);
+    }, [favoritePlaceData.features]);
     
     // Load shapes for each location
-    let mapShapes: MapShape[] = []
+    // let mapShapes: MapShape[] = []
 
     // Add a scale for bubble size of Happy(10)/Sad(0) Score Mood Value
-    favoritePlaceData.features.forEach(feature => {
-      let curHappyScore = feature.properties.happy_score;
-      let curCalmScore = feature.properties.calmness_score;
-      mapShapes.push({
-          // color: Colors.lightGreen,
-          id: feature.properties.index.toString(),
-          color: colorize(curHappyScore),
-          positions: {
-            lng: feature.geometry.coordinates[0],
-            lat: feature.geometry.coordinates[1]
-          },
-          center: {
-            lng: feature.geometry.coordinates[0],
-            lat: feature.geometry.coordinates[1]
-          },
-          radius: curCalmScore * 1000,// * zoomLevel,
-          shapeType: MapShapeType.CIRCLE
-    })});
+    // favoritePlaceData.features.forEach(feature => {
+    //   let curHappyScore = feature.properties.happy_score;
+    //   let curCalmScore = feature.properties.calmness_score;
+    //   mapShapes.push({
+    //       // color: Colors.lightGreen,
+    //       id: feature.properties.index.toString(),
+    //       color: colorize(curHappyScore),
+    //       positions: {
+    //         lng: feature.geometry.coordinates[0],
+    //         lat: feature.geometry.coordinates[1]
+    //       },
+    //       center: {
+    //         lng: feature.geometry.coordinates[0],
+    //         lat: feature.geometry.coordinates[1]
+    //       },
+    //       radius: curCalmScore * 1000,// * zoomLevel,
+    //       shapeType: MapShapeType.CIRCLE
+    // })});
 
     const mapLayers = [
       {
@@ -165,18 +154,18 @@ export function MapComponent() {
           source={ */}
           <LeafletView
             onMessageReceived={onMessageReceived}
-            doDebug={true}
-            // mapMarkers={mapMarkers}
+            // doDebug={true}
+            mapMarkers={mapMarkers}
             // renderLoading={loader}
-            mapShapes={mapShapes}
+            // mapShapes={mapShapes}
             // mapLayers={mapLayers}
             mapCenterPosition={DEFAULT_COORDINATE}
             zoomControl={true}
             zoom={7}
           ></LeafletView>
-         {/* }
+        {/* }
        >
-       </IFrameWebView> */}
+       </IFrameWebView>  */}
     </SafeAreaView>
   );
 };
