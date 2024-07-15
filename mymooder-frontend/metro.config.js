@@ -9,6 +9,7 @@ config.resolver.assetExts.push(
     'db'
   );
 
+// config.resolver.resolverMainFields.push('main', 'react-native')
 
 // const ALIASES = {
 //     'react-native': 'react-native-web',
