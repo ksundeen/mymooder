@@ -17,7 +17,7 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
   const [mapShapes, setMapShapes] = useState<MapShape[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [_, showOpenButton] = useState(true);
-  const [clusterIconsVisible, setClusterIconsVisible] = useState(false);
+  const [clusterIconsVisible, setClusterIconsVisible] = useState(true);
   const [clusterButtonText, setClusterButtonText] = useState('Uncluster Icons');
 
   // const [mapPeriod, setMapPeriod] = React.useState<Period>(Period.week);
@@ -216,8 +216,8 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
                 <LeafletView
                 onMessageReceived={onMessageReceived}
                 // doDebug={true}
-                mapMarkers={[]}
-                mapShapes={mapShapes}
+                mapMarkers={mapMarkers}
+                mapShapes={[]}
                 // renderLoading={loader}
                 // mapLayers={mapLayers}
                 mapCenterPosition={DEFAULT_COORDINATE}
@@ -228,8 +228,8 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
               <LeafletView
                 onMessageReceived={onMessageReceived}
                 // doDebug={true}
-                mapMarkers={mapMarkers}
-                mapShapes={[]}
+                mapMarkers={[]}
+                mapShapes={mapShapes}
                 // renderLoading={loader}
                 // mapLayers={mapLayers}
                 mapCenterPosition={DEFAULT_COORDINATE}
@@ -274,9 +274,9 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
                 onPress={() => {
                   setClusterIconsVisible(!clusterIconsVisible); 
                   if (clusterIconsVisible) {
-                    setClusterButtonText('See Clustered Icons');
-                  } else {
                     setClusterButtonText('Uncluster Icons');
+                  } else {
+                    setClusterButtonText('See Clustered Icons');
                   }
                 } }>
               <Text style={styles.textStyle}>{clusterButtonText}</Text>

@@ -3,8 +3,9 @@ import { TabBarIcon } from '../components/navigation/TabBarIcon';
 import { Colors } from '@/app/constants/Colors';
 import { useColorScheme } from '@/app/hooks/useColorScheme';
 import { AntDesign, FontAwesome, Fontisto } from '@expo/vector-icons';
-import { ActivityIndicator, View, Text } from 'react-native';
-import { SQLiteProvider } from 'expo-sqlite';
+import { ActivityIndicator, View, Text, StyleSheet, Pressable } from 'react-native';
+// import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite';
 import { Asset } from 'expo-asset';
 import * as FileSystem from "expo-file-system";
 import { NavigationContainer } from "@react-navigation/native";
@@ -13,13 +14,13 @@ import Charts from './charts';
 import Map from './map';
 import HomeScreen from './index';
 import TabTwoScreen from './mood';
-import initDatabase from '../database/sqlite';
+// import initDatabase from '../database/sqlite';
 
 const Tab = createBottomTabNavigator();
 
-const loadDatabase = async (seedDb: boolean = false) => {
+const loadDatabase = async () => {
   const dbName = "mymooder.db";
-  const dbAsset = require("../database/mymooder.db");
+  const dbAsset = require("../../assets/mymooder.db");
   const dbUri = Asset.fromModule(dbAsset).uri;
   const dbFilePath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
 
@@ -29,12 +30,13 @@ const loadDatabase = async (seedDb: boolean = false) => {
       `${FileSystem.documentDirectory}SQLite`,
       { intermediates: true }
     );
-    await FileSystem.downloadAsync(dbUri, dbFilePath);
+  await FileSystem.downloadAsync(dbUri, dbFilePath);
   };
 
-  if (seedDb) {
-    await initDatabase((dbAsset));
-  }
+
+  // if (seedDb) {
+  //   await initDatabase((dbAsset));
+  // }
 };
 
 export default function TabLayout() {
@@ -43,16 +45,23 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   useEffect(() => {
-    loadDatabase(false)
-      .then(() => setDbLoaded(true))
-      .catch((e) => console.error(e));
-  }, []);
+    const loadData = async () => {
+      await loadDatabase()
+        .then(() => setDbLoaded(true))
+        .catch((e) => console.error(e));
+    }
+    loadData();
+  }, [dbLoaded]);
   
   if (!dbLoaded)
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, top: 15}}>
         <ActivityIndicator size={"large"} />
         <Text>Loading Database...</Text>
+        <Pressable
+          style={[styles.reloadButton]}
+          onPress={() => {loadDatabase()} }>
+        </Pressable>
       </View>
     );
 
@@ -66,7 +75,7 @@ export default function TabLayout() {
           </View>
         }
       >
-        <SQLiteProvider databaseName="mymooder.db" useSuspense>
+        <SQLite.SQLiteProvider databaseName="mymooder.db" useSuspense>
           <Tab.Navigator
               initialRouteName="Index"
               screenOptions={{
@@ -115,8 +124,18 @@ export default function TabLayout() {
               }}
             />
             </Tab.Navigator>
-        </SQLiteProvider>
+        </SQLite.SQLiteProvider>
       </Suspense>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  reloadButton: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    position: 'absolute',
+    bottom: 10
+  }
+});
