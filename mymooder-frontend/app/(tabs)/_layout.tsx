@@ -6,64 +6,78 @@ import { AntDesign, FontAwesome, Fontisto } from '@expo/vector-icons';
 import { ActivityIndicator, View, Text, StyleSheet, Pressable } from 'react-native';
 // import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
 import * as SQLite from 'expo-sqlite';
-import { Asset } from 'expo-asset';
-import * as FileSystem from "expo-file-system";
+// import { Asset } from 'expo-asset';
+// import * as FileSystem from "expo-file-system";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Charts from './charts';
 import Map from './map';
 import HomeScreen from './index';
 import TabTwoScreen from './mood';
-// import initDatabase from '../database/sqlite';
+// import initDatabaseIfNeeded from '../database/sqliteInit';
 
 const Tab = createBottomTabNavigator();
 
-const loadDatabase = async () => {
-  const dbName = "mymooder.db";
-  const dbAsset = require("../../assets/mymooder.db");
-  const dbUri = Asset.fromModule(dbAsset).uri;
-  const dbFilePath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
+// const loadDatabase = async () => {
+//   const dbName = "mymooder.db";
+//   const dbAsset = require("../../assets/mymooder.db");
+//   const dbUri = Asset.fromModule(dbAsset).uri;
+//   console.log('dbUri: ' + dbUri)
 
-  const fileInfo = await FileSystem.getInfoAsync(dbFilePath);
-  if (!fileInfo.exists) {
-    await FileSystem.makeDirectoryAsync(
-      `${FileSystem.documentDirectory}SQLite`,
-      { intermediates: true }
-    );
-  await FileSystem.downloadAsync(dbUri, dbFilePath);
-  };
+//   const dbFilePath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
+//   console.log('dbFile ' + dbFilePath)
+
+//   const fileInfo = await FileSystem.getInfoAsync(dbFilePath);
+//   console.log('fileInfo: ' + JSON.stringify(fileInfo))
+
+//   if (!fileInfo.exists) {
+//     await FileSystem.makeDirectoryAsync(
+//       `${FileSystem.documentDirectory}SQLite`,
+//       { intermediates: true }
+//     );
+//   await FileSystem.downloadAsync(dbUri, dbFilePath);
+//   };
 
 
   // if (seedDb) {
   //   await initDatabase((dbAsset));
   // }
-};
+// };
 
 export default function TabLayout() {
-  const [dbLoaded, setDbLoaded] = useState(false);
+  // const [dbLoaded, setDbLoaded] = useState(false);
+  // const [dataRequestStatus, setDataRequestStatus] = useState("Could Not Access")
+  // const [buttonClicked, setButtonClicked] = useState(false);
 
   const colorScheme = useColorScheme();
 
-  useEffect(() => {
-    const loadData = async () => {
-      await loadDatabase()
-        .then(() => setDbLoaded(true))
-        .catch((e) => console.error(e));
-    }
-    loadData();
-  }, [dbLoaded]);
+  // useEffect(() => {
+    // const loadData = async () => {
+    //   await loadDatabase()
+    //     .then(() => setDbLoaded(true))
+    //     .catch((e) => console.error(e));
+    // }
+    // loadData();
+  // }, [dbLoaded]);
   
-  if (!dbLoaded)
-    return (
-      <View style={{ flex: 1, top: 15}}>
-        <ActivityIndicator size={"large"} />
-        <Text>Loading Database...</Text>
-        <Pressable
-          style={[styles.reloadButton]}
-          onPress={() => {loadDatabase()} }>
-        </Pressable>
-      </View>
-    );
+  // const onPressButton = async () => {
+  //   setDataRequestStatus('Reloading...');
+  //   setButtonClicked(true);
+  //   await loadDatabase();
+  // }
+
+  // if (!dbLoaded)
+  //   return (
+  //     <View style={styles.container}>
+  //       <ActivityIndicator size={"large"} />
+  //       <Text>{dataRequestStatus}</Text>
+  //       <Pressable
+  //         style={buttonClicked ? [styles.buttonClicked] : [styles.reloadButton]}
+  //         onPress={onPressButton}>          
+  //         <Text style={styles.textStyle}>Reload Data</Text>
+  //       </Pressable>
+  //     </View>
+  //   );
 
   return (
     <NavigationContainer independent>
@@ -75,7 +89,9 @@ export default function TabLayout() {
           </View>
         }
       >
-        <SQLite.SQLiteProvider databaseName="mymooder.db" useSuspense>
+        {/* <SQLite.SQLiteProvider databaseName="mymooder.db" onInit={initDatabaseIfNeeded} useSuspense> */}
+        <SQLite.SQLiteProvider databaseName="mymooder.db" assetSource={{ assetId: require('../../assets/mymooder.db') }}>
+
           <Tab.Navigator
               initialRouteName="Index"
               screenOptions={{
@@ -131,11 +147,30 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+ },
   reloadButton: {
     borderRadius: 20,
     padding: 10,
     elevation: 2,
     position: 'absolute',
-    bottom: 10
+    bottom: 50,
+    backgroundColor: Colors.lightBlue
+  },
+  buttonClicked: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    position: 'absolute',
+    bottom: 50,
+    backgroundColor: Colors.lightGrey
+  },
+  textStyle: {
+    color: 'balck',
+    fontWeight: 'bold',
+    textAlign: 'center',
   }
 });

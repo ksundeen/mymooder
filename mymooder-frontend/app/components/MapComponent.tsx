@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 import { useSQLiteContext } from 'expo-sqlite';
 import Svg from 'react-native-svg';
 import { Colors } from '../constants/Colors';
-import { MoodValue } from '../database/interfaces/MoodValue';
+import { MoodValue } from '../database/interfaces/interfaces';
 
 // import { IFrameWebView } from './IFrameWebView';
 
@@ -113,7 +113,7 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
 
   useMemo(() => {
     // Testing adding mapMarkers
-    if (mapData) {
+    // if (mapData) {
       mapData.forEach(feature => {
         const colorVal = colorize(feature.happy_score);
         const sizeVal = feature.calmness_score;
@@ -127,22 +127,22 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
           size: [32, 32]
         })});
         setMapMarkers(_mapMarkers);
-    } else {
-      favoritePlaceData.features.forEach(feature => {
-        const colorVal = colorize(feature.properties.happy_score);
-        const sizeVal = feature.properties.calmness_score;
-          _mapMarkers.push({
-          id: feature.properties.index.toString(),
-          position: {
-            lat: feature.geometry.coordinates[1],
-            lng: feature.geometry.coordinates[0] 
-          },
-          icon: customSvgMaker(colorVal, (sizeVal + 1) * 20), 
-          // icon: '○', //'📍',
-          size: [32, 32]
-        })});
-        setMapMarkers(_mapMarkers);
-    };
+    // } else {
+    //   favoritePlaceData.features.forEach(feature => {
+    //     const colorVal = colorize(feature.properties.happy_score);
+    //     const sizeVal = feature.properties.calmness_score;
+    //       _mapMarkers.push({
+    //       id: feature.properties.index.toString(),
+    //       position: {
+    //         lat: feature.geometry.coordinates[1],
+    //         lng: feature.geometry.coordinates[0] 
+    //       },
+    //       icon: customSvgMaker(colorVal, (sizeVal + 1) * 20), 
+    //       // icon: '○', //'📍',
+    //       size: [32, 32]
+    //     })});
+        // setMapMarkers(_mapMarkers);
+    // };
   }, [mapData]);
 
     // Load shapes for each location
@@ -163,7 +163,7 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
               lat: feature.latitude_x,
               lng: feature.longitude_y
             },
-            radius: curCalmScore * 1000,// * zoomLevel,
+            radius: curCalmScore * 3000,// * zoomLevel,
             shapeType: MapShapeType.CIRCLE
       })});
       setMapShapes(_mapShapes);
@@ -194,7 +194,7 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
 
   return (
     <View style={styles.container}>
-
+      <Svg width={width} height={height} />
       {/* <IFrameWebView 
           source={ */}
         {/* <SegmentedControl
@@ -237,7 +237,6 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
                 zoom={7}
               ></LeafletView>
             }
-            <Svg width={width} height={height} />
             <Modal
               animationType='fade'
               transparent={true}

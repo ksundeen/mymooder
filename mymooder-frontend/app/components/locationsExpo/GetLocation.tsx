@@ -1,8 +1,16 @@
 import { useState } from "react";
 import * as Location from "expo-location";
-import { View, Text, StyleSheet, Button, Linking } from "react-native";
+import { View, Text, StyleSheet, Linking } from "react-native";
+import ButtonComponent from "../ButtonComponent";
 
-export function GetLocation() {
+export function GetLocation(props: {
+    onDataReceivedCaller: Function, 
+    parentClearState: boolean, 
+    setParentShouldClearState: Function}
+) {
+
+    const { onDataReceivedCaller, parentClearState, setParentShouldClearState } = props;
+
     const defaultPosition: Location.LocationObject = {
         coords: {
             latitude: 0, //43.233224,
@@ -16,10 +24,9 @@ export function GetLocation() {
             timestamp: 0
     };
 
-    const defaultLoadingText = 'Loading...';
-
     const [userLocation, setUserLocation] = useState(defaultPosition);
-    const [userLocationText, setUserLocationText] = useState('');
+    const [userLocationTextLat, setUserLocationTextLat] = useState('');
+    const [userLocationTextLong, setUserLocationTextLong] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
 
     // Function to Send Location to twitter
@@ -36,15 +43,32 @@ export function GetLocation() {
             console.log(error);
         }
     };
-
+    
     const clearLocation = () => {
-        setUserLocationText('')
-    }
+        setUserLocationTextLat('')
+        setUserLocationTextLong('')
+        setUserLocation(defaultPosition)
+        setErrorMsg('')
+        setParentShouldClearState(false)
+        onDataReceivedCaller({
+            latitude: 0,
+            longitude: 0
+        })
+        };
+        
+    if (parentClearState && userLocation != defaultPosition && userLocationTextLat != '' && userLocationTextLong != '') {
+        clearLocation()
+    };
 
-    const requestPermissions = async () => {
-        let _userLocationText = defaultLoadingText
+    const defaultLoadingText = 'Loading...';
 
-        while (_userLocationText === defaultLoadingText){
+    const requestPermissionsAndLocation = async () => {
+        let _userLocationTextLat = defaultLoadingText
+        let _userLocationTextLong = defaultLoadingText
+        setUserLocationTextLat(defaultLoadingText)
+        setUserLocationTextLong(defaultLoadingText)
+
+        while (_userLocationTextLat === defaultLoadingText || _userLocationTextLong === defaultLoadingText){
             let _errMsg = errorMsg
             let _userLocation = defaultPosition
             
@@ -59,34 +83,45 @@ export function GetLocation() {
     
             if (_errMsg !== '') {
                 setErrorMsg(_errMsg)
-                setUserLocationText(_errMsg)
-                _userLocationText = _errMsg
+                _userLocationTextLat = _errMsg
+                setUserLocationTextLat(_errMsg)
+                setUserLocationTextLong(_errMsg)
             } else if (_userLocation !== defaultPosition) {
                 setUserLocation(_userLocation)
-                _userLocationText = JSON.stringify(_userLocation, null, 4)
-                setUserLocationText(_userLocationText)
+                // Send locations to parent component to save
+                onDataReceivedCaller({
+                    latitude: _userLocation.coords.latitude,
+                    longitude: _userLocation.coords.longitude
+                })
+                _userLocationTextLat = (Math.round(_userLocation.coords.latitude * 100) / 100).toFixed(3)
+                _userLocationTextLong = (Math.round(_userLocation.coords.longitude * 100) / 100).toFixed(3)
             } else {
-                _userLocationText = 'Still Loading. Request Again.'
-                setUserLocationText(_userLocationText)
+                _userLocationTextLat = 'Still Loading...'
+                _userLocationTextLong = 'Still Loading...'
             }; 
-            console.log(`Location Status: ${_userLocationText}`)
+            setUserLocationTextLat(_userLocationTextLat)
+            setUserLocationTextLong(_userLocationTextLong)
+            setUserLocation(_userLocation)
+            console.log(`Location lat, long: ${_userLocationTextLat}, ${_userLocationTextLong}`)
         };
 
     };
 
     return (
-        <View>
-            { userLocationText === '' ?
-                <Button title="Request Location" onPress={requestPermissions}/>
-                :
-                <View>
-                    <Text style={styles.paragraph}>{userLocationText}</Text>
-                    <Button title="Reset" onPress={clearLocation}/>
-                </View>
-            }
-            <Button title="Send Location" onPress={sendLocation} />
-        </View>
-
+        <>
+            <View style={styles.container}>
+                { (userLocationTextLat === '' || userLocationTextLong === '') ?
+                    <ButtonComponent buttonWidth={150} onPress={() => requestPermissionsAndLocation()} text='Request Location'/>
+                    :
+                    <View style={styles.paragraph}>
+                        <Text>Latitude: {userLocationTextLat}</Text>
+                        <Text style={styles.textParagraph}>Longitude: {userLocationTextLong}</Text>
+                        <ButtonComponent buttonWidth={75} onPress={() => clearLocation()} text='Reset'/>
+                    </View>
+                }
+            </View>
+            <ButtonComponent buttonWidth={150} onPress={() => sendLocation()} text='Open in Google Maps'/>
+        </>
     )
 };
 
@@ -96,11 +131,24 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       padding: 10,
+      paddingBottom: 25,
     },
     paragraph: {
       fontSize: 12,
+      padding: 5,
+      margin: 5,
       textAlign: 'center',
     },
+    buttonRow: {
+        flex: 0.07,
+        padding: 10,
+        marginHorizontal: "auto",
+        flexDirection: "row"
+      },
+    textParagraph: {
+        paddingBottom: 10,
+        paddingRight: 10,
+    }
   });
 
 export default GetLocation;

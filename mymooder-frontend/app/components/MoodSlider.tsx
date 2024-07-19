@@ -1,33 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Slider, { SliderProps } from '@react-native-community/slider';
 import { Colors } from '@/app/constants/Colors';
 
-export function MoodSlider(props: {clearState: boolean}) {
-    const { clearState } = props
+export function MoodSlider(props: {
+    name: string, 
+    onDataReceivedCaller: Function, 
+    parentClearState: boolean, 
+    setParentShouldClearState: Function}
+  ) {
 
-    const SliderBasic = (props: SliderProps) => {
-        const [value, setValue] = useState(props.value ?? 0);
+    const { name, onDataReceivedCaller, parentClearState, setParentShouldClearState} = props
 
-        // Set value based on clearState value sent from parent component
-        if (clearState){
-            setValue(0)
-        }
+    const [sliderState, setSliderState] = useState(0);
 
-        return (
-          <View style={{alignItems: 'center'}}>
-            <Text style={styles.text}>{value && +value.toFixed(3)}</Text>
-            <Slider
-              step={1.0}
-              style={[styles.slider, props.style]}
-              {...props}
-              value={value}
-              onValueChange={setValue}
-            />
-          </View>
-        );
+    const setSliderVal = (val: number) => {
+      if (name === 'sliderValHappy') {
+        outVal = {sliderValHappy: val}
+      } else if (name === 'sliderValCalm') {
+        outVal = {sliderValCalm: val}
       };
 
+      // Send to parent component
+      onDataReceivedCaller(outVal);
+      setSliderState(val);
+      console.log(outVal);
+    };
+
+    let outVal = {};
+
+    const SliderBasic = (props: SliderProps) => {
+      // Set value based on clearState value sent from parent component
+      if (parentClearState) {
+        setSliderState(0);
+        setParentShouldClearState(false);
+      };
+      
+      return (
+        <View style={{alignItems: 'center'}}>
+          <Text style={styles.text}>{sliderState && +sliderState.toFixed(3)}</Text>
+          <Slider
+            step={1.0}
+            style={[styles.slider, props.style]}
+            {...props}
+            value={sliderState}
+            onValueChange={setSliderVal}
+          />
+        </View>
+      );
+    };
 
     const SlidingSteps = (props: SliderProps) => {
         return (

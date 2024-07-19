@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: 250,
-    width: 425,
+    width: 450,
     position: 'relative',
   },
 });

@@ -154,30 +154,30 @@ export function ChartComponent(props: {width: number, height: number}) {
     }, []); 
 
     return (
-        // <View style={styles.container}>
+        <View style={styles.container}>
             <Svg
                 width={width}
                 height={height / 2}
             >
-                {/* <G> */}
+                <G>
                 {/* Background world fill */}
-                {/* <Circle
+                <Circle
                     cx={width / 2}
                     cy={mapExtent / 2}
                     r={mapExtent / 2}
                     fill={"#3b454f"}
-                /> */}
+                />
                 {/* World shapes */}
-                {/* {countryList.map(x => x)}
-                {happyPointsVisible ? happyPointList.map(x => x): ''} */}
-                {/* </G> */}
+                {countryList.map(x => x)}
+                {happyPointsVisible ? happyPointList.map(x => x): ''}
+                </G>
             </Svg>
-            // {/* <ButtonComponent 
-            //     buttonStyle={{opacity: 0.5}}
-            //     onPress={toggleHappyPoints}
-            //     text={"Toggle Points"}
-            // ></ButtonComponent>  */}
-        // </View>
+            <ButtonComponent 
+                buttonStyle={{opacity: 0.5}}
+                onPress={toggleHappyPoints}
+                text={"Toggle Points"}
+            ></ButtonComponent>
+        </View>
     );
 };
 

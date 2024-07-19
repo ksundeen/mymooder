@@ -308,7 +308,7 @@ E_local-expo-build-android:
 
     echo -e "\n#######################################################"
     echo "#### RUNNING COMMAND: eas update:configure --platform all"
-    echo -e "#########################################################\n
+    echo -e "#########################################################\n"
     eas update:configure --platform all
 
     # Configure the build environments
@@ -357,7 +357,7 @@ E_local-expo-build-ios:
 
     echo -e "\n#######################################################"
     echo "#### RUNNING COMMAND: eas update:configure --platform all"
-    echo -e "#########################################################\n
+    echo -e "#########################################################\n"
     eas update:configure --platform all
 
     # Configure the build environments
