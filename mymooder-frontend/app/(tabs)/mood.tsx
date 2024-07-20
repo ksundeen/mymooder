@@ -1,5 +1,5 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform, Button, Text, View, Pressable } from 'react-native';
+// import Ionicons from '@expo/vector-icons/Ionicons';
+import { StyleSheet, Image, Text, View, Modal, Pressable, Alert } from 'react-native';
 import { Collapsible } from '../components/Collapsible';
 import ParallaxScrollView from '../components/ParallaxScrollView';
 import { ThemedText } from '../components/ThemedText';
@@ -22,19 +22,21 @@ import {
 import DatePickerButton from '../components/DatePickerButton';
 import ButtonComponent from '../components/ButtonComponent';
 
-// import { crudMoodValuesMethods} from '@/app/database/crudMethods'
+import { crudMoodValuesMethods} from '@/app/database/crudMethods'
 
-// const { 
-//   moodValues, 
-//   getMoodValues, 
-//   addMoodValue, 
-//   updateMoodValue, 
-//   deleteMoodValue
-// } = crudMoodValuesMethods();
+const { 
+  // moodValues, 
+  // getMoodValues, 
+  addMoodValue, 
+  updateMoodValue, 
+  deleteMoodValue
+} = crudMoodValuesMethods();
 
 export default function TabTwoScreen() {
 
   const db = useSQLiteContext();
+  const [savingStatus, setSavingStatus] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   // Variables used to clear state in child components
   //----------------------------------------------------------------------------
@@ -44,15 +46,13 @@ export default function TabTwoScreen() {
   const [shouldClearLocationState, setShouldClearLocationState] = useState<boolean>(false);
   //----------------------------------------------------------------------------
 
-  // const [shouldSaveValues, setShouldSaveValues] = useState<boolean>(false);
-
   const [moodValue, setMoodValue] = useState<MoodValue>(
     {
       id: -9,
       latitude_x: 0,
       longitude_y: 0,
       name: 'Test',
-      datetime: new Date(),
+      datetime: '',
       calmness_score: 0,
       happy_score: 0,
       people: '',
@@ -67,35 +67,35 @@ export default function TabTwoScreen() {
   // Variables used to send child component values back to parent
   //--------------------------------------------------------------------------------
   const [receivedChildDate, setReceivedParentDate] = useState<DateValues>({dateVal: new Date()});
-  const [previousReceivedChildDate, setPreviousReceivedParentDate] = useState<DateValues | null>({dateVal: null});
+  // const [previousReceivedChildDate, setPreviousReceivedParentDate] = useState<DateValues>({dateVal: receivedChildDate.dateVal});
 
   const [receivedChildSliderHappyData, setReceivedParentSliderHappyData] = useState<HappyValues>({sliderValHappy: 0});
-  const [previousReceivedChildSliderHappyData, setPreviousReceivedParentSliderHappyData] = useState<HappyValues>({sliderValHappy: 0});
+  // const [previousReceivedChildSliderHappyData, setPreviousReceivedParentSliderHappyData] = useState<HappyValues>({sliderValHappy: 0});
 
   const [receivedChildSliderCalmData, setReceivedParentSliderCalmData] = useState<CalmValues>({sliderValCalm: 0});
-  const [previousReceivedChildSliderCalmData, setPreviousReceivedParentSliderCalmData] = useState<CalmValues>({sliderValCalm: 0});
+  // const [previousReceivedChildSliderCalmData, setPreviousReceivedParentSliderCalmData] = useState<CalmValues>({sliderValCalm: 0});
 
   const [receivedChildPeopleData, setReceivedParentPeopleData] = useState<PeopleValues>({peopleValues: ''});
-  const [previousReceivedChildPeopleData, setPreviousReceivedParentPeopleData] = useState<PeopleValues>({peopleValues: ''});
+  // const [previousReceivedChildPeopleData, setPreviousReceivedParentPeopleData] = useState<PeopleValues>({peopleValues: ''});
 
   const [receivedChildActivitiesData, setReceivedParentActivitiesData] = useState<ActivitiesValues>({activitiesValues: ''});
-  const [previousReceivedChildActivitiesData, setPreviousReceivedParentActivitiesData] = useState<ActivitiesValues>({activitiesValues: ''});
+  // const [previousReceivedChildActivitiesData, setPreviousReceivedParentActivitiesData] = useState<ActivitiesValues>({activitiesValues: ''});
 
   const [receivedChildWeatherData, setReceivedParentWeatherData] = useState<WeatherValues>({weatherValues: ''});
-  const [previousReceivedChildWeatherData, setPreviousReceivedParentWeatherData] = useState<WeatherValues>({weatherValues: ''});
+  // const [previousReceivedChildWeatherData, setPreviousReceivedParentWeatherData] = useState<WeatherValues>({weatherValues: ''});
 
   const [receivedChildWeatherAPIData, setReceivedParentWeatherAPIData] = useState<WeatherAPIValues>({weatherAPIValues: '', weatherAPITemp: 0});
-  const [previousReceivedChildWeatherAPIData, setPreviousReceivedParentWeatherAPIData] = useState<WeatherAPIValues>({weatherAPIValues: '', weatherAPITemp: 0});
+  // const [previousReceivedChildWeatherAPIData, setPreviousReceivedParentWeatherAPIData] = useState<WeatherAPIValues>({weatherAPIValues: '', weatherAPITemp: 0});
 
   const [receivedChildLocationData, setReceivedParentLocationData] = useState<LocationValues>({latitude: 0, longitude: 0});
-  const [previousReceivedChildLocationData, setPreviousReceivedParentLocationData] = useState<LocationValues>({latitude: 0, longitude: 0});
+  // const [previousReceivedChildLocationData, setPreviousReceivedParentLocationData] = useState<LocationValues>({latitude: 0, longitude: 0});
   //--------------------------------------------------------------------------------
 
   // Callback function to receive data from the happiness score slider
   const onDataReceivedDateCaller = (data: DateValues) => {
     setReceivedParentDate(data)
     let newMoodValue = moodValue
-    newMoodValue.datetime = data.dateVal
+    newMoodValue.datetime = data.dateVal.toLocaleDateString()
     setMoodValue(newMoodValue)
   };
 
@@ -158,13 +158,14 @@ export default function TabTwoScreen() {
 
 
   const updateMoodValues = () => {
+    setSavingStatus(true)
     setMoodValue(
       {
         id: -9,
         latitude_x: receivedChildLocationData.latitude,
         longitude_y: receivedChildLocationData.longitude,
         name: 'Test',
-        datetime: receivedChildDate.dateVal,
+        datetime: receivedChildDate.dateVal.toLocaleTimeString(),
         calmness_score: receivedChildSliderCalmData.sliderValCalm,
         happy_score: receivedChildSliderHappyData.sliderValHappy,
         people: receivedChildPeopleData.peopleValues,
@@ -175,18 +176,16 @@ export default function TabTwoScreen() {
         notes: 'Test Notes'
       }
     )
+    setSavingStatus(false)
   };
 
-  const saveToDb = () => {
-    // setShouldSaveValues(true)
-
+  const saveToDb = async () => {
     // To receive any state updates from child components for values.
     updateMoodValues()
 
-  //   addMoodValue(db, moodValue)
+    await addMoodValue(db, moodValue)
+    setModalVisible(true)
     console.log(moodValue)
-
-    // setShouldSaveValues(false)
   };
 
   // Keeps checking if all states are returned to false from child components
@@ -210,6 +209,26 @@ export default function TabTwoScreen() {
 
   return (
     <>
+      <Modal
+        animationType='fade'
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.container}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Saved!</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => {setModalVisible(!modalVisible);}}>
+              <Text style={styles.textStyle}>Close</Text>
+              <Text style={styles.smallModalText}>~tap to close~</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
       <ParallaxScrollView
         headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
         headerImage={<Image source={require('@/assets/images/emotional-rollercoaster-grey.png')} style={styles.headerImage}
@@ -305,7 +324,11 @@ export default function TabTwoScreen() {
       </ParallaxScrollView>
       <View style={styles.buttonRow}>
         <ButtonComponent buttonWidth={75} onPress={() => clearAllStates()} text='Clear'/>
-        <ButtonComponent buttonWidth={75} onPress={() => saveToDb()} text='Save' />
+          {savingStatus ? 
+            <ButtonComponent buttonWidth={100} onPress={() => {}} text='Saving...' />
+            :
+            <ButtonComponent buttonWidth={75} onPress={() => saveToDb()} text='Save' />
+          }
       </View>
       </>
   );
@@ -337,4 +360,38 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  smallModalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontSize: 10
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    position: 'absolute',
+    bottom: 10
+  },
+  buttonClose: {
+    backgroundColor: Colors.lightBlue
+    },
 });

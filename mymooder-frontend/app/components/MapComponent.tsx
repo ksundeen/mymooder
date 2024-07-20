@@ -1,28 +1,21 @@
 import { LatLng, LeafletView, MapMarker, MapShape, MapShapeType, WebViewLeafletEvents, WebviewLeafletMessage } from 'react-native-leaflet-view-2';
-import { favoritePlaceData } from '@/assets/data/favorite-places';
-import { Dimensions, StyleSheet, Text, Image, SafeAreaView, Modal, Alert, View, Pressable } from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
+// import { favoritePlaceData } from '@/assets/data/favorite-places';
+import { Dimensions, StyleSheet, Alert, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
 import * as d3 from 'd3';
 import { useSQLiteContext } from 'expo-sqlite';
 import Svg from 'react-native-svg';
-import { Colors } from '../constants/Colors';
 import { MoodValue } from '../database/interfaces/interfaces';
 
 // import { IFrameWebView } from './IFrameWebView';
 
 const {height, width} = Dimensions.get("window");              
 
-export function MapComponent({mapData}: {mapData: MoodValue[]}) {
+export function MapComponent({mapData, clusterIconsVisible}: 
+  {mapData: MoodValue[], clusterIconsVisible: boolean}) {
   const [mapMarkers, setMapMarkers] = useState<MapMarker[]>([]);
   const [mapShapes, setMapShapes] = useState<MapShape[]>([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [_, showOpenButton] = useState(true);
-  const [clusterIconsVisible, setClusterIconsVisible] = useState(true);
-  const [clusterButtonText, setClusterButtonText] = useState('Uncluster Icons');
-
   // const [mapPeriod, setMapPeriod] = React.useState<Period>(Period.week);
-
-  const db = useSQLiteContext();
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -237,49 +230,6 @@ export function MapComponent({mapData}: {mapData: MoodValue[]}) {
                 zoom={7}
               ></LeafletView>
             }
-            <Modal
-              animationType='fade'
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
-                setModalVisible(!modalVisible);
-              }}>
-              <View style={styles.container}>
-                <View style={styles.modalView}>
-                  <Text style={styles.modalText}>Legend</Text>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => {setModalVisible(!modalVisible); showOpenButton(!modalVisible)}}>
-                    <Text style={styles.textStyle}>Hide Legend</Text>
-                    <Image
-                      style={styles.legend}
-                      source={require('../../assets/images/map-legend.png')}
-                    />
-                    <Text style={styles.smallModalText}>~tap to close~</Text>
-                  </Pressable>
-                </View>
-              </View>
-            </Modal>
-            {modalVisible ? <></> :
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => {setModalVisible(true); showOpenButton(!modalVisible)}}>
-                <Text style={styles.textStyle}>Legend</Text>
-              </Pressable>
-            }
-            <Pressable
-                style={[styles.clusterButton]}
-                onPress={() => {
-                  setClusterIconsVisible(!clusterIconsVisible); 
-                  if (clusterIconsVisible) {
-                    setClusterButtonText('Uncluster Icons');
-                  } else {
-                    setClusterButtonText('See Clustered Icons');
-                  }
-                } }>
-              <Text style={styles.textStyle}>{clusterButtonText}</Text>
-            </Pressable>
         {/* }
 
        >
@@ -306,56 +256,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    position: 'absolute',
-    bottom: 10
-  },
-  buttonClose: {
-    backgroundColor: Colors.lightBlue
-    },
-  buttonOpen: {
-    backgroundColor: Colors.lightBlue
-  },
-  clusterButton: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 3,
-    position: 'absolute',
-    bottom: 10,
-    right: 5,
-    backgroundColor: Colors.lightBlue
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  smallModalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-    fontSize: 10
   },
 });

@@ -31,10 +31,14 @@ export function MoodSlider(props: {
 
     const SliderBasic = (props: SliderProps) => {
       // Set value based on clearState value sent from parent component
-      if (parentClearState) {
-        setSliderState(0);
-        setParentShouldClearState(false);
-      };
+      useEffect(() => {
+        if (parentClearState) {
+          if (sliderState != 0) {
+            setSliderState(0);
+          }
+          setParentShouldClearState(false);
+        };
+      })
       
       return (
         <View style={{alignItems: 'center'}}>

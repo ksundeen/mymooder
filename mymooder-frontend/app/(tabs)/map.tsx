@@ -1,27 +1,32 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MapComponent } from '../components/MapComponent';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
 import { MoodValue } from '../database/interfaces/interfaces';
+import { crudMoodValuesMethods} from '@/app/database/crudMethods'
+import ButtonComponent from '../components/ButtonComponent';
+import { ModalComponent } from '../components/ModalComponent';
 
+const { getMoodValues } = crudMoodValuesMethods();
 export default function Map() {
   const [mapData, setMapData] = useState<MoodValue[]>([]);
+  const [clusterIconsVisible, setClusterIconsVisible] = useState<boolean>(false)
+
   const db = useSQLiteContext();
   
-  async function getMapData() {    
-    const result: MoodValue[] = await db.getAllAsync<MoodValue>(
-      `SELECT * FROM mood_values WHERE id > ?;`, [0]);
-      setMapData(result);
-      // console.log(" In map.tsx, result = " + JSON.stringify(result));
-    };
-      
-  useMemo(() => {
-    getMapData();
+  const refreshMap = async () => {
+    setMapData(await getMoodValues(db));
+  }        
+
+  useMemo(async () => {
+    setMapData(await getMoodValues(db));
   }, []);
   
   return (
     <SafeAreaView style={styles.root}>
-      <MapComponent mapData={mapData}/>
+      <MapComponent mapData={mapData} clusterIconsVisible={clusterIconsVisible}/>
+      <ModalComponent clusterIconsVisible={clusterIconsVisible} setClusterIconsVisibleCaller={setClusterIconsVisible}/>
+      <ButtonComponent diffFlex={0.05} diffPadding={17} buttonWidth={110} onPress={() => refreshMap()} text='Refresh Map' />
     </SafeAreaView>
   );
 }
@@ -29,6 +34,7 @@ export default function Map() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -2,36 +2,39 @@ import { useState } from "react";
 import { Colors } from "../constants/Colors";
 import { View, StyleSheet, Text, Pressable } from 'react-native';
 
-const ButtonComponent = (props: {buttonWidth: number, onPress: Function, text: string}) => {
+const ButtonComponent = (props: {diffPadding?: number | null, diffFlex?: number | null, buttonWidth: number, onPress: Function, text: string}) => {
     const [pressedIn, setPressedIn] = useState<boolean>(false);
+
+    const _thisFlex = props.diffFlex ? props.diffFlex : 1;
+    const _thisPadding = props.diffPadding ? props.diffPadding : 10;
 
     const styles = StyleSheet.create({
         container: {
-            flex: 1,
+            flex: _thisFlex,
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 10,
+            padding: _thisPadding,
         },
         text: {
             textAlign: "center",
             fontSize: 12, 
             color: 'white',
-            borderRadius: 10,
+            borderRadius: _thisPadding,
             fontWeight: "bold"
         },
         button: {
             alignItems: 'center',
             borderRadius: 20,
-            padding: 10,
+            padding: _thisPadding,
             width: props.buttonWidth,
             elevation: 2,
             position: 'absolute',
-            backgroundColor: Colors.lightBlue
+            backgroundColor: Colors.lightBlue,
         },
         buttonPressedIn: {
             alignItems: 'center',
             borderRadius: 20,
-            padding: 10,
+            padding: _thisPadding,
             width: props.buttonWidth,
             elevation: 2,
             position: 'absolute',
