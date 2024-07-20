@@ -14,6 +14,7 @@ import Charts from './charts';
 import Map from './map';
 import HomeScreen from './index';
 import TabTwoScreen from './mood';
+import { LocationValues } from '../database/interfaces/interfaces';
 // import initDatabaseIfNeeded from '../database/sqliteInit';
 
 const Tab = createBottomTabNavigator();
@@ -50,6 +51,8 @@ export default function TabLayout() {
   // const [buttonClicked, setButtonClicked] = useState(false);
 
   const colorScheme = useColorScheme();
+
+  const [dataFromSibling, setDataFromSibling] = useState<any>('');//<LocationValues>({latitude: 0, longitude: 0})
 
   // useEffect(() => {
     // const loadData = async () => {
@@ -97,7 +100,18 @@ export default function TabLayout() {
               screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
               }}
-          >
+              screenListeners={({ navigation }) => ({
+                state: (e) => {
+                  // Do something with the state
+                  console.log('state changed', e.data);
+            
+                  // Do something with the `navigation` object
+                  if (!navigation.canGoBack()) {
+                    console.log("we're on the initial screen");
+                  }
+                },
+              })}
+            >
             <Tab.Screen
               name="Home"
               component={HomeScreen}

@@ -313,7 +313,8 @@ export default function TabTwoScreen() {
           </Collapsible>
 
           <Collapsible title="Step 7: Map Your Mood.">
-            <ThemedText>Tap the Maps to see your Mood Values visualized in an interative map with popups to remind you what was happening at certain places, times, and activities.
+            <ThemedText>Enter coordinates using the 3 options below. Then tap the Maps to see your Mood Values visualized in an interative map with popups to remind you what was happening at certain places, times, and activities. 
+              Your coordinates will show up in the text entry boxes, or you can enter them manually.
             </ThemedText>
             <GetLocation 
               onDataReceivedCaller={onDataReceivedLocationCaller}

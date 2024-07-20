@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as Location from "expo-location";
-import { View, Text, StyleSheet, Linking } from "react-native";
+import { View, Text, StyleSheet, TextInput, Linking } from "react-native";
 import ButtonComponent from "../ButtonComponent";
 
 export function GetLocation(props: {
@@ -28,6 +28,9 @@ export function GetLocation(props: {
     const [userLocationTextLat, setUserLocationTextLat] = useState('');
     const [userLocationTextLong, setUserLocationTextLong] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
+    const [latitudeNumber, onChangeLatitude] = useState<string>('');
+    const [longitudeNumber, onChangeLongitude] = useState<string>('');
+    const [showCoordinateEntry, setShowCoordinateEntry] = useState<boolean>(false);
 
     // Function to Send Location to twitter
     const sendLocation = () => {
@@ -104,11 +107,22 @@ export function GetLocation(props: {
             setUserLocation(_userLocation)
             console.log(`Location lat, long: ${_userLocationTextLat}, ${_userLocationTextLong}`)
         };
-
     };
+
+    // const MapScreen = ({navigation}) => {
+    //     return (
+    //       <Button
+    //         title="Go to Jane's profile"
+    //         onPress={() =>
+    //           navigation.navigate('Profile', {name: 'Jane'})
+    //         }
+    //       />
+    //     );
+    //   };
 
     return (
         <>
+                <Text style={styles.paragraphLeft}>1. Either enter latitude and longitude coordinates directly with the button below.</Text>
             <View style={styles.container}>
                 { (userLocationTextLat === '' || userLocationTextLong === '') ?
                     <ButtonComponent buttonWidth={150} onPress={() => requestPermissionsAndLocation()} text='Request Location'/>
@@ -120,7 +134,34 @@ export function GetLocation(props: {
                     </View>
                 }
             </View>
-            <ButtonComponent buttonWidth={150} onPress={() => sendLocation()} text='Open in Google Maps'/>
+                <Text style={styles.paragraphLeft}>2. Or get the locations from the map. Open the Map...Click on location on map...Click button "Send to Mood"</Text>
+                <Text style={styles.paragraphLeft}>3. Or enter latitude and longitude coordinates directly with the button below.</Text>
+            <View style={styles.container}>
+            <ButtonComponent buttonWidth={150} onPress={() => setShowCoordinateEntry(!showCoordinateEntry)} text='Enter Coordinates Manually'/>
+            {showCoordinateEntry ? 
+                <View style={styles.buttonRow}>
+                    <TextInput
+                    style={styles.textInput}
+                    onChangeText={onChangeLatitude}
+                    value={latitudeNumber}
+                    placeholder="Enter Latitude"
+                    keyboardType="numeric"
+                />
+                <TextInput
+                    style={styles.textInput}
+                    onChangeText={onChangeLongitude}
+                    value={longitudeNumber}
+                    placeholder="Enter Longitude"
+                    keyboardType="numeric"
+                />
+                </View>
+                : <></>
+            }
+
+            </View>
+            <View style={styles.container}>
+                <ButtonComponent buttonWidth={150} onPress={() => sendLocation()} text='Open in Google Maps'/>
+            </View>
         </>
     )
 };
@@ -133,6 +174,12 @@ const styles = StyleSheet.create({
       padding: 10,
       paddingBottom: 25,
     },
+    paragraphLeft: {
+        fontSize: 12,
+        padding: 5,
+        margin: 5,
+        textAlign: 'left',
+    },
     paragraph: {
       fontSize: 12,
       padding: 5,
@@ -144,11 +191,17 @@ const styles = StyleSheet.create({
         padding: 10,
         marginHorizontal: "auto",
         flexDirection: "row"
-      },
+    },
     textParagraph: {
         paddingBottom: 10,
         paddingRight: 10,
-    }
+    },
+    textInput: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+      },
   });
 
 export default GetLocation;

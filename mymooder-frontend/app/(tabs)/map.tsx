@@ -5,9 +5,10 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { MoodValue } from '../database/interfaces/interfaces';
 import { crudMoodValuesMethods} from '@/app/database/crudMethods'
 import ButtonComponent from '../components/ButtonComponent';
-import { ModalComponent } from '../components/ModalComponent';
+import { ModalLegendComponent } from '../components/ModalLegendComponent';
 
 const { getMoodValues } = crudMoodValuesMethods();
+
 export default function Map() {
   const [mapData, setMapData] = useState<MoodValue[]>([]);
   const [clusterIconsVisible, setClusterIconsVisible] = useState<boolean>(false)
@@ -25,7 +26,7 @@ export default function Map() {
   return (
     <SafeAreaView style={styles.root}>
       <MapComponent mapData={mapData} clusterIconsVisible={clusterIconsVisible}/>
-      <ModalComponent clusterIconsVisible={clusterIconsVisible} setClusterIconsVisibleCaller={setClusterIconsVisible}/>
+      <ModalLegendComponent clusterIconsVisible={clusterIconsVisible} setClusterIconsVisibleCaller={setClusterIconsVisible}/>
       <ButtonComponent diffFlex={0.05} diffPadding={17} buttonWidth={110} onPress={() => refreshMap()} text='Refresh Map' />
     </SafeAreaView>
   );

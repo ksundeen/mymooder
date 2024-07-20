@@ -3,10 +3,9 @@ import { LatLng, LeafletView, MapMarker, MapShape, MapShapeType, WebViewLeafletE
 import { Dimensions, StyleSheet, Alert, View } from 'react-native';
 import React, { useMemo, useState } from 'react';
 import * as d3 from 'd3';
-import { useSQLiteContext } from 'expo-sqlite';
 import Svg from 'react-native-svg';
-import { MoodValue } from '../database/interfaces/interfaces';
-
+import { LocationValues, MoodValue } from '../database/interfaces/interfaces';
+import { ModalSaveLocationsComponent } from './ModalSaveLocationsComponent';
 // import { IFrameWebView } from './IFrameWebView';
 
 const {height, width} = Dimensions.get("window");              
@@ -15,6 +14,15 @@ export function MapComponent({mapData, clusterIconsVisible}:
   {mapData: MoodValue[], clusterIconsVisible: boolean}) {
   const [mapMarkers, setMapMarkers] = useState<MapMarker[]>([]);
   const [mapShapes, setMapShapes] = useState<MapShape[]>([]);
+
+  // To send locations clicked on map to Mood Screen
+  const [moodLocations, setMoodLocation] = useState<LocationValues>({latitude: 0, longitude: 0})
+  
+  // Functions sent to child Save Locations Modal component
+  const [shouldSendLocationToMood, setShouldSendLocationToMood] = useState<boolean>(false);
+  
+  // Whether to show the Save Locations Modal component
+  const [showSaveLocationsModal, setShowLocationsModal] = useState<boolean>(false);
   // const [mapPeriod, setMapPeriod] = React.useState<Period>(Period.week);
 
   // useEffect(() => {
@@ -44,7 +52,13 @@ export function MapComponent({mapData, clusterIconsVisible}:
           ?.touchLatLng as LatLng;
         const id: string = message.payload
           ?.mapMarkerID as string;
-        Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng} for id: ${id}`);
+
+        if (!id) {
+          // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
+          setShowLocationsModal(true);
+        } else {
+          Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng} for id: ${id}`);
+        }
         break;
       // case WebViewLeafletEvents.ON_ZOOM_END:
       //   const zoomLevel: number = message.payload
@@ -205,6 +219,13 @@ export function MapComponent({mapData, clusterIconsVisible}:
               }
               }}
               /> */}
+            {/* {showSaveLocationsModal ?  */}
+              <ModalSaveLocationsComponent 
+                showSaveLocationsModal={showSaveLocationsModal}
+                setShowLocationsModalCaller={setShowLocationsModal}
+                setShouldSendLocationToMoodCaller={setShouldSendLocationToMood}
+                />
+            {/* // : <></>} */}
             {clusterIconsVisible ? 
                 <LeafletView
                 onMessageReceived={onMessageReceived}
