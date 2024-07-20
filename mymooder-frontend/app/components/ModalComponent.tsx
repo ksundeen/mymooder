@@ -11,6 +11,7 @@ export function ModalComponent({clusterIconsVisible, setClusterIconsVisibleCalle
     const [modalVisible, setModalVisible] = useState(false);
     const [_, showOpenButton] = useState(true);
     const [clusterButtonText, setClusterButtonText] = useState<string>('Uncluster Icons');
+    const [pressedIn, setPressedIn] = useState<boolean>(false);
 
     return (
       <View style={styles.container}>
@@ -45,7 +46,7 @@ export function ModalComponent({clusterIconsVisible, setClusterIconsVisibleCalle
                 </Pressable>
             }
             <Pressable
-                style={[styles.clusterButton]}
+                style={pressedIn ? [styles.clusterButton, styles.clusterButtonColorPressedIn] : [styles.clusterButtonColor, styles.clusterButton]}
                 onPress={() => {
                     setClusterIconsVisibleCaller(!clusterIconsVisible); 
                     if (clusterIconsVisible) {
@@ -53,7 +54,10 @@ export function ModalComponent({clusterIconsVisible, setClusterIconsVisibleCalle
                     } else {
                     setClusterButtonText('Cluster Icons');
                     }
-                } }>
+                } }
+                onPressIn={() => setPressedIn(true)}
+                onPressOut={() => setPressedIn(false)}
+                >
                 <Text style={styles.clusterButtonsTextStyle}>{clusterButtonText}</Text>
             </Pressable>
           </View>
@@ -138,8 +142,13 @@ const styles = StyleSheet.create({
     right: "15%",
     height: 50,
     width: 140,
-    backgroundColor: Colors.lightBlue,
     alignContent: 'center'
+  },
+  clusterButtonColor: {
+    backgroundColor: Colors.lightBlue,
+  },
+  clusterButtonColorPressedIn: {
+    backgroundColor: Colors.lightGrey,
   },
   clusterButtonsTextStyle: {
     color: 'white',
