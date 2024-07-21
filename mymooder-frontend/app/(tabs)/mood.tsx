@@ -18,18 +18,18 @@ import {
   ActivitiesValues, 
   WeatherValues, 
   WeatherAPIValues, 
-  LocationValues } from '../database/interfaces/interfaces';
+  LocationValues,
+  defaultMoodValue } from '../database/interfaces/interfaces';
 import DatePickerButton from '../components/DatePickerButton';
 import ButtonComponent from '../components/ButtonComponent';
-
 import { crudMoodValuesMethods} from '@/app/database/crudMethods'
 
 const { 
   // moodValues, 
   // getMoodValues, 
   addMoodValue, 
-  updateMoodValue, 
-  deleteMoodValue
+  // updateMoodValue, 
+  // deleteMoodValue
 } = crudMoodValuesMethods();
 
 export default function TabTwoScreen() {
@@ -46,23 +46,7 @@ export default function TabTwoScreen() {
   const [shouldClearLocationState, setShouldClearLocationState] = useState<boolean>(false);
   //----------------------------------------------------------------------------
 
-  const [moodValue, setMoodValue] = useState<MoodValue>(
-    {
-      id: -9,
-      latitude_x: 0,
-      longitude_y: 0,
-      name: 'Test',
-      datetime: '',
-      calmness_score: 0,
-      happy_score: 0,
-      people: '',
-      activities: '',
-      personal_weather_rating: '',
-      api_weather_rating: '',
-      api_weather_temperature: 0,
-      notes: 'Test Notes'
-    }
-  )
+  const [moodValue, setMoodValue] = useState<MoodValue>(defaultMoodValue);
 
   // Variables used to send child component values back to parent
   //--------------------------------------------------------------------------------

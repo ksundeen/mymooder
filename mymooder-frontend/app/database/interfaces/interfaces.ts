@@ -13,6 +13,25 @@ export interface MoodValue {
     api_weather_temperature: number,
     notes: string
 };
+export const defaultMoodValue = {
+    id: -9,
+    latitude_x: 0,
+    longitude_y: 0,
+    name: 'Test',
+    datetime: '',
+    calmness_score: 0,
+    happy_score: 0,
+    people: '',
+    activities: '',
+    personal_weather_rating: '',
+    api_weather_rating: '',
+    api_weather_temperature: 0,
+    notes: ''
+}
+export const defaultLocationValues = {
+    latitude: 0,
+    longitude: 0
+}
 export interface DateValues {
     dateVal: Date
 };

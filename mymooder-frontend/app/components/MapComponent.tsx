@@ -4,9 +4,10 @@ import { Dimensions, StyleSheet, Alert, View } from 'react-native';
 import React, { useMemo, useState } from 'react';
 import * as d3 from 'd3';
 import Svg from 'react-native-svg';
-import { LocationValues, MoodValue } from '../database/interfaces/interfaces';
-import { ModalSaveLocationsComponent } from './ModalSaveLocationsComponent';
+import { LocationValues, MoodValue, defaultLocationValues } from '../database/interfaces/interfaces';
+import ModalInfoBox from './modals/ModalInfoBox';
 // import { IFrameWebView } from './IFrameWebView';
+import { defaultMoodValue } from '../database/interfaces/interfaces';
 
 const {height, width} = Dimensions.get("window");              
 
@@ -15,14 +16,17 @@ export function MapComponent({mapData, clusterIconsVisible}:
   const [mapMarkers, setMapMarkers] = useState<MapMarker[]>([]);
   const [mapShapes, setMapShapes] = useState<MapShape[]>([]);
 
+  const noIdMoodValue = {}
   // To send locations clicked on map to Mood Screen
-  const [moodLocations, setMoodLocation] = useState<LocationValues>({latitude: 0, longitude: 0})
+  const [selectedMoodLocation, setSelectedMoodLocation] = useState<MoodValue>(defaultMoodValue);
+  const [selectedLocationValues, setSelectedLocationValues] = useState<LocationValues>(defaultLocationValues);
   
   // Functions sent to child Save Locations Modal component
   const [shouldSendLocationToMood, setShouldSendLocationToMood] = useState<boolean>(false);
   
-  // Whether to show the Save Locations Modal component
-  const [showSaveLocationsModal, setShowLocationsModal] = useState<boolean>(false);
+  // Whether to show the clicked icon info box modal; state passed to modal component
+  const [showInfoBoxModal, setShowInfoBoxModal] = useState<boolean>(false);
+
   // const [mapPeriod, setMapPeriod] = React.useState<Period>(Period.week);
 
   // useEffect(() => {
@@ -42,23 +46,34 @@ export function MapComponent({mapData, clusterIconsVisible}:
   const onMessageReceived = (message: WebviewLeafletMessage) => {
     switch (message.event) {
       case WebViewLeafletEvents.ON_MAP_MARKER_CLICKED:
-        Alert.alert(
-          `Map Marker Touched, ID: ${message.payload.mapMarkerID || "unknown"}`
-        );
+        // const positionMarkerClicked: LatLng = message.payload?.touchLatLng as LatLng;
+        const idMarkerClicked: string = message.payload?.mapMarkerID as string;
+        // Alert.alert(
+        //   `Map Marker Touched, ID: ${message.payload.mapMarkerID || "unknown"}`
+        // );
+        const selectedPoint: MoodValue = mapData.filter(feature => feature.id === Number(idMarkerClicked))[0]
+        setShowInfoBoxModal(true)
+        setSelectedMoodLocation(selectedPoint)
+        setSelectedLocationValues(defaultLocationValues)
+          // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng} for id: ${id}`);
 
         break;
       case WebViewLeafletEvents.ON_MAP_TOUCHED:
-        const position: LatLng = message.payload
-          ?.touchLatLng as LatLng;
-        const id: string = message.payload
-          ?.mapMarkerID as string;
-
-        if (!id) {
+        const position: LatLng = message.payload?.touchLatLng as LatLng;
+        const id: string = message.payload?.mapMarkerID as string;
+        console.log(JSON.stringify(position))
+        // if (!id) {
           // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng}`);
-          setShowLocationsModal(true);
-        } else {
-          Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng} for id: ${id}`);
-        }
+          setShowInfoBoxModal(true);
+          setSelectedLocationValues({latitude: position.lat, longitude: position.lng})
+          setSelectedMoodLocation(defaultMoodValue)
+        // } else {
+        //     const selectedPoint: MoodValue = mapData.filter(feature => feature.id === Number(id))[0]
+        //     setShowInfoBoxModal(false)
+        //     setSelectedMoodLocation(defaultMoodValue)
+        //     setSelectedLocationValues(defaultLocationValues)
+        //     // Alert.alert(`Map Touched at:`, `${position.lat}, ${position.lng} for id: ${id}`);
+        // };
         break;
       // case WebViewLeafletEvents.ON_ZOOM_END:
       //   const zoomLevel: number = message.payload
@@ -71,11 +86,6 @@ export function MapComponent({mapData, clusterIconsVisible}:
         console.log("App received", message);
     }
   };
-  // const mapEvents = useMapEvents({
-  //   zoomend: () => {
-  //       setZoomLevel(mapEvents.getZoom());
-  //   },
-  // });
 
 
   const DEFAULT_COORDINATE: LatLng = {
@@ -83,9 +93,7 @@ export function MapComponent({mapData, clusterIconsVisible}:
     lng: -90.8013689517975, 
   };
 
-  const circleRadius = 30
   const innerCircleRadius = 5
-  const mapIconColor = '#cc756b';
   const mapIconColorInnerCircle = '#ffffff';
 
   // https://www.svgrepo.com/svg/174809/empty-circle?edit=true
@@ -103,10 +111,7 @@ export function MapComponent({mapData, clusterIconsVisible}:
             </svg>`
   }
 
-  const colorize = useMemo(() => {
-      // const colorScale = d3.scaleSequentialSymlog(d3.interpolateReds)
-      //     .domain([0, maxHappyScoreY]);
-          
+  const colorize = useMemo(() => {  
       const colorScale = d3.scaleLinear(["red", "blue"])
           // .domain([0, maxHappyScoreY])
           .domain([0, 10])
@@ -119,8 +124,6 @@ export function MapComponent({mapData, clusterIconsVisible}:
   let _mapShapes: MapShape[] = []
 
   useMemo(() => {
-    // Testing adding mapMarkers
-    // if (mapData) {
       mapData.forEach(feature => {
         const colorVal = colorize(feature.happy_score);
         const sizeVal = feature.calmness_score;
@@ -219,13 +222,13 @@ export function MapComponent({mapData, clusterIconsVisible}:
               }
               }}
               /> */}
-            {/* {showSaveLocationsModal ?  */}
-              <ModalSaveLocationsComponent 
-                showSaveLocationsModal={showSaveLocationsModal}
-                setShowLocationsModalCaller={setShowLocationsModal}
-                setShouldSendLocationToMoodCaller={setShouldSendLocationToMood}
-                />
-            {/* // : <></>} */}
+            <ModalInfoBox
+              locationValues={selectedLocationValues}
+              moodValue={selectedMoodLocation}
+              showInfoBoxModal={showInfoBoxModal}
+              setShowInfoBoxModalCaller={setShowInfoBoxModal}
+              setShouldSendLocationToMoodCaller={setShouldSendLocationToMood}
+            />
             {clusterIconsVisible ? 
                 <LeafletView
                 onMessageReceived={onMessageReceived}
@@ -241,7 +244,6 @@ export function MapComponent({mapData, clusterIconsVisible}:
             : 
               <LeafletView
                 onMessageReceived={onMessageReceived}
-                // doDebug={true}
                 mapMarkers={[]}
                 mapShapes={mapShapes}
                 // renderLoading={loader}

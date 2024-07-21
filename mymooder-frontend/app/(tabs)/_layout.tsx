@@ -103,7 +103,7 @@ export default function TabLayout() {
               screenListeners={({ navigation }) => ({
                 state: (e) => {
                   // Do something with the state
-                  console.log('state changed', e.data);
+                  console.log('state changed', JSON.stringify(e.data));
             
                   // Do something with the `navigation` object
                   if (!navigation.canGoBack()) {

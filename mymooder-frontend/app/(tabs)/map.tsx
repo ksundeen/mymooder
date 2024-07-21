@@ -5,19 +5,19 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { MoodValue } from '../database/interfaces/interfaces';
 import { crudMoodValuesMethods} from '@/app/database/crudMethods'
 import ButtonComponent from '../components/ButtonComponent';
-import { ModalLegendComponent } from '../components/ModalLegendComponent';
+import { ModalLegend } from '../components/modals/ModalLegend';
 
 const { getMoodValues } = crudMoodValuesMethods();
 
 export default function Map() {
   const [mapData, setMapData] = useState<MoodValue[]>([]);
-  const [clusterIconsVisible, setClusterIconsVisible] = useState<boolean>(false)
+  const [clusterIconsVisible, setClusterIconsVisible] = useState<boolean>(true);
 
   const db = useSQLiteContext();
   
   const refreshMap = async () => {
     setMapData(await getMoodValues(db));
-  }        
+  };
 
   useMemo(async () => {
     setMapData(await getMoodValues(db));
@@ -26,7 +26,7 @@ export default function Map() {
   return (
     <SafeAreaView style={styles.root}>
       <MapComponent mapData={mapData} clusterIconsVisible={clusterIconsVisible}/>
-      <ModalLegendComponent clusterIconsVisible={clusterIconsVisible} setClusterIconsVisibleCaller={setClusterIconsVisible}/>
+      <ModalLegend clusterIconsVisible={clusterIconsVisible} setClusterIconsVisibleCaller={setClusterIconsVisible}/>
       <ButtonComponent diffFlex={0.05} diffPadding={17} buttonWidth={110} onPress={() => refreshMap()} text='Refresh Map' />
     </SafeAreaView>
   );
