@@ -161,12 +161,12 @@ export function ChartComponent(props: {width: number, height: number}) {
             >
                 <G>
                 {/* Background world fill */}
-                {/* <Circle
+                <Circle
                     cx={width / 2}
                     cy={mapExtent / 2}
                     r={mapExtent / 2}
                     fill={"#3b454f"}
-                /> */}
+                />
                 {/* World shapes */}
                 {countryList.map(x => x)}
                 {happyPointsVisible ? happyPointList.map(x => x): ''}
@@ -176,7 +176,7 @@ export function ChartComponent(props: {width: number, height: number}) {
                 buttonStyle={{opacity: 0.5}}
                 onPress={toggleHappyPoints}
                 text={"Toggle Points"}
-            ></ButtonComponent> 
+            ></ButtonComponent>
         </View>
     );
 };

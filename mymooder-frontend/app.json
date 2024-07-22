@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ksundeen.mymooderfrontend",
-      "buildNumber": "13"
+      "buildNumber": "22"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +24,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.ksundeen.mymooderfrontend",
-      "versionCode": 43,
+      "versionCode": 64,
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
@@ -36,7 +36,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/geoi_transparent.png"
     },
     "plugins": [
       "expo-router",
@@ -57,8 +57,7 @@
           "android": {
             "compileSdkVersion": 34,
             "targetSdkVersion": 34,
-            "buildToolsVersion": "34.0.0",
-            "usesCleartextTraffic": true
+            "buildToolsVersion": "34.0.0"
           },
           "ios": {
             "deploymentTarget": "17.5"

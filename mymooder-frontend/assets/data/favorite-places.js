@@ -60,7 +60,7 @@ export const favoritePlaceData = {
                 "personal_weather_rating": ["partly cloudy"],
                 "api_weather_rating": ["cloudy"],
                 "api_weather_temperature": 60,
-                "notes": "I don't always like the cabin, but I love spending time with family."
+                "notes": "I don''t always like the cabin, but I love spending time with family."
             }
         },
         {
@@ -340,7 +340,7 @@ export const favoritePlaceData = {
                 "personal_weather_rating": ["partly cloudy"],
                 "api_weather_rating": ["cloudy"],
                 "api_weather_temperature": 67,
-                "notes": "I'm getting better at horse-back riding."
+                "notes": "I''m getting better at horse-back riding."
             }
             },
             {
@@ -500,7 +500,7 @@ export const favoritePlaceData = {
                 "personal_weather_rating": ["partly sunny"],
                 "api_weather_rating": ["partly sunny"],
                 "api_weather_temperature": 70,
-                "notes": "I'm a little anxious with all the activity."
+                "notes": "I''m a little anxious with all the activity."
             }
             },
             {
@@ -1066,7 +1066,7 @@ export const favoritePlaceData = {
                 "personal_weather_rating": ["partly cloudy"],
                 "api_weather_rating": ["cloudy"],
                 "api_weather_temperature": 75,
-                "notes": "I don't feel calm and needed a run."
+                "notes": "I don''t feel calm and needed a run."
             }
             },
 
