@@ -1,17 +1,20 @@
 
 
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, Modal, Alert, Pressable } from 'react-native';
+import { Text, View, Dimensions, StyleSheet, Image, Modal, Alert, Pressable } from 'react-native';
 import { Colors } from '../../constants/Colors';
 
-export function ModalLegend({clusterIconsVisible, setClusterIconsVisibleCaller}:
-  {clusterIconsVisible: boolean, setClusterIconsVisibleCaller: Function}
+const {height, width} = Dimensions.get("window");              
+
+export function ModalLegendButtons({setRecenterMapCaller, clusterIconsVisible, setClusterIconsVisibleCaller}:
+  {setRecenterMapCaller: Function, clusterIconsVisible: boolean, setClusterIconsVisibleCaller: Function}
 ) {
 
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [_, showOpenButton] = useState<boolean>(true);
     const [clusterButtonText, setClusterButtonText] = useState<string>('Uncluster Icons');
-    const [pressedIn, setPressedIn] = useState<boolean>(false);
+    const [pressedInCluster, setPressedInCluster] = useState<boolean>(false);
+    const [pressedInCenter, setPressedInCenter] = useState<boolean>(false);
 
     return (
       <View style={styles.container}>
@@ -26,14 +29,13 @@ export function ModalLegend({clusterIconsVisible, setClusterIconsVisibleCaller}:
               <View style={styles.modalView}>
                   <Text style={styles.modalText}>Legend</Text>
                   <Pressable
-                    style={[styles.modalButton, styles.legendButtonClose]}
+                    style={[styles.modalButtonLocation, styles.buttonColor]}
                     onPress={() => {setModalVisible(!modalVisible); showOpenButton(!modalVisible)}}>
-                    <Text style={styles.textStyle}>Hide Legend</Text>
+                    <Text style={styles.buttonTextStyle}>Hide Legend</Text>
                   <Image
-                      style={styles.legend}
+                      style={styles.legendImage}
                       source={require('../../../assets/images/map-legend.png')}
                   />
-                  <Text style={styles.smallModalText}>~tap to close~</Text>
                   </Pressable>
               </View>
         </Modal>
@@ -41,13 +43,17 @@ export function ModalLegend({clusterIconsVisible, setClusterIconsVisibleCaller}:
             {
               modalVisible ? <></> :
                   <Pressable
-                  style={[styles.legendButton, styles.legendButtonOpen]}
+                  style={[styles.button, styles.legendButtonLocation, styles.buttonColor]}
                   onPress={() => {setModalVisible(true); showOpenButton(!modalVisible)}}>
-                  <Text style={[styles.textStyle, styles.legendButtonText]}>Legend</Text>
+                  <Text style={[styles.buttonTextStyle, styles.buttonTextStyle, styles.buttonTextStyle]}>Legend</Text>
                   </Pressable>
             }
             <Pressable
-                style={pressedIn ? [styles.clusterButton, styles.clusterButtonColorPressedIn] : [styles.clusterButtonColor, styles.clusterButton]}
+                style={pressedInCluster ? 
+                    [styles.button, styles.buttonClusterIconsLocation, styles.buttonColorPressedIn] 
+                    : 
+                    [styles.button, styles.buttonClusterIconsLocation, styles.buttonColor]
+                  }
                 onPress={() => {
                     setClusterIconsVisibleCaller(!clusterIconsVisible); 
                     if (clusterIconsVisible) {
@@ -56,17 +62,29 @@ export function ModalLegend({clusterIconsVisible, setClusterIconsVisibleCaller}:
                     setClusterButtonText('Cluster Icons');
                     }
                 } }
-                onPressIn={() => setPressedIn(true)}
-                onPressOut={() => setPressedIn(false)}
+                onPressIn={() => setPressedInCluster(true)}
+                onPressOut={() => setPressedInCluster(false)}
                 >
-                <Text style={styles.clusterButtonsTextStyle}>{clusterButtonText}</Text>
+                <Text style={styles.buttonTextStyle}>{clusterButtonText}</Text>
+            </Pressable>
+            <Pressable
+                style={pressedInCenter ? 
+                  [styles.button, styles.buttonCenterLocation, styles.buttonColorPressedIn] 
+                  : 
+                  [styles.buttonColor, styles.buttonCenterLocation, styles.button]
+                }
+                onPress={() => setRecenterMapCaller(true)}
+                onPressIn={() => setPressedInCenter(true)}
+                onPressOut={() => setPressedInCenter(false)}
+                >
+                <Text style={styles.buttonTextStyle}>Recenter</Text>
             </Pressable>
           </View>
         </View>
         )
 };
 
-export default ModalLegend;
+export default ModalLegendButtons;
 
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +92,7 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      justifyContent: 'center',
   },
-  legend:{
+  legendImage:{
     height: 300,
     width: 375,
   },
@@ -90,76 +108,56 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
+  shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
   },
   modalText: {
-    marginBottom: 12,
+    marginBottom: 11,
     textAlign: 'center',
-  },
-  legendButtonText: {
-    fontSize: 14,
-    top: "15%",
-  },
-  smallModalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-    fontSize: 10
   },
   buttonRow: {
-    flex: 0.07,
     marginHorizontal: "auto",
     flexDirection: "row"
   },
-  modalButton: {
+  button: {
     borderRadius: 20,
     padding: 10,
+    elevation: 3,
+    position: 'absolute',
+    alignContent: 'center',
+    height: 50,
+    width: width/3.5,
+    bottom: -61,
+    },
+  modalButtonLocation: {
+    borderRadius: 20,
+    padding: 20,
     elevation: 2,
     position: 'absolute'
   },
-  legendButton: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 3,
-    position: 'absolute',
-    bottom: -61,
-    height: 50,
-    left: "15%",
-    width: 140
+  legendButtonLocation: {
+    // left: "15%",
+    right: (width/5) - (width/1.5)
   },
-  legendButtonClose: {
-    backgroundColor: Colors.lightBlue
+  buttonClusterIconsLocation: {
+    // right: "20%",
+    left: (width/5) - (width/1.5)
   },
-  legendButtonOpen: {
-    backgroundColor: Colors.lightBlue
+  buttonCenterLocation: {
+    left: (width/5) - (width/2.9)
   },
-  clusterButton: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 3,
-    position: 'absolute',
-    bottom: -61,
-    right: "15%",
-    height: 50,
-    width: 140,
-    alignContent: 'center'
-  },
-  clusterButtonColor: {
+  buttonColor: {
     backgroundColor: Colors.lightBlue,
   },
-  clusterButtonColorPressedIn: {
+  buttonColorPressedIn: {
     backgroundColor: Colors.lightGrey,
   },
-  clusterButtonsTextStyle: {
+  buttonTextStyle: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
     top: "23%",
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontSize: 13,
   },
 });

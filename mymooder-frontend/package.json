@@ -32,6 +32,7 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-native-community/slider": "^4.5.2",
     "@react-navigation/native": "^6.0.2",
+    "@turf/centroid": "^7.0.0",
     "d3": "^7.9.0",
     "expo": "^51.0.20",
     "expo-asset": "^10.0.10",
@@ -49,7 +50,9 @@
     "expo-updates": "~0.25.19",
     "expo-web-browser": "^13.0.3",
     "geojson": "^0.5.0",
+    "i": "^0.3.7",
     "leaflet": "^1.9.4",
+    "npm": "^10.8.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-leaflet": "^4.2.1",
@@ -63,7 +66,8 @@
     "react-native-web": "^0.19.12",
     "react-native-webview": "^13.8.6",
     "sax": "^1.4.1",
-    "topojson-client": "^3.1.0"
+    "topojson-client": "^3.1.0",
+    "turf-polygon": "^1.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

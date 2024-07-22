@@ -1,12 +1,11 @@
 
 
 import { Text, View, StyleSheet, Modal, Alert } from 'react-native';
-// import { Colors } from '../../constants/Colors';
-import { MoodValue, LocationValues, defaultLocationValues, defaultMoodValue } from '@/app/database/interfaces/interfaces';
+import { MoodValue, LocationValues } from '@/app/database/interfaces/interfaces';
 import ButtonComponent from '../ButtonComponent';
 
 export function ModalInfoBox({locationValues, moodValue, showInfoBoxModal, setShowInfoBoxModalCaller, setShouldSendLocationToMoodCaller}:
-  {locationValues: LocationValues, moodValue: MoodValue, showInfoBoxModal: boolean, setShowInfoBoxModalCaller: Function, setShouldSendLocationToMoodCaller: Function}
+  {locationValues: LocationValues | null, moodValue: MoodValue | null, showInfoBoxModal: boolean, setShowInfoBoxModalCaller: Function, setShouldSendLocationToMoodCaller: Function}
 ) {
     const sendLocationsYes = () => {
       setShouldSendLocationToMoodCaller(true)
@@ -25,7 +24,7 @@ export function ModalInfoBox({locationValues, moodValue, showInfoBoxModal, setSh
               setShouldSendLocationToMoodCaller(false);
             }}>
               <View style={[styles.modalView]}>
-              {moodValue && moodValue != defaultMoodValue ? 
+              {moodValue ? 
                 <View style={[styles.infoBoxText]}>
                   <Text>Name: {moodValue.name}</Text>
                   <Text>Latitude: {moodValue.latitude_x}, Longitude: {moodValue.longitude_y}</Text>
@@ -42,10 +41,11 @@ export function ModalInfoBox({locationValues, moodValue, showInfoBoxModal, setSh
                 :
                 <></>
               }
-              {locationValues && locationValues != defaultLocationValues ? 
+              {locationValues ? 
                 <View style={[styles.infoBoxText]}>
-                  <Text>Latitude: {moodValue.latitude_x}, Longitude: {moodValue.longitude_y}</Text>
-                </View>
+                  <Text>Latitude: {locationValues.latitude}</Text>
+                  <Text>Longitude: {locationValues.longitude}</Text>
+                  </View>
                 :
                 <></>
               }
