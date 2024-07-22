@@ -10,7 +10,7 @@ My Mooder aims to help transform an individual’s personal view of mental illne
 ### The App Currently
 <div float=center height=25% width=25% padding=5px;>
         <img src="/mymooder-frontend/assets/images/readme-assets/app-home.png" width=20% height=20%>
-        <img src="/mymooder-frontend/assets/images/readme-assets/app-mood-location.png" width=20% height=20%>
+        <img src="/mymooder-frontend/assets/images/readme-assets/app-mood.png" width=20% height=20%>
         <img src="/mymooder-frontend/assets/images/readme-assets/app-chart-world-d3.png" width=20% height=20%>
         <img src="/mymooder-frontend/assets/images/readme-assets/app-leaflet-map.png" width=20% height=20%>
 </div>
