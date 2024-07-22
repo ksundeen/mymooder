@@ -37,9 +37,9 @@ With the My Mooder application, the data is in the hands of the individual to le
 - [x] Add basic d3 graphics. :+1:
 - [x] Add a leaflet map to avoid incurring costs from other mapping API vendors (Bing, Azure, Google, Apple, Mapbox, Cartograph...etc.). :+1:
 - [x] Add user request for location. :+1:
-- [ ] Add menu options to accept mood values. 
+- [x] Add menu options to accept mood values. :+1:
 - [ ] Update the Leaflet map that still uses the WebView react-native component to work for the web platform. It's not working using Expo.
-- [ ] Add sqlite expo component to store data natively.
+- [x] Add sqlite expo component to store data natively. :+1:
 - [ ] Add sample d3 graphics on the Charts and Map from entered mood values.
 - [ ] Convert existing d3 world graphic to a moving SVG.
 - [ ] Add a linked xy plot to exiting d3 world graphic to show mood values.
