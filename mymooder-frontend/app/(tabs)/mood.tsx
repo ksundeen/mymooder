@@ -1,5 +1,5 @@
 // import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Text, View, Modal, Pressable, Alert } from 'react-native';
+import { StyleSheet, Image, Text, View, Modal, Pressable, Alert, TextInput } from 'react-native';
 import { Collapsible } from '../components/Collapsible';
 import ParallaxScrollView from '../components/ParallaxScrollView';
 import { ThemedText } from '../components/ThemedText';
@@ -35,12 +35,16 @@ const {
 export default function TabTwoScreen() {
 
   const db = useSQLiteContext();
-  const [savingStatus, setSavingStatus] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
+  const [people, setPeople] = useState<string>('');
+  const [activties, setActivities] = useState<string>('');
+  const [personalWeather, setPersonalWeather] = useState<string>('');
+
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   // Variables used to clear state in child components
   //----------------------------------------------------------------------------
-  const [shouldClearAllState, setShouldClearAllState] = useState(false);
+  const [shouldClearAllState, setShouldClearAllState] = useState<boolean>(false);
   const [shouldClearHappyState, setShouldClearHappyState] = useState<boolean>(false);
   const [shouldClearCalmState, setShouldClearCalmState] = useState<boolean>(false);
   const [shouldClearLocationState, setShouldClearLocationState] = useState<boolean>(false);
@@ -137,36 +141,11 @@ export default function TabTwoScreen() {
     let newMoodValue = moodValue
     newMoodValue.latitude_x = data.latitude
     newMoodValue.longitude_y = data.longitude
+    console.log(`MoodValue: ${moodValue}`)
     setMoodValue(newMoodValue)
   };
 
-
-  const updateMoodValues = () => {
-    setSavingStatus(true)
-    setMoodValue(
-      {
-        id: -9,
-        latitude_x: receivedChildLocationData.latitude,
-        longitude_y: receivedChildLocationData.longitude,
-        name: 'Test',
-        datetime: receivedChildDate.dateVal.toLocaleTimeString(),
-        calmness_score: receivedChildSliderCalmData.sliderValCalm,
-        happy_score: receivedChildSliderHappyData.sliderValHappy,
-        people: receivedChildPeopleData.peopleValues,
-        activities: receivedChildActivitiesData.activitiesValues,
-        personal_weather_rating: receivedChildWeatherData.weatherValues,
-        api_weather_rating: receivedChildWeatherAPIData.weatherAPIValues,
-        api_weather_temperature: receivedChildWeatherAPIData.weatherAPITemp,
-        notes: 'Test Notes'
-      }
-    )
-    setSavingStatus(false)
-  };
-
   const saveToDb = async () => {
-    // To receive any state updates from child components for values.
-    updateMoodValues()
-
     await addMoodValue(db, moodValue)
     setModalVisible(true)
     console.log(moodValue)
@@ -201,15 +180,16 @@ export default function TabTwoScreen() {
           Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
-        <View style={styles.container}>
+        <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Saved!</Text>
-            <Pressable
+            <Text style={styles.modalText}>Saved Record!</Text>
+            <ButtonComponent buttonWidth={75} onPress={() => setModalVisible(!modalVisible)} text='Close' />
+
+            {/* <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => {setModalVisible(!modalVisible);}}>
               <Text style={styles.textStyle}>Close</Text>
-              <Text style={styles.smallModalText}>~tap to close~</Text>
-            </Pressable>
+            </Pressable> */}
           </View>
         </View>
       </Modal>
@@ -220,6 +200,17 @@ export default function TabTwoScreen() {
       >
           <Collapsible title={`Date: ${receivedChildDate.dateVal}`}>
             <DatePickerButton onDataReceivedCaller={onDataReceivedDateCaller}></DatePickerButton>
+          </Collapsible>
+          <Collapsible title="Enter a Title for this Entry">
+            <View style={styles.buttonRow}>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={setTitle}
+                value={title}
+                placeholder="Enter a title"
+                keyboardType='numbers-and-punctuation'
+                />
+            </View>
           </Collapsible>
 
           <Collapsible title="Step 1: Enter How Happy or Sad You Feel.">
@@ -248,6 +239,15 @@ export default function TabTwoScreen() {
             <ThemedText>
             Enter people with whom you're interacting while you experience the <ThemedText type="defaultSemiBold">Mood Value</ThemedText> you entered in #1 and #2.
             </ThemedText>
+            <View style={styles.buttonRow}>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={setPeople}
+                value={people}
+                placeholder="Enter people separated by commas"
+                keyboardType='numbers-and-punctuation'
+                />
+            </View>
             {/* <DummyNewComponent 
               onDataReceivedCaller={onDataReceivedPeopleCaller}
               setParentShouldClearState={setShouldClearState}
@@ -259,6 +259,15 @@ export default function TabTwoScreen() {
             <ThemedText>
             Enter your activities in which you're engaging while experiencing the <ThemedText type="defaultSemiBold">Mood Value</ThemedText> you entered in #1 and #2.
             </ThemedText>
+            <View style={styles.buttonRow}>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={setActivities}
+                value={activties}
+                placeholder="Enter activities separated by commas"
+                keyboardType='numbers-and-punctuation'
+                />
+            </View>
             {/* <DummyNewComponent 
               onDataReceivedCaller={onDataReceivedActivitesCaller}
               setParentShouldClearState={setShouldClearState}
@@ -270,6 +279,15 @@ export default function TabTwoScreen() {
             <ThemedText>
             Enter the weather where you are and how you feel the weather is. Is it sunny, cloudy, rainy, windy/rainy, windy? Weather can be a big factor affecting one's mood. Let's track it alongside the <ThemedText type="defaultSemiBold">Mood Values</ThemedText>.
             </ThemedText>
+            <View style={styles.buttonRow}>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={setPersonalWeather}
+                value={personalWeather}
+                placeholder="Enter the weather near you"
+                keyboardType='numbers-and-punctuation'
+                />
+            </View>
             {/* <DummyNewComponent 
               onDataReceivedCaller={onDataReceivedWeatherCaller}
               setParentShouldClearState={setShouldClearState}  
@@ -309,22 +327,38 @@ export default function TabTwoScreen() {
       </ParallaxScrollView>
       <View style={styles.buttonRow}>
         <ButtonComponent buttonWidth={75} onPress={() => clearAllStates()} text='Clear'/>
-          {savingStatus ? 
-            <ButtonComponent buttonWidth={100} onPress={() => {}} text='Saving...' />
-            :
-            <ButtonComponent buttonWidth={75} onPress={() => saveToDb()} text='Save' />
-          }
+        <ButtonComponent buttonWidth={75} onPress={() => saveToDb()} text='Save' />
       </View>
       </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    top: 0,
-    flex: 0.05,
+  modalContainer: {
+    top: "45%",
+    flex: 0.2,
     alignItems: 'center'
- },
+  },
+  modalText: {
+    marginBottom: "7%",
+    textAlign: 'center',
+    fontSize: 20
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 30,
+    padding: 40,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   headerImage: {
     position: 'relative',
     height: 250,
@@ -345,30 +379,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  smallModalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-    fontSize: 10
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   button: {
     borderRadius: 20,
     padding: 10,
@@ -378,5 +388,15 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: Colors.lightBlue
-    },
+  },
+  textParagraph: {
+    paddingBottom: 10,
+    paddingRight: 10,
+  },
+  textInput: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
 });

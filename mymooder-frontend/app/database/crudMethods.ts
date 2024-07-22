@@ -32,22 +32,20 @@ export function crudMoodValuesMethods() {
         db.withExclusiveTransactionAsync(async (txn) => {
             await txn.runAsync(`INSERT INTO mood_values (name, latitude_x, longitude_y, datetime, calmness_score, happy_score, people, activities, personal_weather_rating, api_weather_rating, api_weather_temperature, notes)  
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-                `'${moodValue.name}', 
-                ${moodValue.latitude_x}, 
-                ${moodValue.longitude_y}, 
-                '${moodValue.datetime}',
-                ${moodValue.calmness_score}, 
-                ${moodValue.happy_score}, 
-                '${moodValue.people}', 
-                '${moodValue.activities}', 
-                '${moodValue.personal_weather_rating}', 
-                '${moodValue.api_weather_rating}', 
-                ${moodValue.api_weather_temperature}, 
-                '${moodValue.notes}'`
+                moodValue.name,
+                moodValue.latitude_x, 
+                moodValue.longitude_y, 
+                moodValue.datetime,
+                moodValue.calmness_score, 
+                moodValue.happy_score, 
+                moodValue.people, 
+                moodValue.activities, 
+                moodValue.personal_weather_rating, 
+                moodValue.api_weather_rating, 
+                moodValue.api_weather_temperature, 
+                moodValue.notes
             ).then(response => console.log(response))
             .catch(error => console.log(error));
-
-            // getMoodValues(txn);
         });
     };
 
@@ -80,15 +78,12 @@ export function crudMoodValuesMethods() {
                 moodValue.api_weather_temperature,
                 moodValue.notes
                 );
-            // getMoodValues(txn);
         });
     };
 
   const deleteMoodValue = (db: SQLite.SQLiteDatabase, id: number) => {
         db.withExclusiveTransactionAsync(async (txn) => {
             await txn.runAsync('DELETE FROM mood_values WHERE id = ?', id);
-
-            // getMoodValues(txn);
         });
   };
 
