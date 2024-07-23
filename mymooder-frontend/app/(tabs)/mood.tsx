@@ -32,13 +32,21 @@ const {
   // deleteMoodValue
 } = crudMoodValuesMethods();
 
-export default function TabTwoScreen() {
+export default function MoodComponent({locationsFromMap, setLocationsFromMapCaller}: 
+  {locationsFromMap: LocationValues | null, setLocationsFromMapCaller: Function}
+) {
 
   const db = useSQLiteContext();
-  const [title, setTitle] = useState<string>('');
+  
+  // moodValue is what will be saved to the database when user clicks Save
+  const [moodValue, setMoodValue] = useState<MoodValue>(defaultMoodValue);
+
+  const [name, setName] = useState<string>('');
   const [people, setPeople] = useState<string>('');
   const [activties, setActivities] = useState<string>('');
   const [personalWeather, setPersonalWeather] = useState<string>('');
+  const [apiWeather, setApiWeather] = useState<string>('');
+  const [apiTemp, setApiTemp] = useState<number>(0);
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -50,7 +58,6 @@ export default function TabTwoScreen() {
   const [shouldClearLocationState, setShouldClearLocationState] = useState<boolean>(false);
   //----------------------------------------------------------------------------
 
-  const [moodValue, setMoodValue] = useState<MoodValue>(defaultMoodValue);
 
   // Variables used to send child component values back to parent
   //--------------------------------------------------------------------------------
@@ -146,28 +153,63 @@ export default function TabTwoScreen() {
   };
 
   const saveToDb = async () => {
+    // Make sure all moodValues are updated in state for Text components
+    let newMoodValue = moodValue
+    newMoodValue.datetime = receivedChildDate.dateVal.toUTCString()
+    newMoodValue.name = name
+    newMoodValue.happy_score = receivedChildSliderHappyData.sliderValHappy
+    newMoodValue.calmness_score = receivedChildSliderCalmData.sliderValCalm
+    newMoodValue.people = people
+    newMoodValue.activities = activties
+    newMoodValue.personal_weather_rating = personalWeather
+    newMoodValue.api_weather_rating = apiWeather
+    newMoodValue.api_weather_temperature = apiTemp
+    
+    // Only take map locations if provided
+    if (locationsFromMap) {
+      newMoodValue.latitude_x = locationsFromMap.latitude
+      newMoodValue.longitude_y = locationsFromMap.longitude
+    }
+
+    setMoodValue(newMoodValue)
+
     await addMoodValue(db, moodValue)
     setModalVisible(true)
     console.log(moodValue)
+
+    // Reset locationsFromMap back to null
+    setLocationsFromMapCaller(null);
   };
 
   // Keeps checking if all states are returned to false from child components
   if (shouldClearAllState || shouldClearHappyState || shouldClearCalmState || shouldClearLocationState) {
     if (!shouldClearHappyState || !shouldClearCalmState || !shouldClearLocationState) {
-      // Then finally set all clear state to false and stop checking
+      // Then finally set all clear state in child components to false and stop checking
       setShouldClearAllState(false)
       setShouldClearCalmState(false)
       setShouldClearHappyState(false)
       setShouldClearLocationState(false)
+      setReceivedParentDate({dateVal: new Date()})
+      setName('')
+      setPeople('')
+      setActivities('')
+      setPersonalWeather('')
+      setLocationsFromMapCaller(null);
     }
-  }
+  };
 
-  // If clear state is clicked, then wait for all states from components to be returned to true, then set in parent
+  // If clear state is clicked, then wait for all states from child components to be returned to true, then set in parent
   const clearAllStates = () => {
     setShouldClearAllState(true)
     setShouldClearHappyState(true)
     setShouldClearCalmState(true)
     setShouldClearLocationState(true)
+    setReceivedParentDate({dateVal: new Date()})
+    setName('')
+    setPeople('')
+    setActivities('')
+    setPersonalWeather('')
+    setLocationsFromMapCaller(null);
   };
 
   return (
@@ -182,7 +224,20 @@ export default function TabTwoScreen() {
         }}>
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Saved Record!</Text>
+            <Text style={styles.modalText}>Saved the Following Record:</Text>
+            <View style={[styles.infoBoxText]}>
+                  <Text>Name: {moodValue.name}</Text>
+                  <Text>Latitude: {moodValue.latitude_x}, Longitude: {moodValue.longitude_y}</Text>
+                  <Text>Datetime: {moodValue.datetime}</Text>
+                  <Text>Calmness Score: {moodValue.calmness_score}</Text>
+                  <Text>Happy Score: {moodValue.happy_score}</Text>
+                  <Text>People: {moodValue.people}</Text>
+                  <Text>Activities: {moodValue.activities}</Text>
+                  <Text>Weather: {moodValue.personal_weather_rating}</Text>
+                  <Text>Monitored Weather: {moodValue.api_weather_rating}</Text>
+                  <Text>Monitored Temp: {moodValue.api_weather_temperature}</Text>
+                  <Text>Notes: {moodValue.notes}</Text>
+                </View>
             <ButtonComponent buttonWidth={75} onPress={() => setModalVisible(!modalVisible)} text='Close' />
 
             {/* <Pressable
@@ -201,13 +256,13 @@ export default function TabTwoScreen() {
           <Collapsible title={`Date: ${receivedChildDate.dateVal}`}>
             <DatePickerButton onDataReceivedCaller={onDataReceivedDateCaller}></DatePickerButton>
           </Collapsible>
-          <Collapsible title="Enter a Title for this Entry">
+          <Collapsible title="Enter a name for this Entry">
             <View style={styles.buttonRow}>
               <TextInput
                 style={styles.textInput}
-                onChangeText={setTitle}
-                value={title}
-                placeholder="Enter a title"
+                onChangeText={setName}
+                value={name}
+                placeholder="Enter a brief, descriptive name"
                 keyboardType='numbers-and-punctuation'
                 />
             </View>
@@ -319,6 +374,7 @@ export default function TabTwoScreen() {
               Your coordinates will show up in the text entry boxes, or you can enter them manually.
             </ThemedText>
             <GetLocation 
+              locationsFromMap={locationsFromMap}
               onDataReceivedCaller={onDataReceivedLocationCaller}
               parentClearState={shouldClearLocationState}
               setParentShouldClearState={setShouldClearLocationState}
@@ -335,7 +391,7 @@ export default function TabTwoScreen() {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    top: "45%",
+    top: "20%",
     flex: 0.2,
     alignItems: 'center'
   },
@@ -399,4 +455,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  infoBoxText: {
+    fontSize: 12,
+    left: "1%",
+},
 });

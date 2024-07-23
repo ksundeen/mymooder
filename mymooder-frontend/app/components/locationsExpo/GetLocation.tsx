@@ -2,14 +2,16 @@ import { useState } from "react";
 import * as Location from "expo-location";
 import { View, Text, StyleSheet, TextInput, Linking } from "react-native";
 import ButtonComponent from "../ButtonComponent";
+import { LocationValues } from "@/app/database/interfaces/interfaces";
 
 export function GetLocation(props: {
+    locationsFromMap: LocationValues | null
     onDataReceivedCaller: Function, 
     parentClearState: boolean, 
     setParentShouldClearState: Function}
 ) {
 
-    const { onDataReceivedCaller, parentClearState, setParentShouldClearState } = props;
+    const { locationsFromMap, onDataReceivedCaller, parentClearState, setParentShouldClearState } = props;
 
     const defaultPosition: Location.LocationObject = {
         coords: {
@@ -24,15 +26,15 @@ export function GetLocation(props: {
             timestamp: 0
     };
 
-    const [userLocation, setUserLocation] = useState(defaultPosition);
-    const [userLocationTextLat, setUserLocationTextLat] = useState('');
-    const [userLocationTextLong, setUserLocationTextLong] = useState('');
-    const [errorMsg, setErrorMsg] = useState('');
+    const [userLocation, setUserLocation] = useState<Location.LocationObject | null>(null);
+    const [userLocationTextLat, setUserLocationTextLat] = useState<string>('');
+    const [userLocationTextLong, setUserLocationTextLong] = useState<string>('');
+    const [errorMsg, setErrorMsg] = useState<string>('');
     const [latitudeNumber, onChangeLatitude] = useState<string>('');
     const [longitudeNumber, onChangeLongitude] = useState<string>('');
     const [showCoordinateEntry, setShowCoordinateEntry] = useState<boolean>(false);
 
-    // Function to Send Location to twitter
+    // Function to Send Location to Google Maps browser
     const sendLocation = () => {
         // Will be sending to the leaflet map and d3 map
         try {
@@ -72,8 +74,8 @@ export function GetLocation(props: {
         setUserLocationTextLong(defaultLoadingText)
 
         while (_userLocationTextLat === defaultLoadingText || _userLocationTextLong === defaultLoadingText){
-            let _errMsg = errorMsg
-            let _userLocation = defaultPosition
+            let _errMsg: string = errorMsg
+            let _userLocation: Location.LocationObject = defaultPosition
             
             // Possible values: {"GRANTED":"granted","UNDETERMINED":"undetermined","DENIED":"denied"}
             let { status } = await Location.requestForegroundPermissionsAsync()
@@ -109,20 +111,9 @@ export function GetLocation(props: {
         };
     };
 
-    // const MapScreen = ({navigation}) => {
-    //     return (
-    //       <Button
-    //         title="Go to Jane's profile"
-    //         onPress={() =>
-    //           navigation.navigate('Profile', {name: 'Jane'})
-    //         }
-    //       />
-    //     );
-    //   };
-
     return (
         <>
-                <Text style={styles.paragraphLeft}>1. Either enter latitude and longitude coordinates directly with the button below.</Text>
+            <Text style={styles.paragraphLeft}>1. Either enter latitude and longitude coordinates directly with the button below.</Text>
             <View style={styles.container}>
                 { (userLocationTextLat === '' || userLocationTextLong === '') ?
                     <ButtonComponent buttonWidth={150} onPress={() => requestPermissionsAndLocation()} text='Request Location'/>
@@ -135,22 +126,23 @@ export function GetLocation(props: {
                 }
             </View>
                 <Text style={styles.paragraphLeft}>2. Or get the locations from the map. Open the Map...Click on location on map...Click button "Send to Mood"</Text>
-                <Text style={styles.paragraphLeft}>3. Or enter latitude and longitude coordinates directly with the button below.</Text>
+                <Text style={styles.paragraphLeft}>3. Or enter latitude and longitude coordinates directly with the button below. 
+                    (If you sent map locations here, they will show up in the text boxes below.)</Text>
             <View style={styles.container}>
             <ButtonComponent buttonWidth={150} onPress={() => setShowCoordinateEntry(!showCoordinateEntry)} text='Enter Coordinates Manually'/>
-            {showCoordinateEntry ? 
+            {(showCoordinateEntry || locationsFromMap) ? 
                 <View style={styles.buttonRow}>
                     <TextInput
                     style={styles.textInput}
                     onChangeText={onChangeLatitude}
-                    value={latitudeNumber}
+                    value={locationsFromMap ? String(locationsFromMap.latitude) : latitudeNumber}
                     placeholder="Enter Latitude"
                     keyboardType="numeric"
                 />
                 <TextInput
                     style={styles.textInput}
                     onChangeText={onChangeLongitude}
-                    value={longitudeNumber}
+                    value={locationsFromMap ? String(locationsFromMap.longitude) : longitudeNumber}
                     placeholder="Enter Longitude"
                     keyboardType="numeric"
                 />

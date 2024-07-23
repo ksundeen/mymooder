@@ -33,16 +33,29 @@ With the My Mooder application, the data is in the hands of the individual to le
 
 #
 # TODOs
+## mymooder-frontend
 - [x] Configure ios, android, and web building with Expo on a mac m2. :+1:
 - [x] Add basic d3 graphics. :+1:
 - [x] Add a leaflet map to avoid incurring costs from other mapping API vendors (Bing, Azure, Google, Apple, Mapbox, Cartograph...etc.). :+1:
 - [x] Add user request for location. :+1:
 - [x] Add menu options to accept mood values. :+1:
+- [ ] Add option to import new database or existing database when a new app version is installed.
 - [ ] Update the Leaflet map that still uses the WebView react-native component to work for the web platform. It's not working using Expo.
 - [x] Add sqlite expo component to store data natively. :+1:
 - [ ] Add sample d3 graphics on the Charts and Map from entered mood values.
-- [ ] Convert existing d3 world graphic to a moving SVG.
 - [ ] Add a linked xy plot to exiting d3 world graphic to show mood values.
+- [ ] Add filtering options in d3 charting screen by datestimes and other variables.
+- [ ] Add sqlite export option to export out data as the database, geopackage, csv or other format.
+- [ ] Add option to upload data anonymously to website to store and show online publically.
+
+## mymooder-backend
+- [ ] Get a server ready to publish backend infrastructure and web hosting.
+- [ ] Create fast api skeleton for a website and published on the MyMooder site.
+- [ ] Create a GeoNode website to store and host data on the MyMooder site.
+- [ ] Add functionality to run machine learning python alorithms to report predictions of mood based on input parameters.
+- [ ] Tie API for running predictive methods into the frontend.
+
+## Other
 - [ ] Test that GIS data can be viewed in QGIS or other GIS applications.
 
 

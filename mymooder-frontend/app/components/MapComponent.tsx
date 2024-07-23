@@ -15,15 +15,23 @@ import ModalInfoBox from './modals/ModalInfoBox';
 
 const {height, width} = Dimensions.get("window");              
 
-export function MapComponent({mapData, clusterIconsVisible, mapCenter, mapShapes, mapMarkers}: 
-  {mapData: MoodValue[], clusterIconsVisible: boolean, mapCenter: LatLng | null, mapShapes: MapShape[], mapMarkers: MapMarker[]}) {
+export function MapComponent({setLocationsFromMapCaller, 
+                              mapData, 
+                              clusterIconsVisible, 
+                              mapCenter, 
+                              mapShapes, 
+                              mapMarkers}: 
+  { setLocationsFromMapCaller: Function, 
+    mapData: MoodValue[], 
+    clusterIconsVisible: boolean, 
+    mapCenter: LatLng | null, 
+    mapShapes: MapShape[], 
+    mapMarkers: MapMarker[]}
+  ) {
   
   // To send locations clicked on map to Mood Screen
   const [selectedMoodLocation, setSelectedMoodLocation] = useState<MoodValue | null>(null);
   const [selectedLocationValues, setSelectedLocationValues] = useState<LocationValues | null>(null);
-  
-  // Functions sent to child Save Locations Modal component
-  const [shouldSendLocationToMood, setShouldSendLocationToMood] = useState<boolean>(false);
   
   // Whether to show the clicked icon info box modal; state passed to modal component
   const [showInfoBoxModal, setShowInfoBoxModal] = useState<boolean>(false);
@@ -123,7 +131,7 @@ export function MapComponent({mapData, clusterIconsVisible, mapCenter, mapShapes
               moodValue={selectedMoodLocation}
               showInfoBoxModal={showInfoBoxModal}
               setShowInfoBoxModalCaller={setShowInfoBoxModal}
-              setShouldSendLocationToMoodCaller={setShouldSendLocationToMood}
+              setLocationsFromMapToMoodCaller={setLocationsFromMapCaller}            
             />
             {mapCenter ? 
               <LeafletView

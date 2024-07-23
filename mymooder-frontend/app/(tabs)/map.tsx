@@ -8,7 +8,7 @@ import {
 import { MapComponent } from '../components/MapComponent';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
-import { MoodValue } from '../database/interfaces/interfaces';
+import { LocationValues, MoodValue } from '../database/interfaces/interfaces';
 import { crudMoodValuesMethods} from '@/app/database/crudMethods'
 import ButtonComponent from '../components/ButtonComponent';
 import { ModalLegendButtons } from '../components/modals/ModalLegendButtons';
@@ -17,7 +17,8 @@ import polygon from 'turf-polygon';
 
 const { getMoodValues } = crudMoodValuesMethods();
 
-export default function Map() {
+export default function Map({locationsFromMap, setLocationsFromMapCaller}: 
+  {locationsFromMap: LocationValues | null, setLocationsFromMapCaller: Function}) {
   // Map locations
   const [mapData, setMapData] = useState<MoodValue[]>([]);
   const [mapMarkers, setMapMarkers] = useState<MapMarker[]>([]);
@@ -157,6 +158,7 @@ export default function Map() {
 return (
     <SafeAreaView style={styles.root}>
       <MapComponent 
+        setLocationsFromMapCaller={setLocationsFromMapCaller}
         mapData={mapData} 
         clusterIconsVisible={clusterIconsVisible}
         mapCenter={mapCenter}

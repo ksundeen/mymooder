@@ -1,44 +1,44 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useState, useEffect, useMemo } from 'react';
-// import { Countries } from '@/assets/data/Countries';
+import { Countries } from '@/assets/data/Countries';
 import { favoritePlaceData } from '@/assets/data/favorite-places';
 import Svg, { G, Path, Circle } from "react-native-svg";
 import * as d3 from 'd3';
 import { Colors } from '@/app/constants/Colors';
-// import GeoJSON from 'geojson'
+import GeoJSON from 'geojson'
 import ButtonComponent from './ButtonComponent';
 
-// type PropertiesType = {
-//     index: number,
-//     name: string,
-//     datetime: string,
-//     calmness_score: number,
-//     happy_score: number,
-//     people: string[],
-//     activities: string[],
-//     personal_weather_rating: string[],
-//     api_weather_rating: string[],
-//     api_weather_temperature: number,
-//     notes: string
-// };
-// type GeometryType = {
-//     type: GeoJSON.Point
-//     coordinates: [GeoJSON.Position, GeoJSON.Position]
-// };
-// type FeaturesType = {
-//     type: GeoJSON.Feature,
-//     geometry: GeometryType
-//     properties: PropertiesType
-// };
-// type FeatureCollectionType = {
-//     type: GeoJSON.FeatureCollection,
-//     features: FeaturesType[]
-// };
+type PropertiesType = {
+    index: number,
+    name: string,
+    datetime: string,
+    calmness_score: number,
+    happy_score: number,
+    people: string[],
+    activities: string[],
+    personal_weather_rating: string[],
+    api_weather_rating: string[],
+    api_weather_temperature: number,
+    notes: string
+};
+type GeometryType = {
+    type: GeoJSON.Point
+    coordinates: [GeoJSON.Position, GeoJSON.Position]
+};
+type FeaturesType = {
+    type: GeoJSON.Feature,
+    geometry: GeometryType
+    properties: PropertiesType
+};
+type FeatureCollectionType = {
+    type: GeoJSON.FeatureCollection,
+    features: FeaturesType[]
+};
 
 export function ChartComponent(props: {width: number, height: number}) {
     const { width, height } = props;
 
-    // const [countryList, setCountryList] = useState<string[]>([]);
+    const [countryList, setCountryList] = useState<string[]>([]);
     const [happyPointList, setHappyPointList] = useState<JSX.Element[]>([]);
     const [happyPointsVisible, setHappyPointsVisibility] = useState(true);
 
