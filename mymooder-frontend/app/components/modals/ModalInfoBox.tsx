@@ -1,8 +1,9 @@
 
 
 import { Text, View, StyleSheet, Modal, Alert } from 'react-native';
-import { MoodValue, LocationValues } from '@/app/database/interfaces/interfaces';
+import { MoodValue, LocationValues } from '@/app/database/types';
 import ButtonComponent from '../ButtonComponent';
+import { convertIsoToLocaleString } from '../../helpers';
 
 export function ModalInfoBox({locationValues, 
                               moodValue,
@@ -38,7 +39,7 @@ export function ModalInfoBox({locationValues,
                 <View style={[styles.infoBoxText]}>
                   <Text>Name: {moodValue.name}</Text>
                   <Text>Latitude: {moodValue.latitude_x}, Longitude: {moodValue.longitude_y}</Text>
-                  <Text>Datetime: {moodValue.datetime}</Text>
+                  <Text>Datetime: {convertIsoToLocaleString(moodValue.datetime)}</Text>
                   <Text>Calmness Score: {moodValue.calmness_score}</Text>
                   <Text>Happy Score: {moodValue.happy_score}</Text>
                   <Text>People: {moodValue.people}</Text>
@@ -80,9 +81,6 @@ const styles = StyleSheet.create({
   },
   infoBoxText: {
       fontSize: 12,
-      // padding: 5,
-      // margin: 5,
-      // textAlign: 'left',
       left: "1%",
   },
   buttonRow: {

@@ -8,22 +8,21 @@ import {
 import { MapComponent } from '../components/MapComponent';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
-import { LocationValues, MoodValue } from '../database/interfaces/interfaces';
+import { MoodValue } from '../database/types';
 import { crudMoodValuesMethods} from '@/app/database/crudMethods'
 import ButtonComponent from '../components/ButtonComponent';
 import { ModalLegendButtons } from '../components/modals/ModalLegendButtons';
 import centroid from '@turf/centroid';
 import polygon from 'turf-polygon';
 
-const { getMoodValues } = crudMoodValuesMethods();
+const { getAllMoodValues } = crudMoodValuesMethods();
 
-export default function Map({locationsFromMap, setLocationsFromMapCaller}: 
-  {locationsFromMap: LocationValues | null, setLocationsFromMapCaller: Function}) {
+export default function MapEntry({setLocationsFromMapToMoodCaller}: {setLocationsFromMapToMoodCaller: Function}) {
   // Map locations
   const [mapData, setMapData] = useState<MoodValue[]>([]);
   const [mapMarkers, setMapMarkers] = useState<MapMarker[]>([]);
   const [mapShapes, setMapShapes] = useState<MapShape[]>([]);
-  const [recenterMap, setRecenterMap] = useState(false);
+  const [recenterMap, setRecenterMap] = useState<boolean>(false);
   const [mapCenter, setMapCenter] = useState<LatLng | null>(null);
   
   // Whether the cluster icons are visible or should SVG icons show
@@ -32,7 +31,7 @@ export default function Map({locationsFromMap, setLocationsFromMapCaller}:
   const db = useSQLiteContext();
   
   const refreshMap = async () => {
-    setMapData(await getMoodValues(db));
+    setMapData(await getAllMoodValues(db));
   };
 
   const calculateMapCenter = (_polyArray: number[][]) => {
@@ -70,7 +69,7 @@ export default function Map({locationsFromMap, setLocationsFromMapCaller}:
   };
 
   useMemo(async () => {
-    setMapData(await getMoodValues(db));
+    setMapData(await getAllMoodValues(db));
   }, []);
   
   const extraStyles: {} = {
@@ -158,7 +157,7 @@ export default function Map({locationsFromMap, setLocationsFromMapCaller}:
 return (
     <SafeAreaView style={styles.root}>
       <MapComponent 
-        setLocationsFromMapCaller={setLocationsFromMapCaller}
+        setLocationsFromMapToMoodCaller={setLocationsFromMapToMoodCaller}
         mapData={mapData} 
         clusterIconsVisible={clusterIconsVisible}
         mapCenter={mapCenter}

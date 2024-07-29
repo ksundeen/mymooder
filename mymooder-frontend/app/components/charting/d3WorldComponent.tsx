@@ -6,7 +6,7 @@ import Svg, { G, Path, Circle } from "react-native-svg";
 import * as d3 from 'd3';
 import { Colors } from '@/app/constants/Colors';
 import GeoJSON from 'geojson'
-import ButtonComponent from './ButtonComponent';
+// import ButtonComponent from './ButtonComponent';
 
 type PropertiesType = {
     index: number,
@@ -172,11 +172,11 @@ export function ChartComponent(props: {width: number, height: number}) {
                 {happyPointsVisible ? happyPointList.map(x => x): ''}
                 </G>
             </Svg>
-            <ButtonComponent 
+            {/* <ButtonComponent 
                 buttonStyle={{opacity: 0.5}}
                 onPress={toggleHappyPoints}
                 text={"Toggle Points"}
-            ></ButtonComponent>
+            ></ButtonComponent> */}
         </View>
     );
 };

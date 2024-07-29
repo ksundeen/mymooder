@@ -11,7 +11,7 @@ My Mooder aims to help transform an individual’s personal view of mental illne
 <div float=center height=25% width=25% padding=5px;>
         <img src="/mymooder-frontend/assets/images/readme-assets/app-home.png" width=20% height=20%>
         <img src="/mymooder-frontend/assets/images/readme-assets/app-mood.png" width=20% height=20%>
-        <img src="/mymooder-frontend/assets/images/readme-assets/app-chart-world-d3.png" width=20% height=20%>
+        <img src="/mymooder-frontend/assets/images/readme-assets/app-charts.png" width=20% height=20%>
         <img src="/mymooder-frontend/assets/images/readme-assets/app-leaflet-map.png" width=20% height=20%>
 </div>
 
@@ -39,13 +39,15 @@ With the My Mooder application, the data is in the hands of the individual to le
 - [x] Add a leaflet map to avoid incurring costs from other mapping API vendors (Bing, Azure, Google, Apple, Mapbox, Cartograph...etc.). :+1:
 - [x] Add user request for location. :+1:
 - [x] Add menu options to accept mood values. :+1:
+- [ ] Add menu options to edit existing mood values.
 - [ ] Add option to import new database or existing database when a new app version is installed.
 - [ ] Update the Leaflet map that still uses the WebView react-native component to work for the web platform. It's not working using Expo.
 - [x] Add sqlite expo component to store data natively. :+1:
-- [ ] Add sample d3 graphics on the Charts and Map from entered mood values.
-- [ ] Add a linked xy plot to exiting d3 world graphic to show mood values.
+- [x] Add sample d3 graphics on the Charts and Map from entered mood values. :+1:
+- [x] Add d3 line charts on the Charts screen to see numerical (Happy Scores/Calm Scores/Temperature) charts. :+1:
+- [ ] Add d3 categorical charts on the Charts screen to see People/Activties/Weather charts.
 - [ ] Add filtering options in d3 charting screen by datestimes and other variables.
-- [ ] Add sqlite export option to export out data as the database, geopackage, csv or other format.
+- [ ] Add sqlite export option to export out data as the database, geopackage(?), csv or other format.
 - [ ] Add option to upload data anonymously to website to store and show online publically.
 
 ## mymooder-backend
@@ -420,6 +422,7 @@ This section review steps for setting up technologies required to run a React Na
 * Adding D3 Graphics to a Map: https://medium.com/nightingale/creating-a-d3-map-in-a-mobile-app-using-react-native-46da1e6b3be6
 * Getting a User's Location with Expo: https://docs.expo.dev/versions/latest/sdk/location/
 * Getting Location Without Expo: https://blog.logrocket.com/react-native-geolocation-complete-tutorial/#getting-users-location-data
-
+* Charting and Graphs: https://www.react-graph-gallery.com/scatter-plot, https://gifted-charts.web.app/areachart/#customDataPoints
+* 
 # Other Fun Resources to Remember
 * github README emojis: https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md

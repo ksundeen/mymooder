@@ -9,19 +9,19 @@ import {
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { useState } from 'react';
 import Svg from 'react-native-svg';
-import { LocationValues, MoodValue } from '../database/interfaces/interfaces';
+import { LocationValues, MoodValue } from '../database/types';
 import ModalInfoBox from './modals/ModalInfoBox';
 // import { IFrameWebView } from './IFrameWebView';
 
 const {height, width} = Dimensions.get("window");              
 
-export function MapComponent({setLocationsFromMapCaller, 
+export function MapComponent({setLocationsFromMapToMoodCaller, 
                               mapData, 
                               clusterIconsVisible, 
                               mapCenter, 
                               mapShapes, 
                               mapMarkers}: 
-  { setLocationsFromMapCaller: Function, 
+  { setLocationsFromMapToMoodCaller: Function, 
     mapData: MoodValue[], 
     clusterIconsVisible: boolean, 
     mapCenter: LatLng | null, 
@@ -131,7 +131,7 @@ export function MapComponent({setLocationsFromMapCaller,
               moodValue={selectedMoodLocation}
               showInfoBoxModal={showInfoBoxModal}
               setShowInfoBoxModalCaller={setShowInfoBoxModal}
-              setLocationsFromMapToMoodCaller={setLocationsFromMapCaller}            
+              setLocationsFromMapToMoodCaller={setLocationsFromMapToMoodCaller}            
             />
             {mapCenter ? 
               <LeafletView

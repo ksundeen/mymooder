@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <RNSVGSvgView
+    bbHeight={1334}
+    bbWidth={750}
+    focusable={false}
+    height={1334}
+    style={
+      [
+        {
+          "backgroundColor": "transparent",
+          "borderWidth": 0,
+        },
+        {
+          "flex": 0,
+          "height": 1334,
+          "width": 750,
+        },
+      ]
+    }
+    width={750}
+  >
+    <RNSVGGroup
+      fill={
+        {
+          "payload": 4278190080,
+          "type": 0,
+        }
+      }
+    />
+  </RNSVGSvgView>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  />
+  <View
+    allowFileAccess={true}
+    allowFileAccessFromFileURLs={true}
+    allowUniversalAccessFromFileURLs={true}
+    containerStyle={
+      {
+        "bottom": 0,
+        "flex": 1,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+    domStorageEnabled={true}
+    javaScriptEnabled={true}
+    onMessage={[Function]}
+    originWhitelist={
+      [
+        "*",
+      ]
+    }
+    renderLoading={[Function]}
+    source={1}
+    startInLoadingState={true}
+  />
+</View>
+`;

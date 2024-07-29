@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as Location from "expo-location";
 import { View, Text, StyleSheet, TextInput, Linking } from "react-native";
 import ButtonComponent from "../ButtonComponent";
-import { LocationValues } from "@/app/database/interfaces/interfaces";
+import { LocationValues } from "@/app/database/types";
 
 export function GetLocation(props: {
     locationsFromMap: LocationValues | null

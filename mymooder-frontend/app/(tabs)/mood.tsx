@@ -19,21 +19,19 @@ import {
   WeatherValues, 
   WeatherAPIValues, 
   LocationValues,
-  defaultMoodValue } from '../database/interfaces/interfaces';
+ } from '../database/types';
+import { defaultMoodValue } from '../constants/Values';
 import DatePickerButton from '../components/DatePickerButton';
 import ButtonComponent from '../components/ButtonComponent';
 import { crudMoodValuesMethods} from '@/app/database/crudMethods'
 
-const { 
-  // moodValues, 
-  // getMoodValues, 
-  addMoodValue, 
+const { addMoodValue, 
   // updateMoodValue, 
   // deleteMoodValue
 } = crudMoodValuesMethods();
 
-export default function MoodComponent({locationsFromMap, setLocationsFromMapCaller}: 
-  {locationsFromMap: LocationValues | null, setLocationsFromMapCaller: Function}
+export default function MoodComponent({locationsFromMapToMood, setLocationsFromMapToMoodCaller}: 
+  {locationsFromMapToMood: LocationValues | null, setLocationsFromMapToMoodCaller: Function}
 ) {
 
   const db = useSQLiteContext();
@@ -58,39 +56,30 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
   const [shouldClearLocationState, setShouldClearLocationState] = useState<boolean>(false);
   //----------------------------------------------------------------------------
 
-
   // Variables used to send child component values back to parent
   //--------------------------------------------------------------------------------
-  const [receivedChildDate, setReceivedParentDate] = useState<DateValues>({dateVal: new Date()});
-  // const [previousReceivedChildDate, setPreviousReceivedParentDate] = useState<DateValues>({dateVal: receivedChildDate.dateVal});
+  const [receivedChildDate, setReceivedParentDate] = useState<DateValues>(new Date());
 
-  const [receivedChildSliderHappyData, setReceivedParentSliderHappyData] = useState<HappyValues>({sliderValHappy: 0});
-  // const [previousReceivedChildSliderHappyData, setPreviousReceivedParentSliderHappyData] = useState<HappyValues>({sliderValHappy: 0});
+  const [receivedChildSliderHappyData, setReceivedParentSliderHappyData] = useState<HappyValues>(0);
 
-  const [receivedChildSliderCalmData, setReceivedParentSliderCalmData] = useState<CalmValues>({sliderValCalm: 0});
-  // const [previousReceivedChildSliderCalmData, setPreviousReceivedParentSliderCalmData] = useState<CalmValues>({sliderValCalm: 0});
+  const [receivedChildSliderCalmData, setReceivedParentSliderCalmData] = useState<CalmValues>(0);
 
-  const [receivedChildPeopleData, setReceivedParentPeopleData] = useState<PeopleValues>({peopleValues: ''});
-  // const [previousReceivedChildPeopleData, setPreviousReceivedParentPeopleData] = useState<PeopleValues>({peopleValues: ''});
+  const [receivedChildPeopleData, setReceivedParentPeopleData] = useState<PeopleValues>('');
 
-  const [receivedChildActivitiesData, setReceivedParentActivitiesData] = useState<ActivitiesValues>({activitiesValues: ''});
-  // const [previousReceivedChildActivitiesData, setPreviousReceivedParentActivitiesData] = useState<ActivitiesValues>({activitiesValues: ''});
+  const [receivedChildActivitiesData, setReceivedParentActivitiesData] = useState<ActivitiesValues>('');
 
-  const [receivedChildWeatherData, setReceivedParentWeatherData] = useState<WeatherValues>({weatherValues: ''});
-  // const [previousReceivedChildWeatherData, setPreviousReceivedParentWeatherData] = useState<WeatherValues>({weatherValues: ''});
+  const [receivedChildWeatherData, setReceivedParentWeatherData] = useState<WeatherValues>('');
 
   const [receivedChildWeatherAPIData, setReceivedParentWeatherAPIData] = useState<WeatherAPIValues>({weatherAPIValues: '', weatherAPITemp: 0});
-  // const [previousReceivedChildWeatherAPIData, setPreviousReceivedParentWeatherAPIData] = useState<WeatherAPIValues>({weatherAPIValues: '', weatherAPITemp: 0});
 
   const [receivedChildLocationData, setReceivedParentLocationData] = useState<LocationValues>({latitude: 0, longitude: 0});
-  // const [previousReceivedChildLocationData, setPreviousReceivedParentLocationData] = useState<LocationValues>({latitude: 0, longitude: 0});
   //--------------------------------------------------------------------------------
 
   // Callback function to receive data from the happiness score slider
   const onDataReceivedDateCaller = (data: DateValues) => {
     setReceivedParentDate(data)
     let newMoodValue = moodValue
-    newMoodValue.datetime = data.dateVal.toLocaleDateString()
+    newMoodValue.datetime = data.toLocaleDateString()
     setMoodValue(newMoodValue)
   };
 
@@ -98,7 +87,7 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
   const onDataReceivedSliderHappyCaller = (data: HappyValues) => {
     setReceivedParentSliderHappyData(data)
     let newMoodValue = moodValue
-    newMoodValue.happy_score = data.sliderValHappy
+    newMoodValue.happy_score = data
     setMoodValue(newMoodValue)
   };
 
@@ -106,7 +95,7 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
   const onDataReceivedSliderCalmCaller = (data: CalmValues) => {
     setReceivedParentSliderCalmData(data)
     let newMoodValue = moodValue
-    newMoodValue.calmness_score = data.sliderValCalm
+    newMoodValue.calmness_score = data
     setMoodValue(newMoodValue)
   };
 
@@ -114,7 +103,7 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
   const onDataReceivedPeopleCaller = (data: PeopleValues) => {
     setReceivedParentPeopleData(data)
     let newMoodValue = moodValue
-    newMoodValue.people = data.peopleValues
+    newMoodValue.people = data
     setMoodValue(newMoodValue)
   };
 
@@ -122,7 +111,7 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
   const onDataReceivedActivitesCaller = (data: ActivitiesValues) => {
     setReceivedParentActivitiesData(data);
     let newMoodValue = moodValue
-    newMoodValue.activities = data.activitiesValues
+    newMoodValue.activities = data
     setMoodValue(newMoodValue)
   };
 
@@ -130,7 +119,7 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
   const onDataReceivedWeatherCaller = (data: WeatherValues) => {
     setReceivedParentWeatherData(data)
     let newMoodValue = moodValue
-    newMoodValue.personal_weather_rating = data.weatherValues
+    newMoodValue.personal_weather_rating = data
     setMoodValue(newMoodValue)
   };
 
@@ -155,10 +144,10 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
   const saveToDb = async () => {
     // Make sure all moodValues are updated in state for Text components
     let newMoodValue = moodValue
-    newMoodValue.datetime = receivedChildDate.dateVal.toUTCString()
+    newMoodValue.datetime = receivedChildDate.toUTCString()
     newMoodValue.name = name
-    newMoodValue.happy_score = receivedChildSliderHappyData.sliderValHappy
-    newMoodValue.calmness_score = receivedChildSliderCalmData.sliderValCalm
+    newMoodValue.happy_score = receivedChildSliderHappyData
+    newMoodValue.calmness_score = receivedChildSliderCalmData
     newMoodValue.people = people
     newMoodValue.activities = activties
     newMoodValue.personal_weather_rating = personalWeather
@@ -166,9 +155,9 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
     newMoodValue.api_weather_temperature = apiTemp
     
     // Only take map locations if provided
-    if (locationsFromMap) {
-      newMoodValue.latitude_x = locationsFromMap.latitude
-      newMoodValue.longitude_y = locationsFromMap.longitude
+    if (locationsFromMapToMood) {
+      newMoodValue.latitude_x = locationsFromMapToMood.latitude
+      newMoodValue.longitude_y = locationsFromMapToMood.longitude
     }
 
     setMoodValue(newMoodValue)
@@ -178,7 +167,7 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
     console.log(moodValue)
 
     // Reset locationsFromMap back to null
-    setLocationsFromMapCaller(null);
+    setLocationsFromMapToMoodCaller(null);
   };
 
   // Keeps checking if all states are returned to false from child components
@@ -189,12 +178,12 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
       setShouldClearCalmState(false)
       setShouldClearHappyState(false)
       setShouldClearLocationState(false)
-      setReceivedParentDate({dateVal: new Date()})
+      setReceivedParentDate(new Date())
       setName('')
       setPeople('')
       setActivities('')
       setPersonalWeather('')
-      setLocationsFromMapCaller(null);
+      setLocationsFromMapToMoodCaller(null);
     }
   };
 
@@ -204,12 +193,12 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
     setShouldClearHappyState(true)
     setShouldClearCalmState(true)
     setShouldClearLocationState(true)
-    setReceivedParentDate({dateVal: new Date()})
+    setReceivedParentDate(new Date())
     setName('')
     setPeople('')
     setActivities('')
     setPersonalWeather('')
-    setLocationsFromMapCaller(null);
+    setLocationsFromMapToMoodCaller(null);
   };
 
   return (
@@ -253,7 +242,7 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
         headerImage={<Image source={require('@/assets/images/emotional-rollercoaster-grey.png')} style={styles.headerImage}
         />}
       >
-          <Collapsible title={`Date: ${receivedChildDate.dateVal}`}>
+          <Collapsible title={`Date: ${receivedChildDate}`}>
             <DatePickerButton onDataReceivedCaller={onDataReceivedDateCaller}></DatePickerButton>
           </Collapsible>
           <Collapsible title="Enter a name for this Entry">
@@ -374,7 +363,7 @@ export default function MoodComponent({locationsFromMap, setLocationsFromMapCall
               Your coordinates will show up in the text entry boxes, or you can enter them manually.
             </ThemedText>
             <GetLocation 
-              locationsFromMap={locationsFromMap}
+              locationsFromMap={locationsFromMapToMood}
               onDataReceivedCaller={onDataReceivedLocationCaller}
               parentClearState={shouldClearLocationState}
               setParentShouldClearState={setShouldClearLocationState}

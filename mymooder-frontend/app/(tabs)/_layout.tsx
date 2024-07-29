@@ -11,11 +11,10 @@ import * as SQLite from 'expo-sqlite';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Charts from './charts';
-import Map from './map';
 import HomeScreen from './index';
 import MoodComponent from './mood';
-import { LocationValues } from '../database/interfaces/interfaces';
-import MapComponent from '../components/MapComponent';
+import { LocationValues } from '../database/types';
+import MapEntry from './map';
 // import initDatabaseIfNeeded from '../database/sqliteInit';
 
 const Tab = createBottomTabNavigator();
@@ -53,7 +52,7 @@ export default function TabLayout() {
 
   const colorScheme = useColorScheme();
 
-  const [locationsFromMap, setLocationsFromMap] = useState<LocationValues | null>(null);
+  const [locationsFromMapToMood, setLocationsFromMapToMood] = useState<LocationValues | null>(null);
 
   // useEffect(() => {
     // const loadData = async () => {
@@ -102,17 +101,17 @@ export default function TabLayout() {
               screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
               }}
-              screenListeners={({ navigation }) => ({
-                state: (e) => {
-                  // Do something with the state
-                  console.log('state changed', JSON.stringify(e.data));
+              // screenListeners={({ navigation }) => ({
+              //   state: (e) => {
+              //     // Do something with the state
+              //     console.log('state changed', JSON.stringify(e.data));
             
-                  // Do something with the `navigation` object
-                  if (!navigation.canGoBack()) {
-                    console.log("we're on the initial screen");
-                  }
-                },
-              })}
+              //     // Do something with the `navigation` object
+              //     if (!navigation.canGoBack()) {
+              //       console.log("we're on the initial screen");
+              //     }
+              //   },
+              // })}
             >
             <Tab.Screen
               name="Home"
@@ -130,8 +129,8 @@ export default function TabLayout() {
               children={(props: {route: any, navigation: any}) => 
                 <MoodComponent 
                   {...props} 
-                  locationsFromMap={locationsFromMap} 
-                  setLocationsFromMapCaller={setLocationsFromMap} 
+                  locationsFromMap={locationsFromMapToMood} 
+                  setLocationsFromMapCaller={setLocationsFromMapToMood} 
                 />
               }
               options={{
@@ -155,9 +154,9 @@ export default function TabLayout() {
               name="Map"
               // component={Map}
               children={(props: {route: any, navigation: any}) => 
-                <Map 
+                <MapEntry
                   {...props} 
-                  setLocationsFromMapCaller={setLocationsFromMap} 
+                  setLocationsFromMapCaller={setLocationsFromMapToMood} 
                 />
               }
               options={{

@@ -1,6 +1,15 @@
 import * as SQLite from "expo-sqlite";
-import { useState } from "react";
-import { MoodValue } from "./interfaces/interfaces";
+import {
+    MoodValue, 
+    DateRange,
+    HappyValues, 
+    CalmValues, 
+    PeopleValues, 
+    ActivitiesValues, 
+    WeatherValues, 
+    WeatherAPIValues, 
+    LocationValues
+ } from './types';
 
 export function crudMoodValuesMethods() {
     // const [moodValues, setMoodValues] = useState<MoodValue[]>([]);
@@ -22,11 +31,37 @@ export function crudMoodValuesMethods() {
     //     // setMoodValues(allRows);
     //     // moodValues = allRows
     // }
-    const getMoodValues = async (db: SQLite.SQLiteDatabase) => {    
+    const getAllMoodValues = async (db: SQLite.SQLiteDatabase) => {    
         const result: MoodValue[] = await db.getAllAsync<MoodValue>(
           `SELECT * FROM mood_values WHERE id > ?;`, [0])
-          return result
-        };
+        return result
+    };
+
+    const getMoodValuesFilteredByDate = async (db: SQLite.SQLiteDatabase, filterDateRange: DateRange) => {
+        const result: MoodValue[] = await db.getAllAsync<MoodValue>(
+            `SELECT * FROM mood_values WHERE date <= ? and date >= ? ;`, [filterDateRange.minIsoDate, filterDateRange.maxIsoDate])
+        return result
+    };
+
+    // const getMoodValuesFilteredByFields = async (db: SQLite.SQLiteDatabase, dateRangeFilter?: DateRange,
+    //     happyFilter?: HappyValues, calmFilter?: CalmValues, peopleFilter?: PeopleValues, 
+    //     activitiesFilter?: ActivitiesValues, personalWeatherFilter?: WeatherValues, 
+    //     weatherApiFilter?: WeatherAPIValues, locationFilter?: LocationValues) => {
+    //         let fields: [] = []
+    //         const dateFields =  dateRangeFilter ? [dateRangeFilter.minIsoDate, dateRangeFilter.maxIsoDate] : []
+    //         const happyFields = happyFilter ? [happyFilter.
+    //         const calmFields = calmFilter
+    //         const peopleFields = peopleFilter
+    //         const activitiesFields = activitiesFilter
+    //         const personalWeatherFields = personalWeatherFilter
+    //         const weatherApiFields = weatherApiFilter
+    //         const locationFields = locationFilter
+    //         const allFields: [] = fields.concat(dateFields)
+
+    //         const result: MoodValue[] = await db.getAllAsync<MoodValue>(
+    //             `SELECT * FROM mood_values WHERE date <= ? and date >= ? ;`, allFields)
+    //             return result
+    // };
 
     const addMoodValue = (db: SQLite.SQLiteDatabase, moodValue: MoodValue) => {
         db.withExclusiveTransactionAsync(async (txn) => {
@@ -83,12 +118,14 @@ export function crudMoodValuesMethods() {
 
   const deleteMoodValue = (db: SQLite.SQLiteDatabase, id: number) => {
         db.withExclusiveTransactionAsync(async (txn) => {
-            await txn.runAsync('DELETE FROM mood_values WHERE id = ?', id);
+            await txn.runAsync('DELETE FROM mood_values WHERE id = ?', [id]);
         });
   };
 
   return {
-    getMoodValues,
+    getAllMoodValues,
+    getMoodValuesFilteredByDate,
+    // getMoodValuesFilteredByField,
     addMoodValue,
     updateMoodValue,
     deleteMoodValue,
