@@ -19,26 +19,32 @@ import {
   WeatherValues, 
   WeatherAPIValues, 
   LocationValues,
-  defaultMoodValue } from '../database/interfaces/interfaces';
+ } from '../database/types';
+import { defaultMoodValue } from '../constants/Values';
 import DatePickerButton from '../components/DatePickerButton';
 import ButtonComponent from '../components/ButtonComponent';
 import { crudMoodValuesMethods} from '@/app/database/crudMethods'
 
-const { 
-  // moodValues, 
-  // getMoodValues, 
-  addMoodValue, 
+const { addMoodValue, 
   // updateMoodValue, 
   // deleteMoodValue
 } = crudMoodValuesMethods();
 
-export default function TabTwoScreen() {
+export default function MoodComponent({locationsFromMapToMood, setLocationsFromMapToMoodCaller}: 
+  {locationsFromMapToMood: LocationValues | null, setLocationsFromMapToMoodCaller: Function}
+) {
 
   const db = useSQLiteContext();
-  const [title, setTitle] = useState<string>('');
+  
+  // moodValue is what will be saved to the database when user clicks Save
+  const [moodValue, setMoodValue] = useState<MoodValue>(defaultMoodValue);
+
+  const [name, setName] = useState<string>('');
   const [people, setPeople] = useState<string>('');
   const [activties, setActivities] = useState<string>('');
   const [personalWeather, setPersonalWeather] = useState<string>('');
+  const [apiWeather, setApiWeather] = useState<string>('');
+  const [apiTemp, setApiTemp] = useState<number>(0);
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -50,40 +56,30 @@ export default function TabTwoScreen() {
   const [shouldClearLocationState, setShouldClearLocationState] = useState<boolean>(false);
   //----------------------------------------------------------------------------
 
-  const [moodValue, setMoodValue] = useState<MoodValue>(defaultMoodValue);
-
   // Variables used to send child component values back to parent
   //--------------------------------------------------------------------------------
-  const [receivedChildDate, setReceivedParentDate] = useState<DateValues>({dateVal: new Date()});
-  // const [previousReceivedChildDate, setPreviousReceivedParentDate] = useState<DateValues>({dateVal: receivedChildDate.dateVal});
+  const [receivedChildDate, setReceivedParentDate] = useState<DateValues>(new Date());
 
-  const [receivedChildSliderHappyData, setReceivedParentSliderHappyData] = useState<HappyValues>({sliderValHappy: 0});
-  // const [previousReceivedChildSliderHappyData, setPreviousReceivedParentSliderHappyData] = useState<HappyValues>({sliderValHappy: 0});
+  const [receivedChildSliderHappyData, setReceivedParentSliderHappyData] = useState<HappyValues>(0);
 
-  const [receivedChildSliderCalmData, setReceivedParentSliderCalmData] = useState<CalmValues>({sliderValCalm: 0});
-  // const [previousReceivedChildSliderCalmData, setPreviousReceivedParentSliderCalmData] = useState<CalmValues>({sliderValCalm: 0});
+  const [receivedChildSliderCalmData, setReceivedParentSliderCalmData] = useState<CalmValues>(0);
 
-  const [receivedChildPeopleData, setReceivedParentPeopleData] = useState<PeopleValues>({peopleValues: ''});
-  // const [previousReceivedChildPeopleData, setPreviousReceivedParentPeopleData] = useState<PeopleValues>({peopleValues: ''});
+  const [receivedChildPeopleData, setReceivedParentPeopleData] = useState<PeopleValues>('');
 
-  const [receivedChildActivitiesData, setReceivedParentActivitiesData] = useState<ActivitiesValues>({activitiesValues: ''});
-  // const [previousReceivedChildActivitiesData, setPreviousReceivedParentActivitiesData] = useState<ActivitiesValues>({activitiesValues: ''});
+  const [receivedChildActivitiesData, setReceivedParentActivitiesData] = useState<ActivitiesValues>('');
 
-  const [receivedChildWeatherData, setReceivedParentWeatherData] = useState<WeatherValues>({weatherValues: ''});
-  // const [previousReceivedChildWeatherData, setPreviousReceivedParentWeatherData] = useState<WeatherValues>({weatherValues: ''});
+  const [receivedChildWeatherData, setReceivedParentWeatherData] = useState<WeatherValues>('');
 
   const [receivedChildWeatherAPIData, setReceivedParentWeatherAPIData] = useState<WeatherAPIValues>({weatherAPIValues: '', weatherAPITemp: 0});
-  // const [previousReceivedChildWeatherAPIData, setPreviousReceivedParentWeatherAPIData] = useState<WeatherAPIValues>({weatherAPIValues: '', weatherAPITemp: 0});
 
   const [receivedChildLocationData, setReceivedParentLocationData] = useState<LocationValues>({latitude: 0, longitude: 0});
-  // const [previousReceivedChildLocationData, setPreviousReceivedParentLocationData] = useState<LocationValues>({latitude: 0, longitude: 0});
   //--------------------------------------------------------------------------------
 
   // Callback function to receive data from the happiness score slider
   const onDataReceivedDateCaller = (data: DateValues) => {
     setReceivedParentDate(data)
     let newMoodValue = moodValue
-    newMoodValue.datetime = data.dateVal.toLocaleDateString()
+    newMoodValue.datetime = data.toLocaleDateString()
     setMoodValue(newMoodValue)
   };
 
@@ -91,7 +87,7 @@ export default function TabTwoScreen() {
   const onDataReceivedSliderHappyCaller = (data: HappyValues) => {
     setReceivedParentSliderHappyData(data)
     let newMoodValue = moodValue
-    newMoodValue.happy_score = data.sliderValHappy
+    newMoodValue.happy_score = data
     setMoodValue(newMoodValue)
   };
 
@@ -99,7 +95,7 @@ export default function TabTwoScreen() {
   const onDataReceivedSliderCalmCaller = (data: CalmValues) => {
     setReceivedParentSliderCalmData(data)
     let newMoodValue = moodValue
-    newMoodValue.calmness_score = data.sliderValCalm
+    newMoodValue.calmness_score = data
     setMoodValue(newMoodValue)
   };
 
@@ -107,7 +103,7 @@ export default function TabTwoScreen() {
   const onDataReceivedPeopleCaller = (data: PeopleValues) => {
     setReceivedParentPeopleData(data)
     let newMoodValue = moodValue
-    newMoodValue.people = data.peopleValues
+    newMoodValue.people = data
     setMoodValue(newMoodValue)
   };
 
@@ -115,7 +111,7 @@ export default function TabTwoScreen() {
   const onDataReceivedActivitesCaller = (data: ActivitiesValues) => {
     setReceivedParentActivitiesData(data);
     let newMoodValue = moodValue
-    newMoodValue.activities = data.activitiesValues
+    newMoodValue.activities = data
     setMoodValue(newMoodValue)
   };
 
@@ -123,7 +119,7 @@ export default function TabTwoScreen() {
   const onDataReceivedWeatherCaller = (data: WeatherValues) => {
     setReceivedParentWeatherData(data)
     let newMoodValue = moodValue
-    newMoodValue.personal_weather_rating = data.weatherValues
+    newMoodValue.personal_weather_rating = data
     setMoodValue(newMoodValue)
   };
 
@@ -146,28 +142,63 @@ export default function TabTwoScreen() {
   };
 
   const saveToDb = async () => {
+    // Make sure all moodValues are updated in state for Text components
+    let newMoodValue = moodValue
+    newMoodValue.datetime = receivedChildDate.toUTCString()
+    newMoodValue.name = name
+    newMoodValue.happy_score = receivedChildSliderHappyData
+    newMoodValue.calmness_score = receivedChildSliderCalmData
+    newMoodValue.people = people
+    newMoodValue.activities = activties
+    newMoodValue.personal_weather_rating = personalWeather
+    newMoodValue.api_weather_rating = apiWeather
+    newMoodValue.api_weather_temperature = apiTemp
+    
+    // Only take map locations if provided
+    if (locationsFromMapToMood) {
+      newMoodValue.latitude_x = locationsFromMapToMood.latitude
+      newMoodValue.longitude_y = locationsFromMapToMood.longitude
+    }
+
+    setMoodValue(newMoodValue)
+
     await addMoodValue(db, moodValue)
     setModalVisible(true)
     console.log(moodValue)
+
+    // Reset locationsFromMap back to null
+    setLocationsFromMapToMoodCaller(null);
   };
 
   // Keeps checking if all states are returned to false from child components
   if (shouldClearAllState || shouldClearHappyState || shouldClearCalmState || shouldClearLocationState) {
     if (!shouldClearHappyState || !shouldClearCalmState || !shouldClearLocationState) {
-      // Then finally set all clear state to false and stop checking
+      // Then finally set all clear state in child components to false and stop checking
       setShouldClearAllState(false)
       setShouldClearCalmState(false)
       setShouldClearHappyState(false)
       setShouldClearLocationState(false)
+      setReceivedParentDate(new Date())
+      setName('')
+      setPeople('')
+      setActivities('')
+      setPersonalWeather('')
+      setLocationsFromMapToMoodCaller(null);
     }
-  }
+  };
 
-  // If clear state is clicked, then wait for all states from components to be returned to true, then set in parent
+  // If clear state is clicked, then wait for all states from child components to be returned to true, then set in parent
   const clearAllStates = () => {
     setShouldClearAllState(true)
     setShouldClearHappyState(true)
     setShouldClearCalmState(true)
     setShouldClearLocationState(true)
+    setReceivedParentDate(new Date())
+    setName('')
+    setPeople('')
+    setActivities('')
+    setPersonalWeather('')
+    setLocationsFromMapToMoodCaller(null);
   };
 
   return (
@@ -182,7 +213,20 @@ export default function TabTwoScreen() {
         }}>
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Saved Record!</Text>
+            <Text style={styles.modalText}>Saved the Following Record:</Text>
+            <View style={[styles.infoBoxText]}>
+                  <Text>Name: {moodValue.name}</Text>
+                  <Text>Latitude: {moodValue.latitude_x}, Longitude: {moodValue.longitude_y}</Text>
+                  <Text>Datetime: {moodValue.datetime}</Text>
+                  <Text>Calmness Score: {moodValue.calmness_score}</Text>
+                  <Text>Happy Score: {moodValue.happy_score}</Text>
+                  <Text>People: {moodValue.people}</Text>
+                  <Text>Activities: {moodValue.activities}</Text>
+                  <Text>Weather: {moodValue.personal_weather_rating}</Text>
+                  <Text>Monitored Weather: {moodValue.api_weather_rating}</Text>
+                  <Text>Monitored Temp: {moodValue.api_weather_temperature}</Text>
+                  <Text>Notes: {moodValue.notes}</Text>
+                </View>
             <ButtonComponent buttonWidth={75} onPress={() => setModalVisible(!modalVisible)} text='Close' />
 
             {/* <Pressable
@@ -198,16 +242,16 @@ export default function TabTwoScreen() {
         headerImage={<Image source={require('@/assets/images/emotional-rollercoaster-grey.png')} style={styles.headerImage}
         />}
       >
-          <Collapsible title={`Date: ${receivedChildDate.dateVal}`}>
+          <Collapsible title={`Date: ${receivedChildDate}`}>
             <DatePickerButton onDataReceivedCaller={onDataReceivedDateCaller}></DatePickerButton>
           </Collapsible>
-          <Collapsible title="Enter a Title for this Entry">
+          <Collapsible title="Enter a name for this Entry">
             <View style={styles.buttonRow}>
               <TextInput
                 style={styles.textInput}
-                onChangeText={setTitle}
-                value={title}
-                placeholder="Enter a title"
+                onChangeText={setName}
+                value={name}
+                placeholder="Enter a brief, descriptive name"
                 keyboardType='numbers-and-punctuation'
                 />
             </View>
@@ -319,6 +363,7 @@ export default function TabTwoScreen() {
               Your coordinates will show up in the text entry boxes, or you can enter them manually.
             </ThemedText>
             <GetLocation 
+              locationsFromMap={locationsFromMapToMood}
               onDataReceivedCaller={onDataReceivedLocationCaller}
               parentClearState={shouldClearLocationState}
               setParentShouldClearState={setShouldClearLocationState}
@@ -335,7 +380,7 @@ export default function TabTwoScreen() {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    top: "45%",
+    top: "20%",
     flex: 0.2,
     alignItems: 'center'
   },
@@ -399,4 +444,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  infoBoxText: {
+    fontSize: 12,
+    left: "1%",
+},
 });

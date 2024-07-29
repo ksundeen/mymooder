@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render } from '@testing-library/react-native'
 import { ScaledSize } from 'react-native';
 
-import { ChartComponent } from '../ChartComponent';
+import { ChartComponent } from '../charting/ChartComponent';
 
 it(`renders correctly`, () => {
   const size: ScaledSize = {

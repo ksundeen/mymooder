@@ -11,10 +11,10 @@ import * as SQLite from 'expo-sqlite';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Charts from './charts';
-import Map from './map';
 import HomeScreen from './index';
-import TabTwoScreen from './mood';
-import { LocationValues } from '../database/interfaces/interfaces';
+import MoodComponent from './mood';
+import { LocationValues } from '../database/types';
+import MapEntry from './map';
 // import initDatabaseIfNeeded from '../database/sqliteInit';
 
 const Tab = createBottomTabNavigator();
@@ -52,7 +52,7 @@ export default function TabLayout() {
 
   const colorScheme = useColorScheme();
 
-  const [dataFromSibling, setDataFromSibling] = useState<any>('');//<LocationValues>({latitude: 0, longitude: 0})
+  const [locationsFromMapToMood, setLocationsFromMapToMood] = useState<LocationValues | null>(null);
 
   // useEffect(() => {
     // const loadData = async () => {
@@ -92,6 +92,7 @@ export default function TabLayout() {
           </View>
         }
       >
+        {/* When ready, add option to import a new or existing database to use instead of the seed data - https://stackoverflow.com/questions/59769593/accessing-physical-storage-of-expo-sqlite-database */}
         {/* <SQLite.SQLiteProvider databaseName="mymooder.db" onInit={initDatabaseIfNeeded} useSuspense> */}
         <SQLite.SQLiteProvider databaseName="mymooder.db" assetSource={{ assetId: require('../../assets/mymooder.db') }}>
 
@@ -100,17 +101,17 @@ export default function TabLayout() {
               screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
               }}
-              screenListeners={({ navigation }) => ({
-                state: (e) => {
-                  // Do something with the state
-                  console.log('state changed', JSON.stringify(e.data));
+              // screenListeners={({ navigation }) => ({
+              //   state: (e) => {
+              //     // Do something with the state
+              //     console.log('state changed', JSON.stringify(e.data));
             
-                  // Do something with the `navigation` object
-                  if (!navigation.canGoBack()) {
-                    console.log("we're on the initial screen");
-                  }
-                },
-              })}
+              //     // Do something with the `navigation` object
+              //     if (!navigation.canGoBack()) {
+              //       console.log("we're on the initial screen");
+              //     }
+              //   },
+              // })}
             >
             <Tab.Screen
               name="Home"
@@ -125,7 +126,13 @@ export default function TabLayout() {
 
             <Tab.Screen
               name="Mood"
-              component={TabTwoScreen}
+              children={(props: {route: any, navigation: any}) => 
+                <MoodComponent 
+                  {...props} 
+                  locationsFromMap={locationsFromMapToMood} 
+                  setLocationsFromMapCaller={setLocationsFromMapToMood} 
+                />
+              }
               options={{
                 tabBarLabel: 'Mood',
                 tabBarIcon: ({ color, focused }) => (
@@ -145,7 +152,13 @@ export default function TabLayout() {
             />
             <Tab.Screen
               name="Map"
-              component={Map}
+              // component={Map}
+              children={(props: {route: any, navigation: any}) => 
+                <MapEntry
+                  {...props} 
+                  setLocationsFromMapCaller={setLocationsFromMapToMood} 
+                />
+              }
               options={{
                 tabBarLabel: 'Map',
                 tabBarIcon: ({ color, focused }) => (

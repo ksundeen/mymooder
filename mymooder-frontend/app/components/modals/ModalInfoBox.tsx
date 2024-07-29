@@ -1,14 +1,25 @@
 
 
 import { Text, View, StyleSheet, Modal, Alert } from 'react-native';
-import { MoodValue, LocationValues } from '@/app/database/interfaces/interfaces';
+import { MoodValue, LocationValues } from '@/app/database/types';
 import ButtonComponent from '../ButtonComponent';
+import { convertIsoToLocaleString } from '../../helpers';
 
-export function ModalInfoBox({locationValues, moodValue, showInfoBoxModal, setShowInfoBoxModalCaller, setShouldSendLocationToMoodCaller}:
-  {locationValues: LocationValues | null, moodValue: MoodValue | null, showInfoBoxModal: boolean, setShowInfoBoxModalCaller: Function, setShouldSendLocationToMoodCaller: Function}
+export function ModalInfoBox({locationValues, 
+                              moodValue,
+                              showInfoBoxModal, 
+                              setShowInfoBoxModalCaller, 
+                              setLocationsFromMapToMoodCaller
+}:
+  {locationValues: LocationValues | null, 
+    moodValue: MoodValue | null, 
+    showInfoBoxModal: boolean, 
+    setShowInfoBoxModalCaller: Function, 
+    setLocationsFromMapToMoodCaller: Function,
+  }
 ) {
-    const sendLocationsYes = () => {
-      setShouldSendLocationToMoodCaller(true)
+    const sendLocationsYes = (locationValues: LocationValues) => {
+      setLocationsFromMapToMoodCaller(locationValues)
       setShowInfoBoxModalCaller(false)
     };
 
@@ -21,14 +32,14 @@ export function ModalInfoBox({locationValues, moodValue, showInfoBoxModal, setSh
             onRequestClose={() => {
               Alert.alert('Modal has been closed.');
               setShowInfoBoxModalCaller(false);
-              setShouldSendLocationToMoodCaller(false);
+              setLocationsFromMapToMoodCaller(null);
             }}>
               <View style={[styles.modalView]}>
               {moodValue ? 
                 <View style={[styles.infoBoxText]}>
                   <Text>Name: {moodValue.name}</Text>
                   <Text>Latitude: {moodValue.latitude_x}, Longitude: {moodValue.longitude_y}</Text>
-                  <Text>Datetime: {moodValue.datetime}</Text>
+                  <Text>Datetime: {convertIsoToLocaleString(moodValue.datetime)}</Text>
                   <Text>Calmness Score: {moodValue.calmness_score}</Text>
                   <Text>Happy Score: {moodValue.happy_score}</Text>
                   <Text>People: {moodValue.people}</Text>
@@ -51,7 +62,7 @@ export function ModalInfoBox({locationValues, moodValue, showInfoBoxModal, setSh
               }
                 <Text style={styles.modalText}>Send these coordinates to the Mood Screen?</Text>
                 <View style={styles.buttonRow}>
-                  <ButtonComponent buttonWidth={75} onPress={() => sendLocationsYes()} text='Yes'/>
+                  <ButtonComponent buttonWidth={75} onPress={() => sendLocationsYes(locationValues)} text='Yes'/>
                   <ButtonComponent buttonWidth={75} onPress={() => setShowInfoBoxModalCaller(false)} text='Close'/>
                 </View>
               </View>
@@ -70,9 +81,6 @@ const styles = StyleSheet.create({
   },
   infoBoxText: {
       fontSize: 12,
-      // padding: 5,
-      // margin: 5,
-      // textAlign: 'left',
       left: "1%",
   },
   buttonRow: {

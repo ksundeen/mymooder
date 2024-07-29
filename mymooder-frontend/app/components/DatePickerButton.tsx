@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Text, Pressable, StyleSheet } from 'react-native'
 import DatePicker from 'react-native-date-picker'
-import { Colors } from '../constants/Colors'
 import ButtonComponent from './ButtonComponent'
 
 const DatePickerButton = (props: {onDataReceivedCaller: any}) => {
