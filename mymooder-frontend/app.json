@@ -24,7 +24,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.ksundeen.mymooderfrontend",
-      "versionCode": 69,
+      "versionCode": 70,
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",

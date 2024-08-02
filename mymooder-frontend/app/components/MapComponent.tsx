@@ -5,12 +5,12 @@ import {
   MapShape, 
   WebViewLeafletEvents, 
   WebviewLeafletMessage } from 'react-native-leaflet-view-2';
-// import { favoritePlaceData } from '@/assets/data/favorite-places';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Svg from 'react-native-svg';
 import { LocationValues, MoodValue } from '../database/types';
 import ModalInfoBox from './modals/ModalInfoBox';
+
 // import { IFrameWebView } from './IFrameWebView';
 
 const {height, width} = Dimensions.get("window");              
@@ -20,19 +20,27 @@ export function MapComponent({setLocationsFromMapToMoodCaller,
                               clusterIconsVisible, 
                               mapCenter, 
                               mapShapes, 
-                              mapMarkers}: 
+                              userLocationMapShape,
+                              mapMarkers,
+                              userLocationMapMarker
+                            }: 
   { setLocationsFromMapToMoodCaller: Function, 
     mapData: MoodValue[], 
     clusterIconsVisible: boolean, 
     mapCenter: LatLng | null, 
     mapShapes: MapShape[], 
-    mapMarkers: MapMarker[]}
+    userLocationMapShape: MapShape | null
+    mapMarkers: MapMarker[],
+    userLocationMapMarker: MapMarker | null,
+  }
   ) {
   
   // To send locations clicked on map to Mood Screen
   const [selectedMoodLocation, setSelectedMoodLocation] = useState<MoodValue | null>(null);
   const [selectedLocationValues, setSelectedLocationValues] = useState<LocationValues | null>(null);
-  
+  const [newMapShapes, setNewMapShapes] = useState<MapShape[]>([]);
+  const [newMapMarkers, setNewMapMarkers] = useState<MapMarker[]>([]);
+
   // Whether to show the clicked icon info box modal; state passed to modal component
   const [showInfoBoxModal, setShowInfoBoxModal] = useState<boolean>(false);
 
@@ -71,6 +79,12 @@ export function MapComponent({setLocationsFromMapToMoodCaller,
           setSelectedLocationValues({latitude: Number(position.lat), longitude: Number(position.lng)})
           setShowInfoBoxModal(true)
         break;
+      // case WebViewLeafletEvents.ON_MOVE_END:
+      //   const centerPosition: LatLng = message.payload?.mapCenterPosition as LatLng;
+      //   console.log(JSON.stringify(centerPosition))
+      //     console.log(JSON.stringify(centerPosition))
+      //     setMapCenterCaller(centerPosition)
+      //   break;
       // case WebViewLeafletEvents.ON_ZOOM_END:
       //   const zoomLevel: number = message.payload
       //     ?.zoom as number;
@@ -106,6 +120,19 @@ export function MapComponent({setLocationsFromMapToMoodCaller,
     // }
   // ]
 
+  useMemo(() => {
+    if (userLocationMapShape) {
+      setNewMapShapes([userLocationMapShape])
+    }
+  }, [userLocationMapShape])
+
+  useMemo(() => {
+    if (userLocationMapMarker) {
+      setNewMapMarkers([userLocationMapMarker])
+    }
+  }, [userLocationMapMarker])
+
+
   return (
     <View style={styles.container}>
       <Svg width={width} height={height} />
@@ -137,8 +164,8 @@ export function MapComponent({setLocationsFromMapToMoodCaller,
               <LeafletView
                 onMessageReceived={onMessageReceived}
                 // doDebug={true}
-                mapMarkers={clusterIconsVisible ? mapMarkers : []}
-                mapShapes={clusterIconsVisible ? [] : mapShapes}
+              mapMarkers={clusterIconsVisible ? mapMarkers : []}
+              mapShapes={clusterIconsVisible ? [] : mapShapes}
                 // renderLoading={loader}
                 // mapLayers={mapLayers}
                 mapCenterPosition={mapCenter}

@@ -63,9 +63,8 @@ export function crudMoodValuesMethods() {
     //             return result
     // };
 
-    const addMoodValue = (db: SQLite.SQLiteDatabase, moodValue: MoodValue) => {
-        db.withExclusiveTransactionAsync(async (txn) => {
-            await txn.runAsync(`INSERT INTO mood_values (name, latitude_x, longitude_y, datetime, calmness_score, happy_score, people, activities, personal_weather_rating, api_weather_rating, api_weather_temperature, notes)  
+    const addMoodValue = async (db: SQLite.SQLiteDatabase, moodValue: MoodValue) => {
+        db.runAsync(`INSERT INTO mood_values (name, latitude_x, longitude_y, datetime, calmness_score, happy_score, people, activities, personal_weather_rating, api_weather_rating, api_weather_temperature, notes)  
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
                 moodValue.name,
                 moodValue.latitude_x, 
@@ -81,7 +80,6 @@ export function crudMoodValuesMethods() {
                 moodValue.notes
             ).then(response => console.log(response))
             .catch(error => console.log(error));
-        });
     };
 
     const updateMoodValue = (db: SQLite.SQLiteDatabase, moodValue: MoodValue) => {
@@ -118,9 +116,20 @@ export function crudMoodValuesMethods() {
 
   const deleteMoodValue = (db: SQLite.SQLiteDatabase, id: number) => {
         db.withExclusiveTransactionAsync(async (txn) => {
-            await txn.runAsync('DELETE FROM mood_values WHERE id = ?', [id]);
+            await txn.runAsync('DELETE FROM mood_values WHERE id = ?;', [id]);
         });
   };
+
+  const deleteDatabaseData = (db: SQLite.SQLiteDatabase) => {
+    db.withExclusiveTransactionAsync(async (txn) => {
+        await txn.runAsync('DELETE FROM mood_values;');
+    })
+  };
+
+  const getRecordCount = async (db: SQLite.SQLiteDatabase) => {
+    const result = await db.runAsync('SELECT COUNT(*) FROM mood_values;')
+        return result.lastInsertRowId
+  }
 
   return {
     getAllMoodValues,
@@ -129,5 +138,7 @@ export function crudMoodValuesMethods() {
     addMoodValue,
     updateMoodValue,
     deleteMoodValue,
+    deleteDatabaseData,
+    getRecordCount
   };
 }

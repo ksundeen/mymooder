@@ -1,10 +1,10 @@
 // import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Text, View, Modal, Pressable, Alert, TextInput } from 'react-native';
+import { StyleSheet, Image, Text, View, Modal, Alert, TextInput } from 'react-native';
 import { Collapsible } from '../components/Collapsible';
 import ParallaxScrollView from '../components/ParallaxScrollView';
 import { ThemedText } from '../components/ThemedText';
 // import { ThemedView } from '@/components/ThemedView';
-import { GetLocation } from '../components/locationsExpo/GetLocation';
+import { GetLocation } from '../components/locations/GetLocation';
 import { MoodSlider } from '../components/MoodSlider';
 import { useState } from 'react';
 import { useSQLiteContext } from "expo-sqlite";
@@ -24,6 +24,7 @@ import { defaultMoodValue } from '../constants/Values';
 import DatePickerButton from '../components/DatePickerButton';
 import ButtonComponent from '../components/ButtonComponent';
 import { crudMoodValuesMethods} from '@/app/database/crudMethods'
+import IconLocationArrow from '../components/locations/LocationSvg';
 
 const { addMoodValue, 
   // updateMoodValue, 
@@ -203,6 +204,8 @@ export default function MoodComponent({locationsFromMapToMood, setLocationsFromM
 
   return (
     <>
+      <IconLocationArrow></IconLocationArrow>
+
       <Modal
         animationType='fade'
         transparent={true}

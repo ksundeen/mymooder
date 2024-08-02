@@ -16,9 +16,9 @@ export function MoodSlider(props: {
 
     const setSliderVal = (val: number) => {
       if (name === 'sliderValHappy') {
-        outVal = {sliderValHappy: val}
+        outVal = val
       } else if (name === 'sliderValCalm') {
-        outVal = {sliderValCalm: val}
+        outVal = val
       };
 
       // Send to parent component

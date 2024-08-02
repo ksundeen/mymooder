@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react';
 import { crudMoodValuesMethods } from '../database/crudMethods';
 import { useSQLiteContext } from 'expo-sqlite';
 import ParallaxScrollView from '../components/ParallaxScrollView';
-import { Colors } from '../constants/Colors';
 const { getAllMoodValues } = crudMoodValuesMethods();
 
 export default function Charts() {
@@ -51,7 +50,7 @@ export default function Charts() {
     const getFormattedDate = (date: Date) => {
       const month: number = date.getMonth()
       const day: number = date.getDay()
-      const year: number = date.getFullYear()
+      // const year: number = date.getFullYear()
       const formattedDate: string = `${month}-${day}`//-${year}`
       return formattedDate
     };

@@ -4,7 +4,6 @@ import { Colors } from '@/app/constants/Colors';
 import { useColorScheme } from '@/app/hooks/useColorScheme';
 import { AntDesign, FontAwesome, Fontisto } from '@expo/vector-icons';
 import { ActivityIndicator, View, Text, StyleSheet, Pressable } from 'react-native';
-// import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
 import * as SQLite from 'expo-sqlite';
 // import { Asset } from 'expo-asset';
 // import * as FileSystem from "expo-file-system";
@@ -15,7 +14,8 @@ import HomeScreen from './index';
 import MoodComponent from './mood';
 import { LocationValues } from '../database/types';
 import MapEntry from './map';
-// import initDatabaseIfNeeded from '../database/sqliteInit';
+import SettingsComponent from './settings';
+import initDatabaseIfNeeded from '../database/sqliteInit';
 
 const Tab = createBottomTabNavigator();
 
@@ -129,8 +129,8 @@ export default function TabLayout() {
               children={(props: {route: any, navigation: any}) => 
                 <MoodComponent 
                   {...props} 
-                  locationsFromMap={locationsFromMapToMood} 
-                  setLocationsFromMapCaller={setLocationsFromMapToMood} 
+                  locationsFromMapToMood={locationsFromMapToMood} 
+                  setLocationsFromMapToMoodCaller={setLocationsFromMapToMood} 
                 />
               }
               options={{
@@ -156,13 +156,23 @@ export default function TabLayout() {
               children={(props: {route: any, navigation: any}) => 
                 <MapEntry
                   {...props} 
-                  setLocationsFromMapCaller={setLocationsFromMapToMood} 
+                  setLocationsFromMapToMoodCaller={setLocationsFromMapToMood} 
                 />
               }
               options={{
                 tabBarLabel: 'Map',
                 tabBarIcon: ({ color, focused }) => (
                     <FontAwesome name={focused ? 'map' : 'map-o'} size={24} color={color} />
+                  ),
+              }}
+            />
+            <Tab.Screen
+              name="Settings"
+              component={SettingsComponent}
+              options={{
+                tabBarLabel: 'Settings',
+                tabBarIcon: ({ color, focused }) => (
+                    <FontAwesome name={focused ? 'gear' : 'gear'} size={24} color={color} />
                   ),
               }}
             />

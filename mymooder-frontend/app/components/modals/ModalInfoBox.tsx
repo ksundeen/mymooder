@@ -18,7 +18,7 @@ export function ModalInfoBox({locationValues,
     setLocationsFromMapToMoodCaller: Function,
   }
 ) {
-    const sendLocationsYes = (locationValues: LocationValues) => {
+    const sendLocationsYes = (locationValues: LocationValues | null) => {
       setLocationsFromMapToMoodCaller(locationValues)
       setShowInfoBoxModalCaller(false)
     };

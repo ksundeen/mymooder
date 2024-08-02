@@ -1,8 +1,21 @@
 import { useState } from "react";
 import { Colors } from "../constants/Colors";
-import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Text, Pressable, Image, TouchableHighlight, ImageSourcePropType } from 'react-native';
 
-const ButtonComponent = (props: {extraStyles?: any | {}, diffPadding?: number | null, diffFlex?: number | null, buttonWidth: number, onPress: Function, text: string}) => {
+const ButtonComponent = (props: {
+    useImageIcon?: boolean | null,
+    
+    // imageSource needs to be accessible from this ButtonComponent
+    // example is require('@/assets/images/navigation.png')
+    imageSource?: ImageSourcePropType | null, 
+    imageStyle?: {} | any | null, 
+    extraStyles?: any | {} | null, 
+    diffPadding?: number | null, 
+    diffFlex?: number | null, 
+    buttonWidth: number, 
+    onPress: Function, 
+    text: string}
+) => {
     const [pressedIn, setPressedIn] = useState<boolean>(false);
 
     const _thisFlex = props.diffFlex ? props.diffFlex : 1;
@@ -39,21 +52,42 @@ const ButtonComponent = (props: {extraStyles?: any | {}, diffPadding?: number | 
             width: props.buttonWidth,
             elevation: 2,
             position: 'absolute',
+            color: 'gray',
             backgroundColor: Colors.lightGrey
+        },
+        imageButtonPressedIn: {
+            alignItems: 'center',
+            borderRadius: 20,
+            padding: _thisPadding,
+            width: props.buttonWidth,
+            elevation: 2,
+            position: 'absolute',
         },
         extraStyles: _thisExtraStyles,
     });
 
     return(
         <View style={[styles.container, styles.extraStyles]}>
-            <Pressable 
-                style={pressedIn ? styles.buttonPressedIn : styles.button}
-                onPress={() => props.onPress()}                
-                onPressIn={() => setPressedIn(true)}
-                onPressOut={() => setPressedIn(false)}
-              >
-                <Text style={styles.text}>{props.text}</Text>
-            </Pressable>
+            {props.useImageIcon && props.imageSource && props.imageStyle? 
+                <TouchableHighlight
+                    underlayColor={'gray'}
+                    style={pressedIn ? styles.imageButtonPressedIn : styles.button}
+                    onPress={() => props.onPress()}                
+                    onPressIn={() => setPressedIn(true)}
+                    onPressOut={() => setPressedIn(false)}
+                >
+                    <Image source={props.imageSource} style={props.imageStyle}></Image>
+                </TouchableHighlight>
+                :
+                <Pressable 
+                    style={pressedIn ? styles.buttonPressedIn : styles.button}
+                    onPress={() => props.onPress()}                
+                    onPressIn={() => setPressedIn(true)}
+                    onPressOut={() => setPressedIn(false)}
+                >
+                    <Text style={styles.text}>{props.text}</Text>
+                </Pressable>
+            }
         </View>
     )
 };

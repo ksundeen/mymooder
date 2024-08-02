@@ -1,10 +1,8 @@
 import { Dimensions, StyleSheet, SafeAreaView } from 'react-native';
-import { Collapsible } from '../Collapsible';
 import Animated from 'react-native-reanimated';
 import { NumberChart } from '@/app/database/types';
 import ButtonComponent from '../ButtonComponent';
 import LineChartComponent from './LineChartComponent';
-import { Colors } from '@/app/constants/Colors';
 
 const { width, height } = Dimensions.get('screen');
 
