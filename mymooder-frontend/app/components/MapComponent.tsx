@@ -20,26 +20,20 @@ export function MapComponent({setLocationsFromMapToMoodCaller,
                               clusterIconsVisible, 
                               mapCenter, 
                               mapShapes, 
-                              userLocationMapShape,
                               mapMarkers,
-                              userLocationMapMarker
                             }: 
   { setLocationsFromMapToMoodCaller: Function, 
     mapData: MoodValue[], 
     clusterIconsVisible: boolean, 
     mapCenter: LatLng | null, 
     mapShapes: MapShape[], 
-    userLocationMapShape: MapShape | null
     mapMarkers: MapMarker[],
-    userLocationMapMarker: MapMarker | null,
   }
   ) {
   
   // To send locations clicked on map to Mood Screen
   const [selectedMoodLocation, setSelectedMoodLocation] = useState<MoodValue | null>(null);
   const [selectedLocationValues, setSelectedLocationValues] = useState<LocationValues | null>(null);
-  const [newMapShapes, setNewMapShapes] = useState<MapShape[]>([]);
-  const [newMapMarkers, setNewMapMarkers] = useState<MapMarker[]>([]);
 
   // Whether to show the clicked icon info box modal; state passed to modal component
   const [showInfoBoxModal, setShowInfoBoxModal] = useState<boolean>(false);
@@ -119,19 +113,6 @@ export function MapComponent({setLocationsFromMapToMoodCaller,
     //   attribution: ''
     // }
   // ]
-
-  useMemo(() => {
-    if (userLocationMapShape) {
-      setNewMapShapes([userLocationMapShape])
-    }
-  }, [userLocationMapShape])
-
-  useMemo(() => {
-    if (userLocationMapMarker) {
-      setNewMapMarkers([userLocationMapMarker])
-    }
-  }, [userLocationMapMarker])
-
 
   return (
     <View style={styles.container}>

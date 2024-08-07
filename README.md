@@ -206,6 +206,10 @@ This section review steps for setting up technologies required to run a React Na
  * On macOS: `~/Library/pnpm`
  * On Linux: `~/.local/share/pnpm`
 
+12. To load existing data into a local sqlite database, open a terminal (in mac) and run this command (assuming the same path to the existing mymooder.db)
+
+        sqlite3 ~/Documents/repos/mymooder/mymooder-frontend/app/database/mymooder.db < ~/Documents/repos/mymooder/mymooder-frontend/app/database/seedDb.sql
+
  #
 #
 > **Note**  

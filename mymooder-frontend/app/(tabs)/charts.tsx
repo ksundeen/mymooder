@@ -1,10 +1,10 @@
-import { Dimensions, StyleSheet, View, Image } from 'react-native';
-import ChartComponent from "../components/charting/ChartComponent";
-import { ChartPointNumber, MoodValue, NumberChart } from '../database/types';
+import { StyleSheet, View, Image } from 'react-native';
+import ChartComponent from "@/app/components/charting/ChartComponent";
+import { ChartPointNumber, MoodValue, NumberChart } from '@/app/database/types';
 import { useMemo, useState } from 'react';
-import { crudMoodValuesMethods } from '../database/crudMethods';
+import { crudMoodValuesMethods } from '@/app/database/crudMethods';
 import { useSQLiteContext } from 'expo-sqlite';
-import ParallaxScrollView from '../components/ParallaxScrollView';
+import ParallaxScrollView from '@/app/components/ParallaxScrollView';
 const { getAllMoodValues } = crudMoodValuesMethods();
 
 export default function Charts() {
@@ -12,8 +12,6 @@ export default function Charts() {
    const [allGraphData, setAllGraphData] = useState<NumberChart[] | null>(null); 
 
    const db = useSQLiteContext();
-
-   const { width, height } = Dimensions.get('screen');
 
    const refreshMoodData = async () => {
      setMoodData(await getAllMoodValues(db));

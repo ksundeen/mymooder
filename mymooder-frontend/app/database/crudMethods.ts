@@ -10,6 +10,7 @@ import {
     WeatherAPIValues, 
     LocationValues
  } from './types';
+import { favoritePlaceData } from "@/assets/data/favorite-places";
 
 export function crudMoodValuesMethods() {
     // const [moodValues, setMoodValues] = useState<MoodValue[]>([]);
@@ -127,9 +128,33 @@ export function crudMoodValuesMethods() {
   };
 
   const getRecordCount = async (db: SQLite.SQLiteDatabase) => {
-    const result = await db.runAsync('SELECT COUNT(*) FROM mood_values;')
+    const result: SQLite.SQLiteRunResult = await db.runAsync('SELECT COUNT(*) FROM mood_values;')
         return result.lastInsertRowId
   }
+//   const getRecordCount = async (db: SQLite.SQLiteDatabase) => {    
+//     const result: number[] = await db.getAllAsync(
+//       `SELECT COUNT(*) FROM mood_values WHERE id > ?;`, [0])
+//     return result
+// };
+
+ const loadSampleData = async (db: SQLite.SQLiteDatabase) => {
+    let seedSqlMoodValues: string = '';
+    favoritePlaceData.features.forEach(feature => {
+        let geom = feature.geometry;
+        let props = feature.properties;
+        seedSqlMoodValues += `INSERT INTO mood_values (name, latitude_x, longitude_y, datetime, calmness_score, happy_score, people, activities, personal_weather_rating, api_weather_rating, api_weather_temperature, notes) VALUES ('${props.name}', ${geom.coordinates[1]}, ${geom.coordinates[0]}, '${props.datetime}', ${props.calmness_score}, ${props.happy_score}, '${props.people}', '${props.activities}', '${props.personal_weather_rating}', '${props.api_weather_rating}', ${props.api_weather_temperature}, '${props.notes}'); `
+    });
+    console.log(seedSqlMoodValues);
+
+    await db.execAsync(
+        `DROP TABLE IF EXISTS mood_values; CREATE TABLE IF NOT EXISTS mood_values (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, latitude_x REAL, longitude_y REAL, datetime TEXT, calmness_score INTEGER, happy_score INTEGER, people TEXT, activities TEXT, personal_weather_rating TEXT, api_weather_rating TEXT, api_weather_temperature INTEGER, notes TEXT);`);
+        // console.log("createTableResult: ", createTableResult)
+
+    const seedDataResult: SQLite.SQLiteRunResult = await db.runAsync(seedSqlMoodValues)
+    console.log("seedDataResult: ", seedDataResult)
+
+    console.log('LOADED SEED DATA');
+};
 
   return {
     getAllMoodValues,
@@ -139,6 +164,7 @@ export function crudMoodValuesMethods() {
     updateMoodValue,
     deleteMoodValue,
     deleteDatabaseData,
-    getRecordCount
+    getRecordCount,
+    loadSampleData
   };
 }

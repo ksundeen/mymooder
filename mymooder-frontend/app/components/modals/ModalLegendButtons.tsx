@@ -126,9 +126,9 @@ const styles = StyleSheet.create({
     elevation: 3,
     position: 'absolute',
     alignContent: 'center',
-    height: 50,
+    height: 40,
     width: width/3.5,
-    bottom: -61,
+    bottom: -47,
     },
   modalButtonLocation: {
     borderRadius: 20,

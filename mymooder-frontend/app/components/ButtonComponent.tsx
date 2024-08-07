@@ -10,6 +10,7 @@ const ButtonComponent = (props: {
     imageSource?: ImageSourcePropType | null, 
     imageStyle?: {} | any | null, 
     extraStyles?: any | {} | null, 
+    diffFontSize?: number | null,
     diffPadding?: number | null, 
     diffFlex?: number | null, 
     buttonWidth: number, 
@@ -18,6 +19,7 @@ const ButtonComponent = (props: {
 ) => {
     const [pressedIn, setPressedIn] = useState<boolean>(false);
 
+    const _thisFontSize = props.diffFontSize ? props.diffFontSize : 12;
     const _thisFlex = props.diffFlex ? props.diffFlex : 1;
     const _thisPadding = props.diffPadding ? props.diffPadding : 10;
     const _thisExtraStyles = props.extraStyles ? props.extraStyles : {}
@@ -31,7 +33,7 @@ const ButtonComponent = (props: {
         },
         text: {
             textAlign: "center",
-            fontSize: 12, 
+            fontSize: _thisFontSize, 
             color: 'white',
             borderRadius: _thisPadding,
             fontWeight: "bold"

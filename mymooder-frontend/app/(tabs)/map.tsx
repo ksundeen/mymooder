@@ -56,7 +56,7 @@ export default function MapEntry({setLocationsFromMapToMoodCaller}: {setLocation
   }
 
   useMemo(() => {
-    if (userLocation && userLocationCount === 0 ) {
+    if (userLocation) {
       let count = userLocationCount
 
       // Clear out userLocation to stop updating state
@@ -70,45 +70,48 @@ export default function MapEntry({setLocationsFromMapToMoodCaller}: {setLocation
 
       {/* @ts-ignore */}
       setMapCenter(_userLocation)
-
-      // if (count === 0) {
-        // To store User's Location if requested to see on map. 
-        // Add to both mapShapes and mapMarkers.
-        // We don't want to store it permanently though, so it will be removed upon refresh.
-        const userLocationMapMarker: MapMarker = {
-          id: '-123',
-          // icon: "❤️",
-          /* @ts-ignore */
-          position: _userLocation,
-          icon: customSvgMaker("#40E0D0", (4) * 20), 
-          // {/* @ts-ignore */}
-          // {/* @ts-ignore */}
-          // size: [32, 32]
-        }
-
-        const userLocationMapShape: MapShape = {
-          shapeType: MapShapeType.CIRCLE,
-          color: "#40E0D0",
-          id: "-123",
-          center: _userLocation,
-          radius: 6000,
-        }
       
-        // // Add to mapShapes
-        const newMapShapes = [...mapShapes]
-        // const newMapShapes = []
-        newMapShapes.push(userLocationMapShape)
+      if (userLocationCount === 0 ) {
 
-        // // Add to mapMarkers
-        const newMapMarkers = [...mapMarkers]
-        // const newMapMarkers = []
-        newMapMarkers.push(userLocationMapMarker)
+        // if (count === 0) {
+          // To store User's Location if requested to see on map. 
+          // Add to both mapShapes and mapMarkers.
+          // We don't want to store it permanently though, so it will be removed upon refresh.
+          const userLocationMapMarker: MapMarker = {
+            id: '-123',
+            // icon: "❤️",
+            /* @ts-ignore */
+            position: _userLocation,
+            icon: customSvgMaker("#40E0D0", (4) * 20), 
+            // {/* @ts-ignore */}
+            // {/* @ts-ignore */}
+            // size: [32, 32]
+          }
+
+          const userLocationMapShape: MapShape = {
+            shapeType: MapShapeType.CIRCLE,
+            color: "#40E0D0",
+            id: "-123",
+            center: _userLocation,
+            radius: 6000,
+          }
         
-        // Set new mapShapes and mapMarkers
-        setMapShapes(newMapShapes)
-        setMapMarkers(newMapMarkers)
-      // }
-      setUserLocationCount(count+=1)
+          // // Add to mapShapes
+          const newMapShapes = [...mapShapes]
+          // const newMapShapes = []
+          newMapShapes.push(userLocationMapShape)
+
+          // // Add to mapMarkers
+          const newMapMarkers = [...mapMarkers]
+          // const newMapMarkers = []
+          newMapMarkers.push(userLocationMapMarker)
+          
+          // Set new mapShapes and mapMarkers
+          setMapShapes(newMapShapes)
+          setMapMarkers(newMapMarkers)
+        // }
+        setUserLocationCount(count+=1)
+      }
     }
   }, [userLocation, userLocationCount])
 

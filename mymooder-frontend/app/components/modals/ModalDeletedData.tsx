@@ -19,8 +19,8 @@ export function ModalDeletedData({showModal, setShowModalCaller}:
             }}>
               <View style={[styles.modalView]}>
                 <Text style={styles.modalText}>Data deleted!</Text>
+                <ButtonComponent extraStyles={{bottom: "-150%"}} buttonWidth={75} onPress={() => setShowModalCaller(false)} text='Close'/>
               </View>
-              <ButtonComponent diffFlex={1.2} buttonWidth={75} onPress={() => setShowModalCaller(false)} text='Close'/>
         </Modal>
         </View>
         )
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 75,
     top: "30%",
     alignItems: 'center',
     shadowColor: '#000',
@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 20,
-    marginTop: "0%",
+    marginTop: "-8%",
   },
 });
