@@ -1,12 +1,12 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { TabBarIcon } from '../components/navigation/TabBarIcon';
 import { Colors } from '@/app/constants/Colors';
 import { useColorScheme } from '@/app/hooks/useColorScheme';
 import { AntDesign, FontAwesome, Fontisto } from '@expo/vector-icons';
-import { ActivityIndicator, View, Text, StyleSheet, Pressable } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 // import { Asset } from 'expo-asset';
-// import * as FileSystem from "expo-file-system";
+import * as FileSystem from "expo-file-system";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Charts from './charts';
@@ -16,29 +16,10 @@ import { LocationValues } from '../database/types';
 import MapEntry from './map';
 import SettingsComponent from './settings';
 import initDatabaseIfNeeded from '../database/sqliteInit';
+import { crudMoodValuesMethods } from '../database/crudMethods';
+const { reCreateMoodValuesTable, getRecordCount, createMoodValuesTableIfNotExists } = crudMoodValuesMethods();
 
 const Tab = createBottomTabNavigator();
-
-// const loadDatabase = async () => {
-//   const dbName = "mymooder.db";
-//   const dbAsset = require("../../assets/mymooder.db");
-//   const dbUri = Asset.fromModule(dbAsset).uri;
-//   console.log('dbUri: ' + dbUri)
-
-//   const dbFilePath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
-//   console.log('dbFile ' + dbFilePath)
-
-//   const fileInfo = await FileSystem.getInfoAsync(dbFilePath);
-//   console.log('fileInfo: ' + JSON.stringify(fileInfo))
-
-//   if (!fileInfo.exists) {
-//     await FileSystem.makeDirectoryAsync(
-//       `${FileSystem.documentDirectory}SQLite`,
-//       { intermediates: true }
-//     );
-//   await FileSystem.downloadAsync(dbUri, dbFilePath);
-//   };
-
 
   // if (seedDb) {
   //   await initDatabase((dbAsset));
@@ -53,6 +34,41 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   const [locationsFromMapToMood, setLocationsFromMapToMood] = useState<LocationValues | null>(null);
+  const [loadedDb, setLoadedDb] = useState<boolean>(false);
+  const [databaseExisted, setDatabaseExisted] = useState<boolean>(false);
+
+  const getDatabaseLocation = () => {
+    const dbLocation = `${FileSystem.documentDirectory}SQLite/mymooder.db`
+    console.log(dbLocation)
+    return dbLocation
+  };
+
+  useMemo(async () => {
+    if (!loadedDb) {
+      const dbFilePath = getDatabaseLocation();
+      console.log('dbFile ' + dbFilePath)
+    
+      const fileInfo = await FileSystem.getInfoAsync(dbFilePath);
+      console.log('fileInfo: ' + JSON.stringify(fileInfo))
+    
+      // Create new mymooder.db if doesn't exist
+      if (!fileInfo.exists) {
+        setDatabaseExisted(false)
+        await FileSystem.makeDirectoryAsync(
+          `${FileSystem.documentDirectory}SQLite`,
+          { intermediates: true }
+        );
+
+        const dbUri: string = await FileSystem.getContentUriAsync(dbFilePath);
+        await FileSystem.downloadAsync(dbUri, dbFilePath);
+      } else {
+        setDatabaseExisted(true)
+      }
+
+      setLoadedDb(true)       
+    }
+  }, []);
+
 
   // useEffect(() => {
     // const loadData = async () => {
@@ -83,103 +99,112 @@ export default function TabLayout() {
   //   );
 
   return (
-    <NavigationContainer independent>
-      <Suspense
-        fallback={
-          <View style={{ flex: 1 }}>
-            <ActivityIndicator size={"large"} />
-            <Text>Loading Database...</Text>
-          </View>
-        }
-      >
-        {/* When ready, add option to import a new or existing database to use instead of the seed data - https://stackoverflow.com/questions/59769593/accessing-physical-storage-of-expo-sqlite-database */}
-        {/* <SQLite.SQLiteProvider databaseName="mymooder.db" onInit={initDatabaseIfNeeded} useSuspense> */}
-        <SQLite.SQLiteProvider databaseName="mymooder.db" assetSource={{ assetId: require('../../assets/mymooder.db') }}>
+      <NavigationContainer independent>
+        <Suspense
+          fallback={
+            <View style={{ flex: 1 }}>
+              <ActivityIndicator size={"large"} />
+              <Text>Loading Database...</Text>
+            </View>
+          }
+        >
+          {/* When ready, add option to import a new or existing database to use instead of the seed data - https://stackoverflow.com/questions/59769593/accessing-physical-storage-of-expo-sqlite-database */}
+          {/* <SQLite.SQLiteProvider databaseName="mymooder.db" onInit={initDatabaseIfNeeded} useSuspense> */}
+          {/* <SQLite.SQLiteProvider databaseName="mymooder.db" assetSource={{ assetId: require('../assets/mymooder.db') }}> */}
+          {/* { databaseExisted ?  */}
+            <SQLite.SQLiteProvider 
+              databaseName="mymooder.db" 
+              onInit={createMoodValuesTableIfNotExists}
+              assetSource={{assetId:require('../../assets/mymooder.db')}}
+              >
+            {/* :
+            <SQLite.SQLiteProvider databaseName="mymooder.db" assetSource={require('../database/mymooder.db')}>
+          } */}
 
-          <Tab.Navigator
-              initialRouteName="Index"
-              screenOptions={{
-                tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-              }}
-              // screenListeners={({ navigation }) => ({
-              //   state: (e) => {
-              //     // Do something with the state
-              //     console.log('state changed', JSON.stringify(e.data));
-            
-              //     // Do something with the `navigation` object
-              //     if (!navigation.canGoBack()) {
-              //       console.log("we're on the initial screen");
-              //     }
-              //   },
-              // })}
-            >
-            <Tab.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{
-                tabBarLabel: 'Home',
-                tabBarIcon: ({ color, focused }) => (
-                  <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-                ),
+            <Tab.Navigator
+                initialRouteName="Index"
+                screenOptions={{
+                  tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
                 }}
-            />
+                // screenListeners={({ navigation }) => ({
+                //   state: (e) => {
+                //     // Do something with the state
+                //     console.log('state changed', JSON.stringify(e.data));
+              
+                //     // Do something with the `navigation` object
+                //     if (!navigation.canGoBack()) {
+                //       console.log("we're on the initial screen");
+                //     }
+                //   },
+                // })}
+              >
+              <Tab.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{
+                  tabBarLabel: 'Home',
+                  tabBarIcon: ({ color, focused }) => (
+                    <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+                  ),
+                  }}
+              />
 
-            <Tab.Screen
-              name="Mood"
-              children={(props: {route: any, navigation: any}) => 
-                <MoodComponent 
-                  {...props} 
-                  locationsFromMapToMood={locationsFromMapToMood} 
-                  setLocationsFromMapToMoodCaller={setLocationsFromMapToMood} 
-                />
-              }
-              options={{
-                tabBarLabel: 'Mood',
-                tabBarIcon: ({ color, focused }) => (
-                  <Fontisto name='smiley' size={20} color={color} />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Charts"
-              component={Charts}
-              options={{
-                tabBarLabel: 'Charts',
-                tabBarIcon: ({ color, focused }) => (
-                    <AntDesign name='dotchart' size={24} color={color} />
+              <Tab.Screen
+                name="Mood"
+                children={(props: {route: any, navigation: any}) => 
+                  <MoodComponent 
+                    {...props} 
+                    locationsFromMapToMood={locationsFromMapToMood} 
+                    setLocationsFromMapToMoodCaller={setLocationsFromMapToMood} 
+                  />
+                }
+                options={{
+                  tabBarLabel: 'Mood',
+                  tabBarIcon: ({ color, focused }) => (
+                    <Fontisto name='smiley' size={20} color={color} />
                   ),
-              }}
-            />
-            <Tab.Screen
-              name="Map"
-              // component={Map}
-              children={(props: {route: any, navigation: any}) => 
-                <MapEntry
-                  {...props} 
-                  setLocationsFromMapToMoodCaller={setLocationsFromMapToMood} 
-                />
-              }
-              options={{
-                tabBarLabel: 'Map',
-                tabBarIcon: ({ color, focused }) => (
-                    <FontAwesome name={focused ? 'map' : 'map-o'} size={24} color={color} />
-                  ),
-              }}
-            />
-            <Tab.Screen
-              name="Settings"
-              component={SettingsComponent}
-              options={{
-                tabBarLabel: 'Settings',
-                tabBarIcon: ({ color, focused }) => (
-                    <FontAwesome name={focused ? 'gear' : 'gear'} size={24} color={color} />
-                  ),
-              }}
-            />
-            </Tab.Navigator>
-        </SQLite.SQLiteProvider>
-      </Suspense>
-    </NavigationContainer>
+                }}
+              />
+              <Tab.Screen
+                name="Charts"
+                component={Charts}
+                options={{
+                  tabBarLabel: 'Charts',
+                  tabBarIcon: ({ color, focused }) => (
+                      <AntDesign name='dotchart' size={24} color={color} />
+                    ),
+                }}
+              />
+              <Tab.Screen
+                name="Map"
+                // component={Map}
+                children={(props: {route: any, navigation: any}) => 
+                  <MapEntry
+                    {...props} 
+                    setLocationsFromMapToMoodCaller={setLocationsFromMapToMood} 
+                  />
+                }
+                options={{
+                  tabBarLabel: 'Map',
+                  tabBarIcon: ({ color, focused }) => (
+                      <FontAwesome name={focused ? 'map' : 'map-o'} size={24} color={color} />
+                    ),
+                }}
+              />
+              <Tab.Screen
+                name="Settings"
+                component={SettingsComponent}
+                options={{
+                  tabBarLabel: 'Settings',
+                  tabBarIcon: ({ color, focused }) => (
+                      <FontAwesome name={focused ? 'gear' : 'gear'} size={24} color={color} />
+                    ),
+                }}
+              />
+              </Tab.Navigator>
+          </SQLite.SQLiteProvider>
+        </Suspense>
+      </NavigationContainer>
   );
 }
 

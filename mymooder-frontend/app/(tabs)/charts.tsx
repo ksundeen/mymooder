@@ -127,6 +127,7 @@ export default function Charts() {
    return (
       <ParallaxScrollView
          headerBackgroundColor={{ light: 'white', dark: 'white' }}
+         headerHeight={200}
          headerImage={<Image source={require('@/assets/images/statistics-pixabay.jpg')} style={styles.headerImage}/>}
       >
          <View style={styles.container}>
@@ -148,8 +149,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
    },
    headerImage: {
-      position: 'relative',
       height: 250,
-      width: 450,
+      width: 425,
     },
 });

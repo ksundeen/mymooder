@@ -7,19 +7,25 @@ import { ModalDeleteDataConfirm } from '../components/modals/ModalDeleteDataConf
 import ModalDeletedData from '../components/modals/ModalDeletedData';
 import * as FileSystem from "expo-file-system";
 import { Colors } from '../constants/Colors';
-const { deleteDatabaseData, getRecordCount, loadSampleData } = crudMoodValuesMethods();
 import RadioGroup from 'react-native-radio-buttons-group';
 import ParallaxScrollView from '../components/ParallaxScrollView';
 
+const { 
+    deleteDatabaseData, 
+    getRecordCount, 
+    loadSampleData } = crudMoodValuesMethods();
+
 export default function SettingsComponent() {
-    const [selectedRadioId, setSelectedRadioId] = useState('1');
     const defaultTextInput = 'export_filename'
+    
+    const [selectedRadioId, setSelectedRadioId] = useState('1');
     const [exportFilename, setExportFilename] = useState<string>(defaultTextInput);
+    const [shouldCountRecords, setShouldCountRecords] = useState<boolean>(true);
     const [recordCount, setRecordCount] = useState<number>(0);
     const [shouldDeleteData, setShouldDeleteData] = useState<boolean>(false);
     const [dataDeleted, setDataDeleted] = useState<boolean>(false);
     const [showDeleteDataConfirmModal, setShowDeleteDataConfirmModal] = useState<boolean>(false);
-    const [showDeletedDataModal, setShowDeletedDataModal] = useState<boolean>(false);
+    // const [showDeletedDataModal, setShowDeletedDataModal] = useState<boolean>(false);
     const [databaseLocation, setDatabaseLocation] = useState<string>("")
     
     const db = useSQLiteContext();
@@ -27,20 +33,20 @@ export default function SettingsComponent() {
     const radioButtons = useMemo(() => ([
         {
             id: '1', // acts as primary key, should be unique and non-empty string
-            label: 'Recreate Tables',
-            value: 'recreate'
+            label: 'Delete Data Only',
+            value: 'deleteData'
         },
         {
             id: '2', 
-            label: 'Delete Database',
-            value: 'delete'
+            label: 'Delete & Recreate Tables',
+            value: 'reCreate'
         },
     ]), []);
 
     const countRecords = async () => {
         console.log('Counting records...')
         const result = await getRecordCount(db)
-        console.log(JSON.stringify(result))
+        console.log('Settings record count: ', result)
         setRecordCount(result)
     };
 
@@ -48,31 +54,22 @@ export default function SettingsComponent() {
         setShowDeleteDataConfirmModal(true)
     };
 
-    useEffect(() => {
-        if (shouldDeleteData) {
-            console.log(`State after checking 'shouldDeleteData': shouldDeleteData=${shouldDeleteData},
-                dataDeleted=${dataDeleted}, showDeleteDataConfirmModal=${showDeleteDataConfirmModal},
-                showDeletedDataModal=${showDeletedDataModal}`)
-            deleteData()
-            setShouldDeleteData(false)
-        }
-    }, [shouldDeleteData]);
-
-    useEffect(() => {
-        if (dataDeleted) {
-            console.log(`State after checking 'dataDeleted': shouldDeleteData=${shouldDeleteData},
-                dataDeleted=${dataDeleted}, showDeleteDataConfirmModal=${showDeleteDataConfirmModal},
-                showDeletedDataModal=${showDeletedDataModal}`)
-            setShowDeletedDataModal(true)
-            setShouldDeleteData(false)
-            setDataDeleted(false)
-            countRecords()
-        }
-    }, [dataDeleted]);
-
     const deleteData = async () => {
         console.log('Will be deleting data...')
-        await deleteDatabaseData(db)
+        let deleteDataParam: boolean = false;
+        let recreateTablesParam: boolean = false
+
+        console.log('selectedRadioId: ', selectedRadioId)
+
+        // Delete data only
+        if (selectedRadioId == '1') {
+            deleteDataParam = true
+        // Delete & Recreate Table
+        } else if (selectedRadioId == '2') {
+            recreateTablesParam = true
+        }
+        console.log(`Executing delete data for deleteDataParam: ${deleteDataParam} & recreateTablesParam: ${recreateTablesParam}`)
+        await deleteDatabaseData(db, deleteDataParam, recreateTablesParam)
         setDataDeleted(true)
     };
 
@@ -83,20 +80,49 @@ export default function SettingsComponent() {
         }
     };
 
-    const showDatabaseLocation = async () => {
-        console.log(FileSystem.documentDirectory)
-        setDatabaseLocation(JSON.stringify(FileSystem.documentDirectory))   
-    }
+    const showDatabaseLocation = () => {
+        const dbLocation: string = `${FileSystem.documentDirectory}SQLite/mymooder.db`
+        console.log(dbLocation)
+        setDatabaseLocation(dbLocation)   
+    };
 
-    useEffect(() => {
-        countRecords();
-    }, [])
+    const loadSampleDataAndCount = async () => {
+        await loadSampleData(db)
+        setShouldCountRecords(true)
+    };
+
+    useMemo(async () => {
+        if (shouldCountRecords) {
+            await countRecords();
+            setShouldCountRecords(false)
+        }
+    }, [shouldCountRecords])
+
+    useMemo(async () => {
+        if (shouldDeleteData) {
+            console.log(`State after checking 'shouldDeleteData': shouldDeleteData=${shouldDeleteData},
+                dataDeleted=${dataDeleted}, showDeleteDataConfirmModal=${showDeleteDataConfirmModal}`)
+                // showDeletedDataModal=${showDeletedDataModal}`)
+            await deleteData()
+            setShouldDeleteData(false)
+        }
+    }, [shouldDeleteData, dataDeleted]);
+
+    useMemo(() => {
+        if (dataDeleted) {
+            // showDeletedDataModal=${showDeletedDataModal}`)
+            // setShowDeletedDataModal(true)
+            setShouldDeleteData(false)
+            setDataDeleted(false)
+            setShouldCountRecords(true)
+            console.log(`State after checking 'dataDeleted': shouldDeleteData=${shouldDeleteData},
+                dataDeleted=${dataDeleted}, showDeleteDataConfirmModal=${showDeleteDataConfirmModal}`)
+        }
+    }, [dataDeleted]);
 
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-            headerImage={<Image source={require('@/assets/images/settings.png')} style={styles.headerImage}
-            />}
         >
             <View style={styles.container}>
                 <View style={[styles.containerDbLocation, styles.borderStyle]}>
@@ -111,29 +137,29 @@ export default function SettingsComponent() {
                 <View style={[styles.containerCount, styles.borderStyle]}>
                     <Text style={styles.textTitle}>Record Count</Text>
                     <View style={styles.buttonColumn}>
-                        <ButtonComponent extraStyles={{top: "40%", margin: 10}} buttonWidth={125} onPress={() => countRecords()} text='Count Records' />
+                        <ButtonComponent extraStyles={{top: "40%", margin: 10}} buttonWidth={125} onPress={async () => await countRecords()} text='Count Records' />
                         <Text style={[styles.textStyle, styles.textCount]}>{recordCount}</Text>
                     </View>
                 </View>
 
                 <View style={[styles.containerSampleData, styles.borderStyle]}>
                     <Text style={styles.textTitle}>Sample Data</Text>
-                    <ButtonComponent extraStyles={{top: "75%", margin: 15}} buttonWidth={125} onPress={() => loadSampleData(db)} text='Load Sample Data' />
+                    <ButtonComponent extraStyles={{top: "75%", margin: 15}} buttonWidth={125} onPress={async () => await loadSampleDataAndCount()} text='Load Sample Data' />
                 </View>
 
                 <View style={[styles.containerDelete, styles.borderStyle]}>
                     <Text style={styles.textTitle}>Deleting Data</Text>
-                    {/* <View> */}
-                        <ButtonComponent extraStyles={{top: "25%", margin: 10}} buttonWidth={125} onPress={() => confirmDeleteData()} text='Delete Data' />
-                        <RadioGroup
-                            layout='row' 
-                            containerStyle={styles.radioGroupContainerStyle}
-                            radioButtons={radioButtons} 
-                            onPress={setSelectedRadioId}
-                            selectedId={selectedRadioId}
-                        />
-                    {/* </View> */}
-                        {(showDeleteDataConfirmModal && !showDeletedDataModal) ? 
+                        <ButtonComponent extraStyles={{top: "15%", margin: 25}} buttonWidth={125} onPress={() => confirmDeleteData()} text='Delete Data' />
+                        <View>
+                            <RadioGroup
+                                layout='row' 
+                                containerStyle={styles.radioGroupContainerStyle}
+                                radioButtons={radioButtons} 
+                                onPress={setSelectedRadioId}
+                                selectedId={selectedRadioId}
+                            />
+                        </View>
+                        {(showDeleteDataConfirmModal) ? 
                             <ModalDeleteDataConfirm
                                 setShouldDeleteDataCaller={setShouldDeleteData}
                                 showModal={showDeleteDataConfirmModal}
@@ -142,7 +168,7 @@ export default function SettingsComponent() {
                             :
                             <></>
                         }
-                        {(!showDeleteDataConfirmModal && showDeletedDataModal) ?
+                        {/* {(!showDeleteDataConfirmModal && showDeletedDataModal) ?
                             <ModalDeletedData
                                 showModal={showDeletedDataModal}
                                 setShowModalCaller={setShowDeletedDataModal}
@@ -150,7 +176,7 @@ export default function SettingsComponent() {
                             </ModalDeletedData>
                             :
                             <></>
-                        }
+                        } */}
                 </View>
 
                 <View style={[styles.containerExport, styles.borderStyle]}>
@@ -215,15 +241,15 @@ const styles = StyleSheet.create({
         paddingBottom: -500,
     },
     containerDelete: {
-        flex: 0.9,
+        flex: 1.5,
         // margin: 10,
         padding: 10,
         // paddingBottom: 0,
         alignItems: 'center',
     },
     radioGroupContainerStyle: {
-        paddingTop: 40,
-        paddingHorizontal: 60
+        paddingTop: 10,
+        // paddingHorizontal: 60
     },
     containerSampleData: {
         margin: 10,

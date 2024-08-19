@@ -24,7 +24,7 @@ export default function MapEntry({setLocationsFromMapToMoodCaller}: {setLocation
   const [mapData, setMapData] = useState<MoodValue[]>([]);
   const [mapMarkers, setMapMarkers] = useState<MapMarker[]>([]);
   const [mapShapes, setMapShapes] = useState<MapShape[]>([]);
-  const [recenterMap, setRecenterMap] = useState<boolean>(false);
+  const [recenterMap, setRecenterMap] = useState<boolean>(true);
   const [mapCenter, setMapCenter] = useState<LatLng | null>(null);
   
   // Whether the cluster icons are visible or should SVG icons show

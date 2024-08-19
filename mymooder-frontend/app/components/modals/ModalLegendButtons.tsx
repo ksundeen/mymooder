@@ -12,7 +12,7 @@ export function ModalLegendButtons({setRecenterMapCaller, clusterIconsVisible, s
 
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [_, showOpenButton] = useState<boolean>(true);
-    const [clusterButtonText, setClusterButtonText] = useState<string>('Uncluster Icons');
+    const [clusterButtonText, setClusterButtonText] = useState<string>('Uncluster');
     const [pressedInCluster, setPressedInCluster] = useState<boolean>(false);
     const [pressedInCenter, setPressedInCenter] = useState<boolean>(false);
 
@@ -57,9 +57,9 @@ export function ModalLegendButtons({setRecenterMapCaller, clusterIconsVisible, s
                 onPress={() => {
                     setClusterIconsVisibleCaller(!clusterIconsVisible); 
                     if (clusterIconsVisible) {
-                    setClusterButtonText('Uncluster Icons');
+                    setClusterButtonText('Uncluster');
                     } else {
-                    setClusterButtonText('Cluster Icons');
+                    setClusterButtonText('Cluster');
                     }
                 } }
                 onPressIn={() => setPressedInCluster(true)}

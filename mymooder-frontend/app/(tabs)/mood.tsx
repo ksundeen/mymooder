@@ -242,8 +242,8 @@ export default function MoodComponent({locationsFromMapToMood, setLocationsFromM
       </Modal>
       <ParallaxScrollView
         headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-        headerImage={<Image source={require('@/assets/images/emotional-rollercoaster-grey.png')} style={styles.headerImage}
-        />}
+        headerImage={<Image source={require('@/assets/images/emotional-rollercoaster-grey.png')} style={styles.headerImage}/>}
+        headerHeight={200}
       >
           <Collapsible title={`Date: ${receivedChildDate}`}>
             <DatePickerButton onDataReceivedCaller={onDataReceivedDateCaller}></DatePickerButton>
@@ -408,10 +408,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   headerImage: {
-    position: 'relative',
-    height: 250,
-    width: 450,
-    color: Colors.lightBlue
+    // position: 'relative',
+    height: 200,
+    width: 425,
   },
   titleContainer: {
     flexDirection: 'row',

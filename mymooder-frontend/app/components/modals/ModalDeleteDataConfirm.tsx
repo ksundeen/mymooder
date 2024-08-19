@@ -68,6 +68,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalText: {
+    top: '-15%',
+    fontSize: 18,
+    fontWeight: 'bold',
     marginTop: "10%",
+    textAlign: 'center'
   },
 });

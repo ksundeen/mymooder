@@ -121,21 +121,64 @@ export function crudMoodValuesMethods() {
         });
   };
 
-  const deleteDatabaseData = (db: SQLite.SQLiteDatabase) => {
+  const deleteDatabaseData = async (db: SQLite.SQLiteDatabase, deleteData: boolean = true, recreateTables: boolean = false) => {
+    // db.withExclusiveTransactionAsync(async (txn) => {
+        // let command: string = ''
+        if (deleteData) {
+            const command: string = 'DELETE FROM mood_values;'
+            const statement = await db.prepareAsync(command)
+            await statement.executeAsync()
+            // command = 'DELETE FROM mood_values;'
+            // await txn.runAsync(command)
+            console.log('Deleted data from mood_values')
+        } else if (recreateTables) {
+            // command = 'DROP TABLE IF EXISTS mood_values; CREATE TABLE IF NOT EXISTS mood_values (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, latitude_x REAL, longitude_y REAL, datetime TEXT, calmness_score INTEGER, happy_score INTEGER, people TEXT, activities TEXT, personal_weather_rating TEXT, api_weather_rating TEXT, api_weather_temperature INTEGER, notes TEXT);)';
+            // await db.runAsync(command)
+            await reCreateMoodValuesTable(db)
+            console.log('Recreated mood_values table')
+        } else {
+            console.log('No database method called')
+        }
+        // Get count of records logged to console
+        await getRecordCount(db)
+    // })
+  };
+
+  const createMoodValuesTableIfNotExists = async (db: SQLite.SQLiteDatabase) => {
+    // db.withExclusiveTransactionAsync(async (txn) => {
+        const command: string = 'CREATE TABLE IF NOT EXISTS mood_values (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, latitude_x REAL, longitude_y REAL, datetime TEXT, calmness_score INTEGER, happy_score INTEGER, people TEXT, activities TEXT, personal_weather_rating TEXT, api_weather_rating TEXT, api_weather_temperature INTEGER, notes TEXT);';
+        const statement = await db.prepareAsync(command);
+        await statement.executeAsync();
+
+        // Get count of records logged to console
+        await getRecordCount(db)
+    // })
+  };
+
+  // TODO: database keeps locking here...
+  const reCreateMoodValuesTable = async (db: SQLite.SQLiteDatabase) => {
     db.withExclusiveTransactionAsync(async (txn) => {
-        await txn.runAsync('DELETE FROM mood_values;');
-    })
+        const command: string = 'DROP TABLE IF EXISTS mood_values;';
+        const statement = await txn.prepareAsync(command)
+        await statement.executeAsync()
+    });
+
+    db.withExclusiveTransactionAsync(async (txn) => {
+        const command2: string = 'CREATE TABLE IF NOT EXISTS mood_values (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, latitude_x REAL, longitude_y REAL, datetime TEXT, calmness_score INTEGER, happy_score INTEGER, people TEXT, activities TEXT, personal_weather_rating TEXT, api_weather_rating TEXT, api_weather_temperature INTEGER, notes TEXT);';
+        const statement2 = await txn.prepareAsync(command2)
+        await statement2.executeAsync()
+    });
+
+    // Count records to console
+    await getRecordCount(db)
   };
 
   const getRecordCount = async (db: SQLite.SQLiteDatabase) => {
-    const result: SQLite.SQLiteRunResult = await db.runAsync('SELECT COUNT(*) FROM mood_values;')
-        return result.lastInsertRowId
-  }
-//   const getRecordCount = async (db: SQLite.SQLiteDatabase) => {    
-//     const result: number[] = await db.getAllAsync(
-//       `SELECT COUNT(*) FROM mood_values WHERE id > ?;`, [0])
-//     return result
-// };
+    const countArr: any = await db.getAllAsync('SELECT COUNT(*) FROM mood_values;')
+    const count = countArr[0]['COUNT(*)'];
+    console.log("Record count: ", count)
+    return count;
+  };
 
  const loadSampleData = async (db: SQLite.SQLiteDatabase) => {
     let seedSqlMoodValues: string = '';
@@ -146,19 +189,16 @@ export function crudMoodValuesMethods() {
     });
     console.log(seedSqlMoodValues);
 
-    await db.execAsync(
-        `DROP TABLE IF EXISTS mood_values; CREATE TABLE IF NOT EXISTS mood_values (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, latitude_x REAL, longitude_y REAL, datetime TEXT, calmness_score INTEGER, happy_score INTEGER, people TEXT, activities TEXT, personal_weather_rating TEXT, api_weather_rating TEXT, api_weather_temperature INTEGER, notes TEXT);`);
-        // console.log("createTableResult: ", createTableResult)
-
-    const seedDataResult: SQLite.SQLiteRunResult = await db.runAsync(seedSqlMoodValues)
-    console.log("seedDataResult: ", seedDataResult)
+    await db.execAsync(seedSqlMoodValues)
 
     console.log('LOADED SEED DATA');
-};
+ };
 
   return {
     getAllMoodValues,
     getMoodValuesFilteredByDate,
+    reCreateMoodValuesTable,
+    createMoodValuesTableIfNotExists,
     // getMoodValuesFilteredByField,
     addMoodValue,
     updateMoodValue,

@@ -1,23 +1,9 @@
 -- Create new database with: > sqlite3 ~/Documents/repos/mymooder/mymooder-frontend/app/database/mymooder.db 
 -- Call sql file for database: > sqlite3 ~/Documents/repos/mymooder/mymooder-frontend/app/database/mymooder.db < ~/Documents/repos/mymooder/mymooder-frontend/app/database/seedDb.sql
 -- Call sql file from inside database terminal: sqlite>.read ~/Documents/repos/mymooder/mymooder-frontend/app/database/seedDb.sql
-
-CREATE TABLE IF NOT EXISTS mood_values 
-(
-    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-    name TEXT,
-    latitude_x REAL,
-    longitude_y REAL,
-    datetime TEXT, 
-    calmness_score INTEGER, 
-    happy_score INTEGER, 
-    people TEXT, 
-    activities TEXT, 
-    personal_weather_rating TEXT, 
-    api_weather_rating TEXT, 
-    api_weather_temperature INTEGER, 
-    notes TEXT
-);
+-- Connect to phone db: > sqlite3 .read (or .open) /Users/Kim/Library/Developer/CoreSimulator/Devices/13C2CCB2-33A9-42FB-88AE-1B2E21D03D14/data/Containers/Data/Application/CF0FA336-6067-4ADF-816C-BA92B5EF3E36/Documents/SQLite/mymooder.db
+-- Check phone db: > sqlite3 /Users/Kim/Library/Developer/CoreSimulator/Devices/13C2CCB2-33A9-42FB-88AE-1B2E21D03D14/data/Containers/Data/Application/CF0FA336-6067-4ADF-816C-BA92B5EF3E36/Documents/ < ~/Documents/repos/mymooder/mymooder-frontend/app/database/seedDb.sql
+CREATE TABLE IF NOT EXISTS mood_values (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, latitude_x REAL, longitude_y REAL, datetime TEXT, calmness_score INTEGER, happy_score INTEGER, people TEXT, activities TEXT, personal_weather_rating TEXT, api_weather_rating TEXT, api_weather_temperature INTEGER, notes TEXT);
 
 INSERT INTO mood_values (name, latitude_x, longitude_y, datetime, calmness_score, happy_score, people, activities, personal_weather_rating, api_weather_rating, api_weather_temperature, notes) VALUES 
 ('Running Innovation Dr Gravel Path', 43.22725275517992, -89.34438319725115, '2024-07-03T18:00:00.000Z',0, 10, 'Alone', 'running,being outside,alone time', 'sunny', 'partly sunny', 75, 'I love running alone!'); 

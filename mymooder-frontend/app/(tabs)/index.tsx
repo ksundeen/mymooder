@@ -8,6 +8,7 @@ export default function HomeScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerHeight={215}
       headerImage={
         <Image
           source={require('@/assets/images/LogoWithLargerBackgroundLighter3_WorldInfo.png')}
