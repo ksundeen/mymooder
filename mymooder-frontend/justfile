@@ -173,7 +173,7 @@ A1_expo-setup-install eas_login="do_not_login":
 # Apply patches, configure expo builds, and pre-build
 A2_clean-configure-and-build-both-platforms: 
     # {{apply_packages}}
-    # watchman watch-del '/Users/Kim/Documents/repos/my-mooder-frontend' ; watchman watch-project '/Users/Kim/Documents/repos/my-mooder-frontend'
+    # watchman watch-del '/Users/Kim/Documents/repos/mymooder-frontend' ; watchman watch-project '/Users/Kim/Documents/repos/mymooder-frontend'
     # just remove-android-and-ios-expo-previous-builds
     just C_expo-build-configure 
     just D_expo-local-pre-build

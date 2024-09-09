@@ -4,9 +4,8 @@ SHELL ["/bin/bash", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
 ARG NONROOT_USER
 ENV NONROOT_HOME=/home/${NONROOT_USER}
-ARG PY_VERSION=3.10.5
+ARG PY_VERSION=3.12
 ARG PIP_VERSION=22.2.2
-ARG POETRY_VERSION=1.2.2
 ENV PROJECT=mymooder-api
 
 # Prepare apt.
@@ -62,13 +61,13 @@ RUN ./configure --enable-optimizations && \
     make -s &&  \
     make install
 
-# Install Vim (for field troubleshooting).
+# Install nano (for field troubleshooting).
 USER root
-RUN apt-get install -y vim
+RUN apt-get install -y nano
 USER ${NONROOT_USER}
-RUN mkdir -p "${NONROOT_HOME}/.vim/pack/vendor/start"
-RUN echo set number >> "${NONROOT_HOME}/.vimrc"
-RUN echo set relativenumber >> "${NONROOT_HOME}/.vimrc"
+RUN mkdir -p "${NONROOT_HOME}"
+RUN echo set number >> "${NONROOT_HOME}/.bashrc"
+RUN echo set relativenumber >> "${NONROOT_HOME}/.bashrc"
 
 # Install application files.
 USER ${NONROOT_USER}
@@ -82,8 +81,7 @@ USER ${NONROOT_USER}
 RUN python3 -m venv venv && \
     source venv/bin/activate && \
     pip install pip==${PIP_VERSION} && \
-    pip install poetry==${POETRY_VERSION} && \
-    poetry install
+    pip install -r requirements.txt
 
 # Prepare the default entry point.
 USER root

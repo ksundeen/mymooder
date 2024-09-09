@@ -50,9 +50,10 @@ With the My Mooder application, the data is in the hands of the individual to le
 - [ ] Add sqlite export option to export out data as the database, geopackage(?), csv or other format.
 - [ ] Add option to upload data anonymously to website to store and show online publically.
 
-## mymooder-backend
+## mymooder-api
 - [ ] Get a server ready to publish backend infrastructure and web hosting.
 - [ ] Create fast api skeleton for a website and published on the MyMooder site.
+- [ ] Create Airflow API skeleton to run long-running processes from the Fast API setup.
 - [ ] Create a GeoNode website to store and host data on the MyMooder site.
 - [ ] Add functionality to run machine learning python alorithms to report predictions of mood based on input parameters.
 - [ ] Tie API for running predictive methods into the frontend.
@@ -108,7 +109,6 @@ This section review steps for setting up technologies required to run a React Na
 
 5. Install Just as a command runner for your OS from: https://github.com/casey/just. Or from source 
 
-
         # For Ubuntu 24.04 install Just using:
         sudo apt install just 
 
@@ -127,7 +127,7 @@ This section review steps for setting up technologies required to run a React Na
           # Example
           git checkout -b feature/d3-graphics
 
-7. Set the pnpm global directory with 
+7. Set the npm OR pnpm global directory with 
 `$XDG_DATA_HOME` env variable is set, then `$XDG_DATA_HOME/pnpm`
 
         # Run this in mac to set add the env to ~/.zshrc or add directly.
@@ -210,7 +210,7 @@ This section review steps for setting up technologies required to run a React Na
 
         sqlite3 ~/Documents/repos/mymooder/mymooder-frontend/app/database/mymooder.db < ~/Documents/repos/mymooder/mymooder-frontend/app/database/seedDb.sql
 
- #
+#
 #
 > **Note**  
 >
@@ -332,18 +332,21 @@ This section review steps for setting up technologies required to run a React Na
         export XDG_STATE_HOME="$HOME/.pnpm-state"
         export XDG_CACHE_HOME="$HOME/Library/Caches/pnpm"
         export PNPM_HOME=$XDG_DATA_HOME
-        export PATH="${PATH}:$XDG_DATA_HOME:$XDG_STATE_HOME:XDG_CACHE_HOME=:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME"
         export PATH=$PATH:$ANDROID_HOME/emulator
         export PATH=$PATH:$ANDROID_HOME/platform-tools
+        export PATH="${PATH}:$XDG_DATA_HOME:$XDG_STATE_HOME:XDG_CACHE_HOME=:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$JAVA_HOME"
 
 14. If using `npm`, this is the final ~/.zhrc:
 
         export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
         export ANDROID_HOME=$HOME/Library/Android/sdk
+        export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+        export ANDROID_AVD_HOME=$HOME/.android/avd
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-        export XDG_DATA_HOME="$HOME/Library"
+        export XDG_DATA_HOME="$HOME/Library/pnpm"
+        export PNPM_HOME=$XDG_DATA_HOME
         export ANDROID_TOOLS=$ANDROID_HOME/tools
         export ANDROID_EMULATOR=$ANDROID_HOME/emulator
         export ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools
