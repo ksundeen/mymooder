@@ -2,7 +2,7 @@
 <img src="/mymooder-frontend/assets/images/readme-assets/LogoWithLargerBackgroundLighter_WorldInfo.png" width=75% height=75% display=flex justify-content=center>
 
 # Goal of My Mooder Application
-My Mooder aims to help transform an individual’s personal view of mental illness from an issue of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see over time and space, across activities, people, and weather how their mood fluctuates from negative to positive. With data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs to better support how one's moods naturally fluctuate.
+My Mooder aims to help transform an individual’s personal view of “mental health” to “mood awareness.” Individuals will grow in their awareness of how mood is influenced not simply by work stress, family stress, or any number of stresses of humanity, but empower them to visually see over time and space, across activities, people, and weather how their mood fluctuates from negative to positive. With data in hand, individuals can choose to share such information with medical providers, therapists, or find new jobs to better support how one's moods naturally fluctuate.
 
 ### The Mockup
 <img src="/mymooder-frontend/assets/images/readme-assets/mymooder-mockup.png" width=50% height=50% display=flex justify-content=center>
