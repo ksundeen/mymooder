@@ -151,6 +151,15 @@ This section review steps for setting up technologies required to run a React Na
 >       
 >       # List just commands
 >       just --list
+>
+>       # Reset the app
+>       just Z_reset-all
+>
+>       # Reset the app and clear npm cache
+>       just Z_reset-all clean
+>
+>       # Or Start the App
+>       just B4_expo-start
 
 8. Install the Android Studio and SDK: follow instructions through Expo android page: https://docs.expo.dev/workflow/android-studio-emulator/ to set up the Android Emulator, and set environmental variables. Update Android
 

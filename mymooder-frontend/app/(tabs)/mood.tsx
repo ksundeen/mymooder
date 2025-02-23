@@ -24,6 +24,7 @@ import { defaultMoodValue } from '../constants/Values';
 import DatePickerButton from '../components/DatePickerButton';
 import ButtonComponent from '../components/ButtonComponent';
 import { crudMoodValuesMethods} from '@/app/database/crudMethods'
+import React from 'react';
 
 const { addMoodValue, 
   // updateMoodValue, 
@@ -77,10 +78,12 @@ export default function MoodComponent({locationsFromMapToMood, setLocationsFromM
 
   // Callback function to receive data from the happiness score slider
   const onDataReceivedDateCaller = (data: DateValues) => {
-    setReceivedParentDate(data)
-    let newMoodValue = moodValue
-    newMoodValue.datetime = data.toLocaleDateString()
-    setMoodValue(newMoodValue)
+    if (data) {
+      setReceivedParentDate(data)
+      let newMoodValue = moodValue
+      newMoodValue.datetime = data.toLocaleDateString()
+      setMoodValue(newMoodValue)
+    }
   };
 
   // Callback function to receive data from the happiness score slider

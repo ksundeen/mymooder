@@ -76,5 +76,8 @@
       },
       "channel": "production"
     }
+  },
+  "cli": {
+    "appVersionSource": "remote"
   }
 }

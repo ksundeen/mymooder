@@ -3,6 +3,7 @@ import * as Location from "expo-location";
 import { View, Text, StyleSheet, TextInput, Linking } from "react-native";
 import ButtonComponent from "../ButtonComponent";
 import { LocationValues } from "@/app/database/types";
+import React from "react";
 
 export function GetLocation(props: {
     locationsFromMap: LocationValues | null
@@ -72,43 +73,46 @@ export function GetLocation(props: {
         let _userLocationTextLong = defaultLoadingText
         setUserLocationTextLat(defaultLoadingText)
         setUserLocationTextLong(defaultLoadingText)
+        let _userLocation: Location.LocationObject = defaultPosition
+        let _errMsg: string = errorMsg
+        let permissionResponse: Location.PermissionResponse = await Location.requestForegroundPermissionsAsync()
 
-        while (_userLocationTextLat === defaultLoadingText || _userLocationTextLong === defaultLoadingText){
-            let _errMsg: string = errorMsg
-            let _userLocation: Location.LocationObject = defaultPosition
-            
-            // Possible values: {"GRANTED":"granted","UNDETERMINED":"undetermined","DENIED":"denied"}
-            let { status } = await Location.requestForegroundPermissionsAsync()
-            if (status !== 'granted') {
-                _errMsg = 'Permission to access location was denied'
+        while (!permissionResponse.granted) {
+            while (_userLocationTextLat === defaultLoadingText || _userLocationTextLong === defaultLoadingText){
+                
+                // Possible values: {"GRANTED":"granted","UNDETERMINED":"undetermined","DENIED":"denied"}
+                permissionResponse = await Location.requestForegroundPermissionsAsync()
+                if (!permissionResponse.granted) {
+                    _errMsg = 'Permission to access location was denied'
+                }
+                console.log(`Location Status: ${permissionResponse.status.toString()}`)
             }
-            console.log(`Location Status: ${status.toString()}`)
-            _userLocation = await Location.getCurrentPositionAsync({})
+        }
+        _userLocation = await Location.getCurrentPositionAsync({})
+        setUserLocation(_userLocation)
+
+        if (_errMsg !== '') {
+            setErrorMsg(_errMsg)
+            _userLocationTextLat = _errMsg
+            setUserLocationTextLat(_errMsg)
+            setUserLocationTextLong(_errMsg)
+        } else if (_userLocation !== defaultPosition) {
             setUserLocation(_userLocation)
-    
-            if (_errMsg !== '') {
-                setErrorMsg(_errMsg)
-                _userLocationTextLat = _errMsg
-                setUserLocationTextLat(_errMsg)
-                setUserLocationTextLong(_errMsg)
-            } else if (_userLocation !== defaultPosition) {
-                setUserLocation(_userLocation)
-                // Send locations to parent component to save
-                onDataReceivedCaller({
-                    latitude: _userLocation.coords.latitude,
-                    longitude: _userLocation.coords.longitude
-                })
-                _userLocationTextLat = (Math.round(_userLocation.coords.latitude * 100) / 100).toFixed(3)
-                _userLocationTextLong = (Math.round(_userLocation.coords.longitude * 100) / 100).toFixed(3)
-            } else {
-                _userLocationTextLat = 'Still Loading...'
-                _userLocationTextLong = 'Still Loading...'
-            }; 
-            setUserLocationTextLat(_userLocationTextLat)
-            setUserLocationTextLong(_userLocationTextLong)
-            setUserLocation(_userLocation)
-            console.log(`Location lat, long: ${_userLocationTextLat}, ${_userLocationTextLong}`)
-        };
+            // Send locations to parent component to save
+            onDataReceivedCaller({
+                latitude: _userLocation.coords.latitude,
+                longitude: _userLocation.coords.longitude
+            })
+            _userLocationTextLat = (Math.round(_userLocation.coords.latitude * 100) / 100).toFixed(3)
+            _userLocationTextLong = (Math.round(_userLocation.coords.longitude * 100) / 100).toFixed(3)
+        } else {
+            _userLocationTextLat = 'Still Loading...'
+            _userLocationTextLong = 'Still Loading...'
+        }; 
+        setUserLocationTextLat(_userLocationTextLat)
+        setUserLocationTextLong(_userLocationTextLong)
+        setUserLocation(_userLocation)
+        console.log(`Location lat, long: ${_userLocationTextLat}, ${_userLocationTextLong}`)
     };
 
     return (

@@ -247,7 +247,7 @@ D_expo-local-pre-build:
 
 # Build Android App to Be Transfered to a Expo for deployment through Apps Developer Program
 # Runs complete clear of node_modules and reinstalls packages. Then rebuilds local ios and android apps.
-# Enter 'Z_reset_all clean' to also clean npm cache if using npm
+# Enter 'Z_reset-all clean' to also clean npm cache if using npm
 Z_reset-all clean="do_not_clean_npm_cache":
     #!/usr/bin/env bash
     set {{flags}}
