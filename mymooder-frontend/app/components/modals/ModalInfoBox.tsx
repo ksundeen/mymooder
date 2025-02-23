@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, Modal, Alert } from 'react-native';
 import { MoodValue, LocationValues } from '@/app/database/types';
 import ButtonComponent from '../ButtonComponent';
 import { convertIsoToLocaleString } from '../../helpers';
+import React from 'react';
 
 export function ModalInfoBox({locationValues, 
                               moodValue,

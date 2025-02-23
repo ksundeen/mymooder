@@ -7,7 +7,7 @@ import {
   WebviewLeafletMessage } from 'react-native-leaflet-view-2';
 // import { favoritePlaceData } from '@/assets/data/favorite-places';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Svg from 'react-native-svg';
 import { LocationValues, MoodValue } from '../database/types';
 import ModalInfoBox from './modals/ModalInfoBox';
@@ -28,7 +28,16 @@ export function MapComponent({setLocationsFromMapToMoodCaller,
     mapShapes: MapShape[], 
     mapMarkers: MapMarker[]}
   ) {
-  
+
+  const webViewRef = useRef(null);
+  const handleWebViewLoad = () => {
+    if (webViewRef.current && webViewRef.current.startLoadWithResult) {
+      webViewRef.current.startLoadWithResult();
+    } else {
+      console.warn('WebView ref is not yet available.');
+    }
+  };
+
   // To send locations clicked on map to Mood Screen
   const [selectedMoodLocation, setSelectedMoodLocation] = useState<MoodValue | null>(null);
   const [selectedLocationValues, setSelectedLocationValues] = useState<LocationValues | null>(null);

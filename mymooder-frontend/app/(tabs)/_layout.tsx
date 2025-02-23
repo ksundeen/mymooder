@@ -129,8 +129,8 @@ export default function TabLayout() {
               children={(props: {route: any, navigation: any}) => 
                 <MoodComponent 
                   {...props} 
-                  locationsFromMap={locationsFromMapToMood} 
-                  setLocationsFromMapCaller={setLocationsFromMapToMood} 
+                  locationsFromMapToMood={locationsFromMapToMood} 
+                  setLocationsFromMapToMoodCaller={setLocationsFromMapToMood} 
                 />
               }
               options={{
@@ -156,7 +156,7 @@ export default function TabLayout() {
               children={(props: {route: any, navigation: any}) => 
                 <MapEntry
                   {...props} 
-                  setLocationsFromMapCaller={setLocationsFromMapToMood} 
+                  setLocationsFromMapToMoodCaller={setLocationsFromMapToMood} 
                 />
               }
               options={{
